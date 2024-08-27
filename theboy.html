@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Boy - MSFlix</title>
+    <style>
+        /* Styles généraux */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            overflow-y: scroll;
+        }
+
+        /* Conteneur principal */
+        .container {
+            width: 100%;
+            height: 200%;
+            position: relative;
+            z-index: 1;
+            padding: 100px;
+            box-sizing: border-box;
+            background-image: url('https://www.geekslands.fr/wp-content/uploads/2022/06/the-boys-saison-3-1-1024x576.webp');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(80%);
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Bouton de retour */
+        .return-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #ff4500;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #ff4500;
+            font-weight: bold;
+        }
+
+        .return-button:hover {
+            background-color: rgba(255, 69, 0, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Contenu principal */
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content {
+            flex: 1;
+            text-align: center;
+            margin-right: 20px;
+            transition: opacity 1s, transform 1s;
+        }
+
+        .info {
+            text-align: left;
+            max-width: 550px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.8);
+        }
+
+        .info h1 {
+            font-size: 3em;
+            margin: 0;
+            color: #ff4500;
+            font-family: 'Roboto Slab', serif;
+        }
+
+        .info p {
+            font-size: 1.3em;
+            margin: 10px 0;
+            line-height: 1.6;
+            color: #cccccc;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            background-color: #444;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #ff4500;
+            font-weight: bold;
+        }
+
+        .buttons button:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+
+        /* Tableau des épisodes */
+        .episodes {
+            flex: 1;
+            max-width: 550px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.8);
+            overflow-x: auto;
+            max-height: 80vh;
+        }
+
+        .episodes table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .episodes th,
+        .episodes td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        .episodes th {
+            background-color: #222;
+            color: #ff4500;
+            font-size: 1.3em;
+        }
+
+        .episodes td {
+            background-color: #333;
+            border: 1px solid #555;
+        }
+
+        .episodes a {
+            color: #ff4500;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .episodes a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section vidéo */
+        .video-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .video-section iframe {
+            width: 80%;
+            height: 80%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .video-section .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #ff4500;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #ff4500;
+            font-weight: bold;
+        }
+
+        .video-section .back-button:hover {
+            background-color: rgba(255, 69, 0, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Personnalisation de la barre de défilement pour WebKit (Chrome, Safari) */
+        .movie-grid::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .movie-grid::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .movie-grid::-webkit-scrollbar-thumb {
+            background: #1f80e0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            scroll-behavior: smooth;
+            scrollbar-width: thin; /* Pour Firefox */
+            scrollbar-color: #1f80e0 transparent; /* Pour Firefox */
+        }
+
+        .movie-grid::-webkit-scrollbar-thumb:hover {
+            background: #145a8d;
+        }
+
+        .movie-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 25px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 20px;
+            scroll-behavior: smooth;
+            scrollbar-width: thin; /* Pour Firefox */
+            scrollbar-color: #1f80e0 transparent; /* Pour Firefox */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <a href="/series/serie.html" class="return-button" id="returnButton">Retour</a>
+
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="info">
+                    <h1>MXFlix <br> The Boys</h1>
+                    <p>2019 • Action, Drame, Science-Fiction</p>
+                    <p>"The Boys" explore un monde où les super-héros sont corrompus par le pouvoir et l'argent. Suivez un groupe de vigilants qui se battent pour exposer la vérité et arrêter les super-héros déchus qui abusent de leur pouvoir. Une série satirique et intense sur le côté obscur des héros.</p>                    <div class="buttons">
+                        <button id="trailerButton">Bande-annonce</button>
+                        <button id="favoriteButton">Favoris</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="episodes">
+                <!-- Saison 1 -->
+                <table>
+                    <tr>
+                        <th>Saison 1</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/jw0hwmh9xyxu.html">Épisode 1</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/8cd6dz29mud0.html">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/qopzt2qscu66.html">Épisode 3</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/599p6qh2xrf7.html">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/tkzau41zqbau.html">Épisode 5</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/hgjvx9tk4uia.html">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/bbv6vr12bc8e.html">Épisode 7</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/cf7l730fsdxc.html">Épisode 8</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/w12fldwjqg4v.html">Épisode 9</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/k74avy5jyaj4.html">Épisode 10</a></td>
+                    </tr>
+                </table>
+
+                <!-- Saison 2 -->
+                <table>
+                    <tr>
+                        <th>Saison 2</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/qkkq1nc8p1et.html">Épisode 1</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/c6vjcb52j5ov.html">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/6wn42bvp9fpl.html">Épisode 3</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/4w64i5pdde6y.html">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/dd9i01f9o5e4.html">Épisode 5</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/hl06kbo719by.html">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/oetgph8sdw4o.html">Épisode 7</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/ky4usrzf3dlz.html">Épisode 8</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/whwv6trw2fmn.html">Épisode 9</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/fc6geujxzn2h.html">Épisode 10</a></td>
+                    </tr>
+                </table>
+
+                <!-- Saison 3 -->
+                <table>
+                    <tr>
+                        <th>Saison 3</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/onwpqw3ysdt9.html">Épisode 1</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/dpeaft7bu1o4.html">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/0u9qvc0vlqah.html">Épisode 3</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/ko8akb9osprz.html">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/m7he2sqmhqev.html">Épisode 5</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/t19bpeqgrm5l.html">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/2vh7f4tfw0zd.html">Épisode 7</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/p42ozen41hm2.html">Épisode 8</a></td>
+                    </tr>
+                </table>
+
+                <!-- Saison 4 -->
+                <table>
+                    <tr>
+                        <th>Saison 4</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/gh5f9pxyhexd.html">Épisode 1</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/vwo12mo1wff9.html">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/sh1ecsoqcvg9.html">Épisode 3</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/r4anltwpdb2o.html">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/z2a2em9f7tlk.html">Épisode 5</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/wnaqqs6nhwx5.html">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/hqh23eup6dn3.html">Épisode 7</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/uk32hze3k7as.html">Épisode 8</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/a3sgq5bbu977.html">Épisode 9</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/v5xjzxsosvsv.html">Épisode 10</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section vidéo -->
+    <div class="video-section" id="videoSection">
+        <iframe src="" id="videoIframe" allowfullscreen></iframe>
+        <button class="back-button" id="backButton">Retour</button>
+    </div>
+
+    <script>
+        // Gestion des boutons de la bande-annonce et des favoris
+        const trailerButton = document.getElementById('trailerButton');
+        const favoriteButton = document.getElementById('favoriteButton');
+        const videoSection = document.getElementById('videoSection');
+        const videoIframe = document.getElementById('videoIframe');
+        const backButton = document.getElementById('backButton');
+
+        trailerButton.addEventListener('click', function() {
+            videoSection.style.display = 'flex';
+            videoIframe.src = 'https://www.youtube.com/embed/iwcVvYjd1Rw';
+        });
+
+        backButton.addEventListener('click', function() {
+            videoSection.style.display = 'none';
+            videoIframe.src = '';
+        });
+
+        favoriteButton.addEventListener('click', function() {
+            alert('Ajouté aux favoris !');
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>On My Block</title>
+    <style>
+        /* Styles généraux */
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://assets.teenvogue.com/photos/5c87c919fa0b8705b1120e3e/16:9/w_2560%2Cc_limit/lede.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Conteneur principal */
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            padding: 100px 20px;
+            box-sizing: border-box;
+            background-image: url('https://images.unsplash.com/photo-1506748686214e9df14eab4d0d1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MXwyMDA3NzN8MHwxfGFsbHwxfHx8fHx8fHx8MTY3NjUyNjU3Mg&ixlib=rb-1.2.1&q=80&w=1080'); /* Image d'arrière-plan */
+            background-size: cover; /* Couvre tout le conteneur */
+            background-position: center; /* Centre l'image */
+            background-attachment: fixed; /* Fixe l'image pour qu'elle ne bouge pas lors du défilement */
+            filter: brightness(70%);
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Bouton de retour */
+        .return-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #00ff00; /* Couleur d'accent */
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        .return-button:hover {
+            background-color: #ff5722,
+        }
+
+        /* Contenu principal */
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content {
+            flex: 1;
+            text-align: center;
+            margin-right: 20px;
+            transition: opacity 1s, transform 1s;
+        }
+
+        .info {
+            text-align: left;
+            max-width: 550px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px #ff5722;
+        }
+
+        .info h1 {
+            font-size: 3em;
+            margin: 0;
+            color: #ff5722;
+            font-family: 'Roboto Slab', serif;
+        }
+
+        .info p {
+            font-size: 1.3em;
+            margin: 10px 0;
+            line-height: 1.6;
+            color: #cccccc;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            background-color: #444;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        .buttons button:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+
+        /* Tableau des épisodes */
+        .episodes {
+            flex: 1;
+            max-width: 550px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px #ff5722;
+        }
+
+        .episodes table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .episodes th,
+        .episodes td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        .episodes th {
+            background-color: #222;
+            color: #00ff00;
+            font-size: 1.3em;
+        }
+
+        .episodes td {
+            background-color: #333;
+            border: 1px solid #555;
+        }
+
+        .episodes a {
+            color: #ff5722;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .episodes a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section vidéo */
+        .video-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .video-section iframe {
+            width: 80%;
+            height: 80%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .video-section .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #2196f3;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #2196f3
+        }
+
+        .video-section .back-button:hover {
+            background-color: rgba(0, 255, 0, 0.3);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <a href="/series/serie.html" class="return-button" id="returnButton">Retour</a>
+
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="info">
+                    <h1>MXFlix <br> On My Block</h1>
+                    <p>2018 • Drame, Comédie</p>
+                    <p>"On My Block" suit un groupe d'amis vivant dans un quartier difficile de Los Angeles alors qu'ils naviguent dans les défis de l'adolescence, de l'amitié et des épreuves personnelles tout en faisant face à des situations souvent dramatiques mais aussi pleines d'humour.</p>
+                    <div class="buttons">
+                        <button id="trailerButton">Bande-annonce</button>
+                        <button id="favoriteButton">Favoris</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="episodes">
+                <h2>Saison 1</h2>
+                <table>
+                    <tr>
+                        <td><a href="https://uqload.to/p5z9hr47f2n9.html" target="_blank">Épisode 1</a></td>
+                        <td><a href="https://uqload.to/oz9m5bqxcml9.html" target="_blank">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/ar8scp2exg7x.html" target="_blank">Épisode 3</a></td>
+                        <td><a href="https://uqload.to/0qnywldmsghw.html" target="_blank">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/krpltg6c9r56.html" target="_blank">Épisode 5</a></td>
+                        <td><a href="https://uqload.to/mdr7stxryqfh.html" target="_blank">Épisode 6</a></td>
+                    </tr>
+                </table>
+            
+                <h2>Saison 2</h2>
+                <table>
+                    <tr>
+                        <td><a href="https://uqload.to/030c9mr48rqp.html" target="_blank">Épisode 1</a></td>
+                        <td><a href="https://uqload.to/qjwqv1viu1jy.html" target="_blank">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/3mp7wmk6pir0.html" target="_blank">Épisode 3</a></td>
+                        <td><a href="https://uqload.to/yz6kwrkheuki.html" target="_blank">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/6lzihbxedkyn.html" target="_blank">Épisode 5</a></td>
+                        <td><a href="https://uqload.to/k7eo7vniw48h.html" target="_blank">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/13xbywz8thsn.html" target="_blank">Épisode 7</a></td>
+                        <td><a href="https://uqload.to/aosyegcmoyyf.html" target="_blank">Épisode 8</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/y5p37un9o9wn.html" target="_blank">Épisode 9</a></td>
+                        <td><a href="https://uqload.to/ecfb48plzi91.html" target="_blank">Épisode 10</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/uh5mwf8oko5e.html" target="_blank">Épisode 11</a></td>
+                        <td><a href="https://uqload.to/1a3qocv7vuzp.html" target="_blank">Épisode 12</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/fmyhn3uyxopn.html" target="_blank">Épisode 13</a></td>
+                    </tr>
+                </table>
+            
+                <h2>Saison 3</h2>
+                <table>
+                    <tr>
+                        <td><a href="https://uqload.to/6tk0v4q7rnz1.html" target="_blank">Épisode 1</a></td>
+                        <td><a href="https://uqload.to/edb1ehq4229b.html" target="_blank">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/r20xf8ky06pr.html" target="_blank">Épisode 3</a></td>
+                        <td><a href="https://uqload.to/s4ir2p3g3zjc.html" target="_blank">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/dxnxp6yb0j1l.html" target="_blank">Épisode 5</a></td>
+                        <td><a href="https://uqload.to/4prtn909drdd.html" target="_blank">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/rax4koleazsd.html" target="_blank">Épisode 7</a></td>
+                        <td><a href="https://uqload.to/qojd18dy4td8.html" target="_blank">Épisode 8</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/3gmn9rj7fwov.html" target="_blank">Épisode 9</a></td>
+                        <td><a href="https://uqload.to/848rz6qa2k89.html" target="_blank">Épisode 10</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/83gqxddttn7p.html" target="_blank">Épisode 11</a></td>
+                        <td><a href="https://uqload.to/xwk3560dgazi.html" target="_blank">Épisode 12</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/ehs2b2rupgjm.html" target="_blank">Épisode 13</a></td>
+                        <td><a href="https://uqload.to/op3mzm2mdome.html" target="_blank">Épisode 14</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/sl9p54vjxt0o.html" target="_blank">Épisode 15</a></td>
+                        <td><a href="https://uqload.to/ku8cdmn7h4ud.html" target="_blank">Épisode 16</a></td>
+                    </tr>
+                </table>
+            
+                <h2>Saison 4</h2>
+                <table>
+                    <tr>
+                        <td><a href="https://uqload.to/2bpbj7hsybue.html" target="_blank">Épisode 1</a></td>
+                        <td><a href="https://uqload.to/w6vvhvzjeku5.html" target="_blank">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/rxeaa7l45wdu.html" target="_blank">Épisode 3</a></td>
+                        <td><a href="https://uqload.to/5e0lklh7esvu.html" target="_blank">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/iyhyjfy7aivl.html" target="_blank">Épisode 5</a></td>
+                        <td><a href="https://uqload.to/mlkh8j8itnsi.html" target="_blank">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/sc0sbly1hpqj.html" target="_blank">Épisode 7</a></td>
+                        <td><a href="https://uqload.to/9o57l40pmn3m.html" target="_blank">Épisode 8</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/kujsmvpj8n49.html" target="_blank">Épisode 9</a></td>
+                        <td><a href="https://uqload.to/qo2juovmqgab.html" target="_blank">Épisode 10</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/0q3vm8ivl4i0.html" target="_blank">Épisode 11</a></td>
+                        <td><a href="https://uqload.to/ci47xa1p426k.html" target="_blank">Épisode 12</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/bd08pcxmwhjh.html" target="_blank">Épisode 13</a></td>
+                        <td><a href="https://uqload.to/klvzxpoqg8v1.html" target="_blank">Épisode 14</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/su0tw16zldpn.html" target="_blank">Épisode 15</a></td>
+                        <td><a href="https://uqload.to/42yakfd5c6v9.html" target="_blank">Épisode 16</a></td>
+                    </tr>
+                </table>
+            
+                <h2>Saison 5</h2>
+                <table>
+                    <tr>
+                        <td><a href="https://uqload.to/anw7muyvcsfr.html" target="_blank">Épisode 1</a></td>
+                        <td><a href="https://uqload.to/bjqftsynnenm.html" target="_blank">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/3hu4bmjzpgo8.html" target="_blank">Épisode 3</a></td>
+                        <td><a href="https://uqload.to/upf41nl4x1nm.html" target="_blank">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/kxhaptlousuv.html" target="_blank">Épisode 5</a></td>
+                        <td><a href="https://uqload.to/tud6zhji4dox.html" target="_blank">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/497ata05vufm.html" target="_blank">Épisode 7</a></td>
+                        <td><a href="https://uqload.to/gpobzd0dape8.html" target="_blank">Épisode 8</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/auksqd8ng8dc.html" target="_blank">Épisode 9</a></td>
+                        <td><a href="https://uqload.to/75jlr92ic8ii.html" target="_blank">Épisode 10</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/jtgxw4rdrq0m.html" target="_blank">Épisode 11</a></td>
+                        <td><a href="https://uqload.to/7590l9q3mzi4.html" target="_blank">Épisode 12</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/1ewo1z5z3u2m.html" target="_blank">Épisode 13</a></td>
+                        <td><a href="https://uqload.to/zotgwo2e30a1.html" target="_blank">Épisode 14</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/zrp6fh7qe8gf.html" target="_blank">Épisode 15</a></td>
+                        <td><a href="https://uqload.to/9glejn63rfpm.html" target="_blank">Épisode 16</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section vidéo -->
+        <div class="video-section" id="videoSection">
+            <button class="back-button" id="backButton">Retour</button>
+            <iframe src="" id="videoIframe" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Code JavaScript pour la gestion des boutons et de la vidéo
+        document.getElementById('trailerButton').addEventListener('click', function() {
+            document.getElementById('videoIframe').src = 'https://www.youtube.com/embed/KA-kjg8jZUo'; // Remplacer VIDEO_ID par l'ID réel de la vidéo
+            document.getElementById('videoSection').style.display = 'flex';
+        });
+
+        document.getElementById('backButton').addEventListener('click', function() {
+            document.getElementById('videoSection').style.display = 'none';
+            document.getElementById('videoIframe').src = '';
+        });
+    </script>
+</body>
+
+</html>

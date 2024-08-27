@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page de Suggestions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            margin-top: 0;
+            color: #333;
+            font-size: 24px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"], input[type="url"], select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        .checkbox-group {
+            margin-bottom: 16px;
+        }
+        .checkbox-group label {
+            display: block;
+            margin-bottom: 4px;
+        }
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .alert {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            color: #fff;
+            display: none;
+        }
+        .alert.success {
+            background-color: #28a745;
+        }
+        .alert.error {
+            background-color: #dc3545;
+        }
+        .back-button {
+            margin-top: 20px;
+            background-color: #6c757d;
+            padding: 10px 15px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+        .seasons-field {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Soumettre une Suggestion</h1>
+        <form id="suggestionForm">
+            <label for="type">Type:</label>
+            <select id="type" name="type" required aria-required="true">
+                <option value="" disabled selected>Choisissez un type</option>
+                <option value="Film">Film</option>
+                <option value="Série">Série</option>
+            </select>
+
+            <label for="title">Titre:</label>
+            <input type="text" id="title" name="title" required aria-required="true">
+
+            <label for="year">Année:</label>
+            <input type="text" id="year" name="year" pattern="\d{4}" placeholder="AAAA" required aria-required="true" title="Veuillez entrer une année à 4 chiffres.">
+
+            <label for="posterUrl">URL de l'affiche (optionnel):</label>
+            <input type="url" id="posterUrl" name="posterUrl" placeholder="https://exemple.com/affiche.jpg">
+
+            <div id="seasonsField" class="seasons-field">
+                <label for="seasons">Nombre de saisons:</label>
+                <input type="number" id="seasons" name="seasons" min="1" placeholder="1" aria-required="false">
+            </div>
+
+            <label>Genres:</label>
+            <div class="checkbox-group" id="genres">
+                <label><input type="checkbox" name="genre" value="Action"> Action</label>
+                <label><input type="checkbox" name="genre" value="Aventure"> Aventure</label>
+                <label><input type="checkbox" name="genre" value="Comédie"> Comédie</label>
+                <label><input type="checkbox" name="genre" value="Drame"> Drame</label>
+                <label><input type="checkbox" name="genre" value="Fantasy"> Fantasy</label>
+                <label><input type="checkbox" name="genre" value="Horreur"> Horreur</label>
+                <label><input type="checkbox" name="genre" value="Romance"> Romance</label>
+                <label><input type="checkbox" name="genre" value="Science-Fiction"> Science-Fiction</label>
+                <label><input type="checkbox" name="genre" value="Thriller"> Thriller</label>
+                <label><input type="checkbox" name="genre" value="Documentaire"> Documentaire</label>
+            </div>
+            
+            <button type="submit">Envoyer la Suggestion</button>
+        </form>
+
+        <a href="node.html" class="back-button">Retour à la page précédente</a>
+
+        <div id="alertMessage" class="alert"></div>
+    </div>
+
+    <script>
+        // Afficher ou masquer le champ des saisons selon le type sélectionné
+        document.getElementById('type').addEventListener('change', function() {
+            const type = this.value;
+            const seasonsField = document.getElementById('seasonsField');
+            if (type === 'Série') {
+                seasonsField.style.display = 'block';
+            } else {
+                seasonsField.style.display = 'none';
+            }
+        });
+
+        document.getElementById('suggestionForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const type = document.getElementById('type').value;
+            const title = document.getElementById('title').value.trim();
+            const year = document.getElementById('year').value.trim();
+            const posterUrl = document.getElementById('posterUrl').value.trim();
+            const genreCheckboxes = document.querySelectorAll('input[name="genre"]:checked');
+            const genres = Array.from(genreCheckboxes).map(checkbox => checkbox.value).join(', ');
+            const seasons = document.getElementById('seasons').value;
+
+            // Validation de l'année pour s'assurer qu'elle est bien à 4 chiffres
+            if (!type || !title || !year.match(/^\d{4}$/) || genres.length === 0 || (type === 'Série' && !seasons)) {
+                showAlert('Veuillez remplir tous les champs correctement.', 'error');
+                return;
+            }
+
+            const webhookUrl = 'https://discord.com/api/webhooks/1277736880334704700/-VYrD0ESiEilX_SCN8lPc2x_19Io6e7dghsc2ePMwSbn6tHA0e0gPPwn2q41UKmLENN6'; // Remplacez par votre URL de webhook Discord
+
+            const payload = {
+                embeds: [
+                    {
+                        title: 'Nouvelle Suggestion',
+                        color: 5814783, // Couleur bleue
+                        fields: [
+                            {
+                                name: 'Type',
+                                value: type,
+                                inline: true
+                            },
+                            {
+                                name: 'Titre',
+                                value: title,
+                                inline: true
+                            },
+                            {
+                                name: 'Année',
+                                value: year,
+                                inline: true
+                            },
+                            {
+                                name: 'Genres',
+                                value: genres,
+                                inline: true
+                            },
+                        ],
+                        footer: {
+                            text: 'MSFlix Suggestions'
+                        }
+                    }
+                ]
+            };
+
+            // Ajouter l'URL de l'affiche si elle est présente
+            if (posterUrl) {
+                payload.embeds[0].image = { url: posterUrl };
+            }
+
+            // Ajouter le nombre de saisons si c'est une série
+            if (type === 'Série') {
+                payload.embeds[0].fields.push({
+                    name: 'Nombre de saisons',
+                    value: seasons,
+                    inline: true
+                });
+            }
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (response.ok) {
+                    showAlert('Suggestion a été envoyée a l\'équipe !', 'success');
+                    document.getElementById('suggestionForm').reset();
+                    document.getElementById('seasonsField').style.display = 'none'; // Cacher à nouveau le champ saisons
+                } else {
+                    showAlert('Erreur lors de l\'envoi de la suggestion.', 'error');
+                }
+            })
+            .catch(error => {
+                showAlert('Erreur lors de l\'envoi de la suggestion.', 'error');
+                console.error('Erreur:', error);
+            });
+        });
+
+        function showAlert(message, type) {
+            const alert = document.getElementById('alertMessage');
+            alert.textContent = message;
+            alert.className = `alert ${type}`;
+            alert.style.display = 'block';
+            setTimeout(() => alert.style.display = 'none', 5000);
+        }
+    </script>
+</body>
+</html>

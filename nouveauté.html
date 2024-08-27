@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouveautés</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .nouveaute-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .nouveaute-card {
+            width: 230px;
+            height: 380px;
+            border-radius: 15px;
+            overflow: hidden;
+            background-color: #222;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .nouveaute-card img {
+            width: 100%;
+            height: 70%;
+            object-fit: cover;
+        }
+
+        .nouveaute-card h3 {
+            margin: 10px 0;
+        }
+
+        .nouveaute-card:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+<h1>Nouveautés</h1>
+<div class="nouveaute-container" id="nouveauteContainer">
+    <!-- Les cartes des nouveautés seront ajoutées ici -->
+</div>
+
+<script>
+    // Charger les séries depuis node.html (ajoute une ligne à la fin de node.html pour inclure les données)
+    const series = [
+        { title: "Snowfall", image: "https://fr.web.img4.acsta.net/pictures/23/04/06/15/59/0246445.jpg", link: "/series/snowfall.html" },
+        // Autres séries ici...
+    ];
+
+    const nouveauteContainer = document.getElementById('nouveauteContainer');
+
+    // Générer dynamiquement les cartes de nouveautés
+    series.forEach(serie => {
+        const card = document.createElement('div');
+        card.className = 'nouveaute-card';
+        card.innerHTML = `
+            <a href="${serie.link}">
+                <img src="${serie.image}" alt="${serie.title}">
+                <h3>${serie.title}</h3>
+            </a>
+        `;
+        nouveauteContainer.appendChild(card);
+    });
+</script>
+
+</body>
+</html>

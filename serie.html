@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSFlix</title>
+    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+    <style>
+        /* Votre style CSS ici */
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            margin-top: 100px;
+            padding: 0;
+            background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1707e452-eddb-4b53-a2d2-be332866adad/ddle43s-52197d60-a2ea-4b10-afe3-8323ae215896.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzE3MDdlNDUyLWVkZGItNGI1My1hMmQyLWJlMzMyODY2YWRhZFwvZGRsZTQzcy01MjE5N2Q2MC1hMmVhLTRiMTAtYWZlMy04MzIzYWUyMTU4OTYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.3LhMlvyASZlP7R6HWGFNRJ8MpDGoGNnt-ZioCMiLCr8');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        header {
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    padding: 20px 40px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    justify-content: space-between; /* Assure que les éléments sont répartis */
+}
+
+.logo {
+    flex: 1; /* Occupe l'espace disponible à gauche */
+}
+        .logo img {
+            width: 60;
+            height: 55px;
+        }
+    
+
+        nav {
+    flex: 2; /* Occupe l'espace disponible au centre */
+    display: flex;
+    justify-content: center; /* Centre le menu de navigation */
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    gap: 30px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    transition: color 0.3s, border-bottom 0.3s;
+}
+nav ul li a:hover {
+    color: #1f80e0;
+    border-bottom: 2px solid #1f80e0;
+}
+
+
+.header-right {
+    flex: 0.8; /* Occupe l'espace disponible à droite */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Aligne les éléments à droite */
+    gap: 10px;
+}
+
+
+        .search-container {
+    display: flex;
+    align-items: center; /* Assurer que le bouton est bien aligné verticalement */
+}
+
+        .search-bar {
+            width: 200px; /* Ajuster la largeur de la barre de recherche */
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #333;
+            color: #fff;
+        }
+
+/* Styles du popup */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 20px; /* Augmenté pour plus d'espace autour du contenu */
+    z-index: 2000;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.popup.active {
+    display: block;
+}
+
+.popup h2 {
+    color: #fff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.popup input {
+    width: calc(100% - 20px); /* Ajuster pour laisser un padding */
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 20px;
+    background-color: #333;
+    color: #fff;
+    box-sizing: border-box;
+}
+
+.popup .results {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 20px;
+    padding: 10px; /* Augmenté pour plus de confort */
+    background-color: #444;
+    border-radius: 5px;
+}
+
+.popup .results a {
+    display: block;
+    color: #fff;
+    padding: 10px; /* Augmenté pour plus d'espace autour des éléments */
+    text-decoration: none;
+    border-bottom: 1px solid #555;
+}
+
+.popup .results a:hover {
+    background-color: #1f80e0;
+}
+
+.popup-close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 36px;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Styles pour les images dans le popup */
+.popup img {
+    max-width: 10%; /* Ajuster la largeur maximale des images */
+    height: auto;
+    display: block;
+    margin: 0; /* Centrer les images horizontalement */
+    border-radius: 10px; /* Ajouter un arrondi aux coins */
+}
+
+        .search-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background-color: #1f80e0;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.3s ease;
+    font-size: 20px;
+}
+
+
+        .search-button:hover {
+            background-color: #145a8d;
+        }
+
+        .search-button span {
+            line-height: 0; /* Aligner correctement l'icône */
+        }
+        
+        /* Ajout de styles pour la disposition du profil utilisateur */
+        .header-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Aligner le contenu à droite */
+    gap: 10px; /* Ajuster l'espacement entre le bouton de recherche et le profil utilisateur */
+}
+.user-profile img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.user-profile img:hover {
+    transform: scale(1.1);
+}
+
+        .user-profile img {
+            width: 45px; /* Agrandir l'image du profil */
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .user-profile img:hover {
+    transform: scale(1.1);
+}
+
+        .user-profile img {
+            width: 45px; /* Agrandir l'image du profil */
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .user-profile img:hover {
+    transform: scale(1.1);
+}
+
+.user-profile {
+    display: flex;
+    align-items: right;
+}
+
+        .carousel-container {
+            margin-top: 90px;
+            width: 95%; /* Augmenter la largeur du conteneur */
+            max-width: 1400px; /* Augmenter la largeur maximale */
+            height: 70vh; /* Augmenter la hauteur du carrousel */
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+        }
+
+        .carousel {
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .carousel-cell {
+            width: 90%; /* Augmenter la largeur des cellules du carrousel */
+            height: 100%;
+            position: relative;
+            transition: filter 0.3s ease;
+        }
+
+        .carousel-cell img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: filter 0.3s ease;
+        }
+
+        .carousel-cell:not(.is-selected) img {
+            filter: brightness(50%);
+        }
+
+        .carousel-cell.is-selected img {
+            filter: brightness(100%);
+        }
+
+        .movie-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding: 20px; /* Augmenter le padding pour plus d'espace autour des cartes */
+            gap: 30px; /* Augmenter l'espacement entre les cartes */
+            margin-top: 130px; /* Augmenter l'espacement au-dessus de la grille */
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .movie-card {
+            flex: 0 0 auto;
+            width: 230px; /* Agrandir la largeur des cartes */
+            height: 380px; /* Agrandir la hauteur des cartes */
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            scroll-snap-align: center;
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .movie-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .movie-card-details {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            text-align: center;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.4);
+            border-top: 2px solid #1f80e0;
+            transition: opacity 0.3s ease;
+        }
+
+        .movie-card:hover .movie-card-details {
+            opacity: 1;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .movie-grid::-webkit-scrollbar {
+            height: 10px;
+        }
+
+        .movie-grid::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .movie-grid::-webkit-scrollbar-thumb {
+            background: #1f80e0;
+            border-radius: 10px;
+        }
+
+        .movie-grid::-webkit-scrollbar-thumb:hover {
+            background: #145a8d;
+        }
+
+
+
+
+
+        .section-padding {
+    padding-top: 55px; 
+}
+
+   
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="/pages/node.html"><img src="/txt/Capture d'écran 2024-08-26 105747.png" alt="Logo MSFlix"></a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/pages\node.html">Accueil 🏠</a></li>
+                <li><a href="/films\films.html">Films 🎞️</a></li>
+                <li><a href="/series/serie.html">Séries 🎥</a></li>
+                <li><a href="/pages\maliste.html">Mes Favoris ⭐</a></li>
+                <li><a href="/pages/suggesitons.html">Suggestions 📝</a></li>
+            </ul>
+
+            <div class="header-right">
+                <div class="search-container">
+                    <button class="search-button" onclick="togglePopup()"><span>&#128269;</span></button>
+                </div>
+                <div class="user-profile">
+                    <a href="/pages/profiles.html">
+                        <img id="profileImage" src="default-profile.jpg" alt="Photo de profil">
+                    </a>
+                </div>
+            </div>
+        </header>
+
+    <!-- Popup -->
+    <div class="popup" id="searchPopup">
+        <span class="popup-close" id="popupClose">&times;</span>
+        <h2>Recherche</h2>
+        <input type="text" id="popupSearchBar" placeholder="Entrez le nom de la série...">
+        <div class="results" id="searchResults"></div>
+    </div>
+    <section>
+        <h2 class="section-title">Séries</h2>
+        <div class="movie-grid">
+            <a href="/series/thewalkingdead.html" class="movie-card">
+                <img src="https://static.tvmaze.com/uploads/images/original_untouched/353/882587.jpg" alt="The Walking Dead">
+                <h4>The Walking Dead</h4>
+            </a>
+    
+            <a href="/series/the-mandalorian.html" class="movie-card large-card searchable">
+                <img src="https://th.bing.com/th/id/R.a4b35d44b2b0b69a34bc237c8e92e14c?rik=%2fLW9z%2fdtmQv6hA&pid=ImgRaw&r=0" alt="The Mandalorian">
+                <h4>The Mandalorian</h4>
+            </a>
+            <a href="/series/miraculous.html" class="movie-card large-card searchable">
+                <img src="https://fr.web.img6.acsta.net/pictures/21/12/07/23/31/3224773.jpg" alt="Miraculous">
+                <h4>Miraculous</h4>
+            </a>
+            <a href="/series/thelastofus.html" class="movie-card">
+                <img src="https://imagens.ne10.uol.com.br/veiculos/_midias/jpg/2023/01/15/the_last_of_us_official_key_art-22305699.jpg" alt="The Last of Us">
+                <h4>The Last of Us</h4>
+            </a>
+            <a href="/series/strangerthing.html" class="movie-card searchable">
+                <img src="https://i.pinimg.com/originals/11/d1/7b/11d17b1731cdeafedc2c027d882b4c13.jpg" alt="Stranger Things">
+                <h4>Stranger Things</h4>
+            </a>
+            <a href="/series/breacking-bad.html" class="movie-card searchable">
+                <img src="https://flxt.tmsimg.com/assets/p185846_b_v8_ad.jpg" alt="Breaking Bad">
+                <h4>Breaking Bad</h4>
+            </a>
+            <a href="/series/loki.html" class="movie-card searchable">
+                <img src="https://th.bing.com/th/id/OIP.KTaW8jeMOD2ZtsZGSGFGTwHaKR?rs=1&pid=ImgDetMain" alt="Loki">
+                <h4>Loki</h4>
+            </a>
+            <a href="/series/game-of-thrones.html" class="movie-card searchable">
+                <img src="https://i.redd.it/h7uga1bv24fz.jpg" alt="Game of Thrones">
+                <h4>Game of Thrones</h4>
+            </a>
+            <a href="/series/Ginny-Et-Georgia.html" class="movie-card searchable">
+                <img src="https://i.pinimg.com/736x/84/c7/54/84c754eeef1e36e59d0cd39c18d0754d.jpg" alt="Ginny Et Georgia">
+                <h4>Ginny Et Georgia</h4>
+            </a>
+            <a href="/series/wandavision.html" class="movie-card searchable">
+                <img src="https://fr.web.img4.acsta.net/pictures/21/02/01/16/54/3730739.jpg" alt="WandaVision">
+                <h4>WandaVision</h4>
+            </a>
+            <a href="/series/13reasonswhy.html" class="movie-card">
+                <img src="https://media.senscritique.com/media/000016743844/source_big/13_Reasons_Why.jpg" alt="13 Reasons Why">
+                <h4>13 Reasons Why</h4>
+            </a>
+            <a href="/series/onmyblock.html" class="movie-card searchable">
+                <img src="https://th.bing.com/th/id/R.b040a1fccdd253ee14dc6651a44a1532?rik=bkHwOSgnpPmb3A&riu=http%3a%2f%2fes.web.img2.acsta.net%2fpictures%2f18%2f02%2f01%2f11%2f56%2f4746129.jpg&ehk=qr2IcyovFuERBHEcMlu2ibwqsG%2bvYXySD%2fDq4El2Nl4%3d&risl=&pid=ImgRaw&r=0" alt="On My Block">
+                <h4>On My Block</h4>
+            </a>
+            <a href="/series/Pretty-Little-Liars.html" class="movie-card searchable">
+                <img src="https://www.chicklit.nl/ckfinder/userfiles/files/poster%20pllll.jpg" alt="Pretty Little Liars">
+                <h4>Pretty Little Liars</h4>
+            </a>
+            <a href="/series/theboy.html" class="movie-card searchable">
+                <img src="https://fr.web.img2.acsta.net/r_1280_720/pictures/23/11/09/09/29/4036613.jpg" alt="The Boy">
+                <h4>The Boy</h4>
+            </a>
+            <a href="/series/mespremierefois.html" class="movie-card searchable">
+                <img src="https://imgsrc.cineserie.com/2022/12/2264076.jpg?ver=1" alt="Mes Premières Fois">
+                <h4>Mes Premières Fois</h4>
+            </a>
+            <a href="/series/the-witcher.html" class="movie-card searchable">
+                <img src="https://th.bing.com/th/id/OIP.teZavVN0PkxV9zSpNuJYpgHaJQ?rs=1&pid=ImgDetMain" alt="The Witcher">
+                <h4>The Witcher</h4>
+            </a>
+            <a href="/series/snowfall.html" class="movie-card searchable">
+                <img src="https://fr.web.img4.acsta.net/pictures/23/04/06/15/59/0246445.jpg" alt="Snowfall">
+                <h4>Snowfall</h4>
+            </a>
+            <a href="/series/alice-in-bordelands.html" class="movie-card searchable">
+                <img src="https://th.bing.com/th/id/R.71022c757a7aba49277d81cffd784df4?rik=w5bz%2fdELcskWGQ&pid=ImgRaw&r=0" alt="Alice in Borderland">
+                <h4>Alice in Borderland</h4>
+            </a>
+            <a href="/series/euphoria.html" class="movie-card searchable">
+                <img src="https://serietvitalia.com/wp-content/uploads/2021/04/9MmQrUGUbDDl2lHMwZvhjgNnkZt-scaled.jpg" alt="Euphoria">
+                <h4>Euphoria</h4>
+            </a>
+        </div>
+    </section>
+    
+    <section>
+        <h2 class="section-title">Science-Fiction</h2>
+        <div class="movie-grid">
+            <a href="/series/the-mandalorian.html" class="movie-card large-card">
+                <img src="https://th.bing.com/th/id/R.a4b35d44b2b0b69a34bc237c8e92e14c?rik=%2fLW9z%2fdtmQv6hA&pid=ImgRaw&r=0" alt="The Mandalorian">
+                <h4>The Mandalorian</h4>
+            </a>
+            <a href="/series/strangerthing.html" class="movie-card">
+                <img src="https://i.pinimg.com/originals/11/d1/7b/11d17b1731cdeafedc2c027d882b4c13.jpg" alt="Stranger Things">
+                <h4>Stranger Things</h4>
+            </a>
+            <a href="/series/thewalkingdead.html" class="movie-card">
+                <img src="https://static.tvmaze.com/uploads/images/original_untouched/353/882587.jpg" alt="The Walking Dead">
+                <h4>The Walking Dead</h4>
+            </a>
+            <a href="/series/thelastofus.html" class="movie-card">
+                <img src="https://imagens.ne10.uol.com.br/veiculos/_midias/jpg/2023/01/15/the_last_of_us_official_key_art-22305699.jpg" alt="The Last of Us">
+                <h4>The Last of Us</h4>
+            </a>
+        </div>
+    </section>
+    
+
+    <section>
+        <h2 class="section-title">Drame</h2>
+        <div class="movie-grid">
+            <a href="/series/breacking-bad.html" class="movie-card">
+                <img src="https://flxt.tmsimg.com/assets/p185846_b_v8_ad.jpg" alt="Breaking Bad">
+                <h4>Breaking Bad</h4>
+            </a>
+            <a href="/series/snowfall.html" class="movie-card">
+                <img src="https://fr.web.img4.acsta.net/pictures/23/04/06/15/59/0246445.jpg" alt="Snowfall">
+                <h4>Snowfall</h4>
+            </a>
+            <a href="/series/euporia.html" class="movie-card">
+                <img src="https://serietvitalia.com/wp-content/uploads/2021/04/9MmQrUGUbDDl2lHMwZvhjgNnkZt-scaled.jpg" alt="Euphoria">
+                <h4>Euphoria</h4>
+            </a>
+            <a href="/series/thewalkingdead.html" class="movie-card">
+                <img src="https://static.tvmaze.com/uploads/images/original_untouched/353/882587.jpg" alt="The Walking Dead">
+                <h4>The Walking Dead</h4>
+            </a>
+
+            <a href="/series/onmyblock.html" class="movie-card searchable">
+                <img src="https://th.bing.com/th/id/R.b040a1fccdd253ee14dc6651a44a1532?rik=bkHwOSgnpPmb3A&riu=http%3a%2f%2fes.web.img2.acsta.net%2fpictures%2f18%2f02%2f01%2f11%2f56%2f4746129.jpg&ehk=qr2IcyovFuERBHEcMlu2ibwqsG%2bvYXySD%2fDq4El2Nl4%3d&risl=&pid=ImgRaw&r=0" alt="On My Block">
+                <h4>On my block</h4>
+            </a>
+            <a href="/series/thelastofus.html" class="movie-card">
+                <img src="https://imagens.ne10.uol.com.br/veiculos/_midias/jpg/2023/01/15/the_last_of_us_official_key_art-22305699.jpg" alt="THE LAST OF US ">
+                <h4>THE LAST OF US </h4>
+            </a>
+
+            <a href="/series/Ginny-Et-Georgia.html" class="movie-card searchable">
+                <img src="https://i.pinimg.com/736x/84/c7/54/84c754eeef1e36e59d0cd39c18d0754d.jpg" alt="Ginny Et Georgia">
+                <h4>Ginny Et Georgia</h4>
+            </a>
+            <a href="/series/Pretty-Little-Liars.html" class="movie-card searchable">
+                <img src="https://www.chicklit.nl/ckfinder/userfiles/files/poster%20pllll.jpg" alt="Pretty Little Liars">
+                <h4>Pretty Little Liars</h4>
+            </a>
+
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Comédie 🤣</h2>
+        <div class="movie-grid">
+            <a href="/series/onmyblock.html" class="movie-card searchable">
+                <img src="https://th.bing.com/th/id/R.b040a1fccdd253ee14dc6651a44a1532?rik=bkHwOSgnpPmb3A&riu=http%3a%2f%2fes.web.img2.acsta.net%2fpictures%2f18%2f02%2f01%2f11%2f56%2f4746129.jpg&ehk=qr2IcyovFuERBHEcMlu2ibwqsG%2bvYXySD%2fDq4El2Nl4%3d&risl=&pid=ImgRaw&r=0" alt="On My Block">
+                <h4>On my block</h4>
+            </a>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Horreur 👻</h2>
+        <div class="movie-grid">
+            <a href="/series/thewalkingdead.html" class="movie-card">
+                <img src="https://static.tvmaze.com/uploads/images/original_untouched/353/882587.jpg" alt="The Walking Dead">
+                <h4>The Walking Dead</h4>
+            </a>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Marvel 🦸</h2>
+        <div class="movie-grid">
+            <a href="/series/loki.html" class="movie-card">
+                <img src="https://th.bing.com/th/id/OIP.KTaW8jeMOD2ZtsZGSGFGTwHaKR?rs=1&pid=ImgDetMain" alt="Loki">
+                <h4>Loki</h4>
+            </a>
+            <a href="/series/wandavision.html" class="movie-card">
+                <img src="https://fr.web.img4.acsta.net/pictures/21/02/01/16/54/3730739.jpg" alt="WandaVision">
+                <h4>WandaVision</h4>
+            </a>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Animation</h2>
+        <div class="movie-grid">
+            <a href="/series/miraculous.html" class="movie-card large-card">
+                <img src="https://fr.web.img6.acsta.net/pictures/21/12/07/23/31/3224773.jpg" alt="Miraculous">
+                <h4>Miraculous</h4>
+            </a>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Fantastique 🧚‍♂️</h2>
+        <div class="movie-grid">
+            <a href="/series/game-of-thrones.html" class="movie-card">
+                <img src="https://i.redd.it/h7uga1bv24fz.jpg" alt="Game of Thrones">
+                <h4>Game of Thrones</h4>
+            </a>
+            <a href="/series/the-witcher.html" class="movie-card">
+                <img src="https://th.bing.com/th/id/OIP.teZavVN0PkxV9zSpNuJYpgHaJQ?rs=1&pid=ImgDetMain" alt="The Witcher">
+                <h4>The Witcher</h4>
+            </a>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Actions 💥</h2>
+        <div class="movie-grid">
+            <a href="/series/alice-in-borderlands.html" class="movie-card">
+                <img src="https://th.bing.com/th/id/R.71022c757a7aba49277d81cffd784df4?rik=w5bz%2fdELcskWGQ&pid=ImgRaw&r=0" alt="Alice in Borderland">
+                <h4>Alice in Borderland</h4>
+            </a>
+            <a href="/series/thelastofus.html" class="movie-card">
+                <img src="https://imagens.ne10.uol.com.br/veiculos/_midias/jpg/2023/01/15/the_last_of_us_official_key_art-22305699.jpg" alt="THE LAST OF US ">
+                <h4>THE LAST OF US </h4>
+            </a>
+        </div>
+    </section>
+    <main class="main-content">
+
+    <footer>
+        &copy; 2024 MXFlix. Tous droits réservés.
+    </footer>
+
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+    <script>
+        function togglePopup() {
+            const searchPopup = document.getElementById('searchPopup');
+            searchPopup.classList.toggle('active');
+        }
+        
+        function closePopup() {
+            const searchPopup = document.getElementById('searchPopup');
+            searchPopup.classList.remove('active');
+        }
+
+        const profilePics = [
+    'https://avatarfiles.alphacoders.com/196/196458.jpg', // Avengers: Endgame
+    'https://th.bing.com/th/id/OIP.mgSIWJTGqC2cxgKGEoWbGgAAAA?rs=1&pid=ImgDetMain', // Spider-Man: No Way Home
+    'https://m.media-amazon.com/images/I/91KkWf50SoL._AC_SY679_.jpg', // Interstellar
+    'https://th.bing.com/th/id/R.e8180cb64a00bd675f4b23769c669c17?rik=dUhNFi6ZusJVMA&pid=ImgRaw&r=0', // The Dark Knight
+    'https://th.bing.com/th/id/R.4536cd982a20ab27d718a495c02a23c1?rik=7QN%2fO%2bx5Os%2bAMQ&pid=ImgRaw&r=0', // Star Wars: The Force Awakens
+    'https://images8.alphacoders.com/829/thumb-1920-829758.jpg', // Guardians of the Galaxy
+    'https://images6.alphacoders.com/809/thumb-1920-809702.jpg', // Thor: Ragnarok
+    'https://th.bing.com/th/id/R.77752ee5258b96bcd108982e7c154c7d?rik=3dydNJsnZXU%2fUA&pid=ImgRaw&r=0', // Deadpool
+    'https://th.bing.com/th/id/OIP.LID3rORLGZxFvWkE1eHDXwHaF1?rs=1&pid=ImgDetMain', // The Matrix
+    'https://images7.alphacoders.com/327/327742.jpg', // Inception
+    'https://th.bing.com/th/id/R.2fd16497dc078d82aa566b234e58112e?rik=WqAHPd0pOF1E2Q&pid=ImgRaw&r=0', // John Wick
+    'https://th.bing.com/th/id/R.1e55d7adabc6c0c3e476b012133edd7b?rik=UMSrIY2ehp4KdQ&riu=http%3a%2f%2fscriptshadow.net%2fwp-content%2fuploads%2f2020%2f10%2feto_trailer_dune_090920.jpg&ehk=zY4r3PQFFfKHp3J7OOlNE3NFvTQG63rRX%2b%2fSzp17Zi0%3d&risl=&pid=ImgRaw&r=0', // Dune
+    'https://images.hdqwalls.com/wallpapers/ryan-gosling-as-officer-k-in-blade-runner-2049-4k-ou.jpg', // Blade Runner 2049
+    'https://th.bing.com/th/id/OIP.ULJy1v7_ayGFWamEZPrDgAHaFj?rs=1&pid=ImgDetMain', // Mad Max: Fury Road
+    'https://th.bing.com/th/id/OIP.akwhd6lyhXZyzWycCqsD6AHaHa?rs=1&pid=ImgDetMain', // The Hunger Games
+    'https://th.bing.com/th/id/R.767bac64bb2530155ba2490e33a130da?rik=9Dvuh%2fXohPgrhQ&riu=http%3a%2f%2fimages6.fanpop.com%2fimage%2fphotos%2f40700000%2fWonder-Woman-wonder-woman-2017-40716735-1024-1074.jpg&ehk=Jx6SAqNCj8b%2fzN%2fwarClV9RhafofmlQn84ZVdbaI9w4%3d&risl=&pid=ImgRaw&r=0', // Wonder Woman
+    'https://avatarfiles.alphacoders.com/180/180374.jpg', // Logan
+    'https://images6.alphacoders.com/699/699584.jpg', // Doctor Strange
+
+];
+
+const randomPic = profilePics[Math.floor(Math.random() * profilePics.length)];
+            const profileImg = document.querySelector('.user-profile img');
+            if (profileImg) {
+                profileImg.src = randomPic;
+            }
+        
+        // Ajouter l'événement pour le bouton de fermeture du popup
+        document.getElementById('popupClose').addEventListener('click', closePopup);
+        
+        // Fonction de recherche en temps réel
+        function searchMovies() {
+            const input = document.getElementById('popupSearchBar').value.toLowerCase();
+            const resultsContainer = document.getElementById('searchResults');
+            resultsContainer.innerHTML = '';
+        
+            const filteredSeries = series.filter(series => series.title.toLowerCase().includes(input));
+            filteredSeries.forEach(series => {
+                const resultItem = document.createElement('a');
+                resultItem.href = series.link;
+                resultItem.className = 'result-item';
+                resultItem.innerHTML = `<img src="${series.image}" alt="${series.title}"> <span>${series.title}</span>`;
+                resultsContainer.appendChild(resultItem);
+            });
+        }
+        
+        // Ajouter l'événement pour la barre de recherche
+        document.getElementById('popupSearchBar').addEventListener('input', searchMovies);
+        
+        // Liste des séries
+        const series = [
+    { title: "The Walking Dead", image: "https://static.tvmaze.com/uploads/images/original_untouched/353/882587.jpg", link: "/series/thewalkingdead.html" },
+    { title: "Miraculous", image: "https://fr.web.img6.acsta.net/pictures/21/12/07/23/31/3224773.jpg", link: "/series/miraculous.html" },
+    { title: "The Mandalorian", image: "https://th.bing.com/th/id/R.a4b35d44b2b0b69a34bc237c8e92e14c?rik=%2fLW9z%2fdtmQv6hA&pid=ImgRaw&r=0", link: "/series/the-mandalorian.html" },
+    { title: "Stranger Things", image: "https://i.pinimg.com/originals/11/d1/7b/11d17b1731cdeafedc2c027d882b4c13.jpg", link: "/series/strangerthing.html" },
+    { title: "Breaking Bad", image: "https://flxt.tmsimg.com/assets/p185846_b_v8_ad.jpg", link: "/series/breaking-bad.html" },
+    { title: "Loki", image: "https://th.bing.com/th/id/OIP.KTaW8jeMOD2ZtsZGSGFGTwHaKR?rs=1&pid=ImgDetMain", link: "/series/loki.html" },
+    { title: "Game of Thrones", image: "https://i.redd.it/h7uga1bv24fz.jpg", link: "/series/game-of-thrones.html" },
+    { title: "WandaVision", image: "https://fr.web.img4.acsta.net/pictures/21/02/01/16/54/3730739.jpg", link: "/series/wandavision.html" },
+    { title: "The Witcher", image: "https://th.bing.com/th/id/OIP.teZavVN0PkxV9zSpNuJYpgHaJQ?rs=1&pid=ImgDetMain", link: "/series/the-witcher.html" },
+    { title: "Fast And Furious", image: "https://media.ginza.se/Images/item_img_1200/10894.jpg", link: "/series/fast-and-furious.html" },
+    { title: "Alice in Borderland", image: "https://th.bing.com/th/id/R.71022c757a7aba49277d81cffd784df4?rik=w5bz%2fdELcskWGQ&pid=ImgRaw&r=0", link: "/series/alice-in-borderlands.html" },
+    { title: "Snowfall", image: "https://fr.web.img4.acsta.net/pictures/23/04/06/15/59/0246445.jpg", link: "/series/snowfall.html" },
+    { title: "On my Block", image: "https://th.bing.com/th/id/R.b040a1fccdd253ee14dc6651a44a1532?rik=bkHwOSgnpPmb3A&riu=http%3a%2f%2fes.web.img2.acsta.net%2fpictures%2f18%2f02%2f01%2f11%2f56%2f4746129.jpg&ehk=qr2IcyovFuERBHEcMlu2ibwqsG%2bvYXySD%2fDq4El2Nl4%3d&risl=&pid=ImgRaw&r=0", link: "/series/onmyblock.html" },
+    { title: "Mes premières fois", image: "https://imgsrc.cineserie.com/2022/12/2264076.jpg?ver=1", link: "/series/mespremierefois.html" },
+    { title: "The Last of Us", image: "https://imagens.ne10.uol.com.br/veiculos/_midias/jpg/2023/01/15/the_last_of_us_official_key_art-22305699.jpg", link: "/series/thelastofus.html" },
+    { title: "Ginny et Georgia", image: "https://image.tmdb.org/t/p/w500/jUCinYtvrF9n9SQCU6thTkIkFve.jpg", link: "/series/ginnyetgeorgia.html" },
+    { title: "Pretty Little Liars", image: "https://www.chicklit.nl/ckfinder/userfiles/files/poster%20pllll.jpg", link: "/series/Pretty-Little-Liars.html" }
+
+];
+
+
+
+   
+document.addEventListener('DOMContentLoaded', function() {
+            const profileImage = document.getElementById('profileImage');
+            const usernameSpan = document.getElementById('username');
+
+            // Charger les informations depuis localStorage
+            const savedProfileImage = localStorage.getItem('profileImage');
+            if (savedProfileImage) {
+                profileImage.src = savedProfileImage;
+            }
+            usernameSpan.textContent = localStorage.getItem('username') || 'Utilisateur';
+        });
+
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('email');
+            localStorage.removeItem('bio');
+            localStorage.removeItem('profileImage');
+            window.location.href = 'login.html';
+        }
+    </script>
+
+
+        

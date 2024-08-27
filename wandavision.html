@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WandaVision - MXFlix</title>
+    <style>
+        /* Styles généraux */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        /* Conteneur principal */
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            padding: 100px 20px;
+            box-sizing: border-box;
+            background-image: url('https://images.hdqwalls.com/download/wanda-vision-from-marvel-5k-bf-1920x1080.jpg'); /* Remplacez par une image appropriée */
+            background-size: cover;
+            background-position: center;
+            filter: brightness(80%);
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Bouton de retour */
+        .return-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #ff00ff; /* Couleur de WandaVision */
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #ff00ff;
+            font-weight: bold;
+        }
+
+        .return-button:hover {
+            background-color: rgba(255, 0, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Contenu principal */
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content {
+            flex: 1;
+            text-align: center;
+            margin-right: 20px;
+            transition: opacity 1s, transform 1s;
+        }
+
+        .info {
+            text-align: left;
+            max-width: 550px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
+        }
+
+        .info h1 {
+            font-size: 3em;
+            margin: 0;
+            color: #ff00ff;
+            font-family: 'Roboto Slab', serif;
+        }
+
+        .info p {
+            font-size: 1.3em;
+            margin: 10px 0;
+            line-height: 1.6;
+            color: #cccccc;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            background-color: #444;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #ff00ff;
+            font-weight: bold;
+        }
+
+        .buttons button:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+
+        /* Tableau des épisodes */
+        .episodes {
+            flex: 1;
+            max-width: 550px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
+        }
+
+        .episodes table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .episodes th,
+        .episodes td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        .episodes th {
+            background-color: #222;
+            color: #ff00ff;
+            font-size: 1.3em;
+        }
+
+        .episodes td {
+            background-color: #333;
+            border: 1px solid #555;
+        }
+
+        .episodes a {
+            color: #ff00ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .episodes a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section vidéo */
+        .video-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .video-section iframe {
+            width: 80%;
+            height: 80%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .video-section .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #ff00ff;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #ff00ff;
+            font-weight: bold;
+        }
+
+        .video-section .back-button:hover {
+            background-color: rgba(255, 0, 255, 0.3);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <a href="/series/serie.html" class="return-button" id="returnButton">Retour</a>
+
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="info">
+                    <h1>MXFlix <br> WandaVision</h1>
+                    <p>2021 • Action, Drame, Fantastique</p>
+                    <p>"WandaVision" suit Wanda Maximoff et Vision, deux super-héros qui vivent une vie parfaite dans un sitcom des années 50. Lorsque des événements étranges commencent à se produire, ils réalisent que tout n'est pas ce qu'il semble, et doivent naviguer à travers différentes décennies pour percer les mystères qui les entourent.</p>
+                    <div class="buttons">
+                        <button id="trailerButton">Bande-annonce</button>
+                        <button id="favoriteButton">Favoris</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="episodes">
+                <table>
+                    <tr>
+                        <th colspan="2">Saison 1</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/h8ujmjj9nflg.html" target="_blank">Épisode 1</a></td>
+                        <td><a href="https://uqload.to/5usk49v4z9gt.html" target="_blank">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/iy9v32w8jfjy.html" target="_blank">Épisode 3</a></td>
+                        <td><a href="https://uqload.to/jlqx0ycrwjff.html" target="_blank">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/75vj9atz1xym.html" target="_blank">Épisode 5</a></td>
+                        <td><a href="https://uqload.to/z9422gwrfm0r.html" target="_blank">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/4txdd3lrj3a5.html" target="_blank">Épisode 7</a></td>
+                        <td><a href="https://uqload.to/5sqhn9f95skk.html" target="_blank">Épisode 8</a></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><a href="https://uqload.to/fitkwg5wcdjt.html" target="_blank">Épisode 9</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section pour la vidéo -->
+    <div class="video-section" id="videoSection">
+        <button class="back-button" id="backButton">Retour</button>
+        <iframe id="videoPlayer" src="" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        // Script pour gérer la vidéo
+        document.getElementById('trailerButton').addEventListener('click', function () {
+            document.getElementById('videoSection').style.display = 'flex';
+            document.getElementById('videoPlayer').src = 'https://www.youtube.com/embed/nwW7bDpdyq4?si=LbabxL6l8UcP2AK3'; // URL de la bande-annonce
+        });
+
+        document.getElementById('backButton').addEventListener('click', function () {
+            document.getElementById('videoSection').style.display = 'none';
+            document.getElementById('videoPlayer').src = '';
+        });
+
+      // Fonction pour ajouter ou retirer des favoris
+      document.getElementById('favoriteButton').addEventListener('click', function() {
+            // Informations sur le film à stocker
+            const movie = {
+                title: 'Wandavisions',
+                image: 'https://fr.web.img4.acsta.net/pictures/21/02/01/16/54/3730739.jpg'
+            };
+
+            // Récupérer la liste des favoris depuis le localStorage
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+            // Vérifier si le film est déjà dans les favoris
+            const movieIndex = favorites.findIndex(fav => fav.title === movie.title);
+
+            if (movieIndex !== -1) {
+                // Le film est déjà dans les favoris, le retirer
+                favorites.splice(movieIndex, 1);
+                alert('Le film a été retiré de vos favoris.');
+            } else {
+                // Ajouter le film aux favoris
+                favorites.push(movie);
+                alert('Le film a été ajouté à vos favoris !');
+            }
+
+            // Mettre à jour le localStorage
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        });
+    </script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const favButtons = document.querySelectorAll('.fav-button');
+        favButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                const movieCard = event.target.closest('.movie-card');
+                const movieTitle = movieCard.querySelector('h4').textContent;
+                const movieImgSrc = movieCard.querySelector('img').src;
+
+                // Informations sur le film à stocker
+                const movie = {
+                    title: movieTitle,
+                    image: movieImgSrc
+                };
+
+                // Récupérer la liste des favoris depuis le localStorage
+                let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+                // Vérifier si le film est déjà dans les favoris
+                const movieIndex = favorites.findIndex(fav => fav.title === movie.title);
+
+                if (movieIndex !== -1) {
+                    // Le film est déjà dans les favoris, le retirer
+                    favorites.splice(movieIndex, 1);
+                    alert('Le film a été retiré de vos favoris.');
+                    button.textContent = 'Ajouter à Ma Liste';
+                } else {
+                    // Ajouter le film aux favoris
+                    favorites.push(movie);
+                    alert('Le film a été ajouté à vos favoris !');
+                    button.textContent = 'Retirer de Ma Liste';
+                }
+
+                // Mettre à jour le localStorage
+                localStorage.setItem('favorites', JSON.stringify(favorites));
+            });
+        });
+    });
+</script>
+
+
+</body>
+
+</html>
+

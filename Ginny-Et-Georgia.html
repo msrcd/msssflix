@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ginny et Georgia</title>
+    <style>
+        /* Styles généraux */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        /* Conteneur principal */
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            padding: 100px 20px;
+            box-sizing: border-box;
+            background-image: url('https://minhaseriefavorita.com.br/wp-content/uploads/2024/06/ginny_e-georgia.png'); /* Image de Ginny et Georgia */
+            background-size: cover; /* Couvre tout le conteneur */
+            background-position: center; /* Centre l'image */
+            background-attachment: fixed; /* Fixe l'image pour qu'elle ne bouge pas lors du défilement */
+            filter: brightness(60%);
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Bouton de retour */
+        .return-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #ff8c00; /* Couleur des boutons */
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #ff8c00;
+            font-weight: bold;
+        }
+
+        .return-button:hover {
+            background-color: rgba(255, 140, 0, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Contenu principal */
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content {
+            flex: 1;
+            text-align: center;
+            margin-right: 20px;
+            transition: opacity 1s, transform 1s;
+        }
+
+        .info {
+            text-align: left;
+            max-width: 550px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.8);
+        }
+
+        .info h1 {
+            font-size: 3em;
+            margin: 0;
+            color: #ff8c00;
+            font-family: 'Roboto Slab', serif;
+        }
+
+        .info p {
+            font-size: 1.3em;
+            margin: 10px 0;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            background-color: #444;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #ff8c00;
+            font-weight: bold;
+        }
+
+        .buttons button:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+
+        /* Tableau des épisodes */
+        .episodes {
+            flex: 1;
+            max-width: 550px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.8);
+        }
+
+        .episodes table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .episodes th,
+        .episodes td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        .episodes th {
+            background-color: #222;
+            color: #ff8c00;
+            font-size: 1.3em;
+        }
+
+        .episodes td {
+            background-color: #333;
+            border: 1px solid #555;
+        }
+
+        .episodes a {
+            color: #ff8c00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .episodes a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section vidéo */
+        .video-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .video-section iframe {
+            width: 80%;
+            height: 80%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .video-section .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #ff8c00;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #ff8c00;
+            font-weight: bold;
+        }
+
+        .video-section .back-button:hover {
+            background-color: rgba(255, 140, 0, 0.3);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <a href="/series/serie.html" class="return-button" id="returnButton">Retour</a>
+
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="info">
+                    <h1>MXFlix <br> Ginny et Georgia</h1>
+                    <p>2021 • Drame, Comédie</p>
+                    <p>"Ginny et Georgia" suit une mère célibataire et sa fille adolescente qui déménagent dans une petite ville pour une nouvelle vie, mais découvrent que leur passé est loin d'être derrière elles. La série explore les dynamiques familiales et les défis de la jeunesse moderne.</p>
+                    <div class="buttons">
+                        <button id="trailerButton">Bande-annonce</button>
+                        <button id="favoriteButton">Favoris</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="episodes">
+                <table>
+                    <tr>
+                        <th colspan="2">Saison 1</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/pvku26d8bpr6.html" target="_blank">Épisode 1</a></td>
+                        <td><a href="https://uqload.to/9y3sle6e7ahq.html" target="_blank">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/unnxc3gfrarw.html" target="_blank">Épisode 3</a></td>
+                        <td><a href="https://uqload.to/lgc62l1iofpa.html" target="_blank">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/pzpbpi9vpm1f.html" target="_blank">Épisode 5</a></td>
+                        <td><a href="https://uqload.to/oagijya05fkw.html" target="_blank">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/d87l598kltbc.html" target="_blank">Épisode 7</a></td>
+                        <td><a href="https://uqload.to/6l01ki9wil29.html" target="_blank">Épisode 8</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/z8hn2cju8n7a.html" target="_blank">Épisode 9</a></td>
+                        <td><a href="https://uqload.to/2s1mle3jb9om.html" target="_blank">Épisode 10</a></td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Saison 2</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/7fo9mztqlfnn.html" target="_blank">Épisode 1</a></td>
+                        <td><a href="https://uqload.to/puh3jq3x94x0.html" target="_blank">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/x5nc0gjm2f9y.html" target="_blank">Épisode 3</a></td>
+                        <td><a href="https://uqload.to/fze1ny7ifpkz.html" target="_blank">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/mqzfz92ndbj7.html" target="_blank">Épisode 5</a></td>
+                        <td><a href="https://uqload.to/qcmf0vzpe1av.html" target="_blank">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/t0u0wonisivi.html" target="_blank">Épisode 7</a></td>
+                        <td><a href="https://uqload.to/ltcvizsc3se7.html" target="_blank">Épisode 8</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/scmnqthb0tj2.html" target="_blank">Épisode 9</a></td>
+                        <td><a href="https://uqload.to/8voocp8fa3ut.html" target="_blank">Épisode 10</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section pour la vidéo -->
+    <div class="video-section" id="videoSection">
+        <button class="back-button" id="backButton">Retour</button>
+        <iframe id="videoPlayer" src="" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        // Script pour gérer la vidéo
+        document.getElementById('trailerButton').addEventListener('click', function () {
+            document.getElementById('videoSection').style.display = 'flex';
+            document.getElementById('videoPlayer').src = 'https://www.youtube.com/embed/tI8zFzGP7Nw'; // URL de la bande-annonce
+        });
+
+        document.getElementById('backButton').addEventListener('click', function () {
+            document.getElementById('videoSection').style.display = 'none';
+            document.getElementById('videoPlayer').src = '';
+        });
+
+        // Fonction pour ajouter ou retirer des favoris
+        document.getElementById('favoriteButton').addEventListener('click', function() {
+            // Informations sur le film à stocker
+            const movie = {
+                title: 'Ginny et Georgia',
+                image: 'https://th.bing.com/th/id/R.4e7bb758bf53e54fd530f071044f98b1?rik=LTkJ3FdB9FDOtA&pid=ImgRaw&r=0'
+            };
+
+            // Récupérer la liste des favoris depuis le localStorage
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+            // Vérifier si le film est déjà dans les favoris
+            const movieIndex = favorites.findIndex(fav => fav.title === movie.title);
+
+            if (movieIndex !== -1) {
+                // Le film est déjà dans les favoris, le retirer
+                favorites.splice(movieIndex, 1);
+                alert('La série a été retirée de vos favoris.');
+            } else {
+                // Ajouter le film aux favoris
+                favorites.push(movie);
+                alert('La série a été ajoutée à vos favoris !');
+            }
+
+            // Mettre à jour le localStorage
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        });
+    </script>
+
+</body>
+
+</html>

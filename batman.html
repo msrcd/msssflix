@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batman - MXFlix</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212; /* Fond sombre */
+            color: #e0e0e0; /* Texte clair pour le contraste */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+            height: 100vh;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+            box-sizing: border-box;
+            background-image: url('https://i.guim.co.uk/img/media/006e580ef0ee8c46c17b265f2bf66e7f0c61b746/3436_0_8487_5097/master/8487.jpg?width=1200&quality=85&auto=format&fit=max&s=f4483f1cadff02ab33d8d038bf154dad');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(100%); /* Ajuster la luminosité si nécessaire */
+        }
+
+        .return-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            z-index: 1000;
+            color: #333;
+        }
+
+        .return-button:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content {
+            flex: 1;
+            text-align: center;
+            margin-right: 20px;
+            transition: opacity 1s, transform 1s;
+        }
+
+        .content img {
+            width: 100%;
+            height: auto;
+            display: none;
+        }
+
+        .content.hide {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        .info {
+            text-align: left;
+            max-width: 550px;
+            background: rgba(0, 0, 0, 0.9); /* Fond sombre et transparent */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6); /* Ombre rougeâtre pour le thème */
+        }
+
+        .info h1 {
+            font-size: 3em;
+            margin: 0;
+            color: #ff4500; /* Couleur rouge-orange vif */
+        }
+
+        .info p {
+            font-size: 1.3em;
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            background-color: #333; /* Fond sombre pour les boutons */
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #e0e0e0; /* Texte clair pour les boutons */
+        }
+
+        .buttons button:hover {
+            background-color: #444; /* Fond légèrement plus clair au survol */
+            transform: scale(1.05);
+        }
+
+        .episodes {
+            flex: 1;
+            max-width: 550px;
+            background-color: rgba(0, 0, 0, 0.9); /* Fond sombre et transparent */
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6); /* Ombre rougeâtre pour le thème */
+        }
+
+        .episodes table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .episodes th,
+        .episodes td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        .episodes th {
+            background-color: #222; /* Fond sombre pour les en-têtes */
+            color: #ff4500; /* Couleur rouge-orange vif */
+            font-size: 1.3em;
+        }
+
+        .episodes td {
+            background-color: #333; /* Fond sombre pour les cellules */
+            border: 1px solid #555; /* Bordure sombre */
+        }
+
+        .episodes a {
+            color: #ff0000; /* Couleur rouge pour les liens */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .episodes a:hover {
+            text-decoration: underline;
+        }
+
+        .video-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .video-section iframe {
+            width: 80%;
+            height: 80%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .video-section .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            z-index: 1001;
+            color: #333;
+        }
+
+        .video-section .back-button:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <a href="/films/films.html" class="return-button" id="returnButton">Retour</a>
+
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="info">
+                    <h1>MXFlix <br> Batman</h1>
+                    <p>1989 • Action, Aventure, Fantastique</p>
+                    <p>Batman est une série de films emblématiques qui suit les aventures du chevalier noir de Gotham City. Découvrez les différentes incarnations du héros, de ses débuts dans les années 80 à ses aventures les plus récentes.</p>
+                    <div class="buttons">
+                        <button id="trailerButton">Bande-annonce</button>
+                        <button id="favoriteButton">Favoris</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="episodes">
+                <table>
+                    <tr>
+                        <th colspan="2">Films</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.ws/73jytnwlyfnx.html" target="_blank">Batman</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.ws/kwkjd8k331gh.html" target="_blank">Batman, le défi</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.ws/colipkvgkfna.html" target="_blank">Batman Forever</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.ws/n2o60ldnq50i.html" target="_blank">Batman & Robin</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.ws/sdze2h2dweur.html" target="_blank">Batman Begins</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.ws/gvug0ecz8iow.html" target="_blank">The Dark Knight, Le Chevalier Noir</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.ws/d8otj5e0661e.html" target="_blank">The Dark Knight Rises</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.ws/wfi8twetgsep.html" target="_blank">Batman v Superman : L’Aube de la Justice</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.ws/okozbjzpm46n.html" target="_blank">The Batman</a></td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Film 2</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.ws/mdlstx6essuu.html" target="_blank">Film Complet</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="video-section" id="videoSection">
+            <button class="back-button" id="backButton">Retour</button>
+            <iframe id="videoPlayer" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('trailerButton').addEventListener('click', function () {
+            var content = document.querySelector('.content');
+            var videoSection = document.getElementById('videoSection');
+            var videoPlayer = document.getElementById('videoPlayer');
+
+            content.classList.add('hide');
+
+            setTimeout(function () {
+                videoSection.style.display = 'flex';
+                videoPlayer.src = 'https://www.youtube.com/embed/mqqft2x_Aa4';
+            }, 1000);
+        });
+
+        document.getElementById('backButton').addEventListener('click', function () {
+            var content = document.querySelector('.content');
+            var videoSection = document.getElementById('videoSection');
+
+            document.getElementById('videoPlayer').src = '';
+
+            videoSection.style.display = 'none';
+            content.classList.remove('hide');
+        });
+
+        document.getElementById('returnButton').addEventListener('click', function () {
+            window.history.back();
+        });
+
+       // Fonction pour ajouter ou retirer des favoris
+       document.getElementById('favoriteButton').addEventListener('click', function() {
+            // Informations sur le film à stocker
+            const movie = {
+                title: 'Batman',
+                image: 'https://i.guim.co.uk/img/media/006e580ef0ee8c46c17b265f2bf66e7f0c61b746/3436_0_8487_5097/master/8487.jpg?width=1200&quality=85&auto=format&fit=max&s=f4483f1cadff02ab33d8d038bf154dad'
+            };
+
+            // Récupérer la liste des favoris depuis le localStorage
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+            // Vérifier si le film est déjà dans les favoris
+            const movieIndex = favorites.findIndex(fav => fav.title === movie.title);
+
+            if (movieIndex !== -1) {
+                // Le film est déjà dans les favoris, le retirer
+                favorites.splice(movieIndex, 1);
+                alert('Le film a été retiré de vos favoris.');
+            } else {
+                // Ajouter le film aux favoris
+                favorites.push(movie);
+                alert('Le film a été ajouté à vos favoris !');
+            }
+
+            // Mettre à jour le localStorage
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        });
+    </script>
+
+</body>
+
+</html>

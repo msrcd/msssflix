@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scarface - Disney+</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+        }
+        /* Full-screen video background */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background-color: black;
+        }
+        .video-background iframe {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* Content overlay with gradient */
+        .overlay-content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 40%;
+            height: 100%;
+            padding: 100px;
+            background: linear-gradient(to right, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 100%);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            z-index: 2;
+        }
+        .overlay-content h1 {
+            font-size: 3em;
+            margin: 0 0 50px;
+        }
+        .overlay-content p {
+            font-size: 1.5em;
+            line-height: 1.5;
+            margin: 10px 0;
+        }
+        .buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 60px;
+        }
+        .buttons button {
+            background-color: #e50914; /* Couleur rouge d'origine */
+            border: none;
+            padding: 15px 30px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: white;
+        }
+        .buttons button:hover {
+            background-color: #b20710; /* Rouge plus foncé au survol */
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- Video Background -->
+    <div class="video-background">
+        <iframe src="https://www.youtube.com/embed/7pQQHnqBa2E?autoplay=1&mute=1&loop=1&playlist=7pQQHnqBa2E" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
+    <!-- Overlay Content with Gradient -->
+    <div class="overlay-content">
+        <h1>Scarface</h1>
+        <p>1983 • Crime, Drame</p>
+        <p>Scarface est un film culte qui raconte l'ascension et la chute de Tony Montana, un gangster impitoyable à Miami. C'est une œuvre emblématique remplie de scènes mémorables, offrant une vision brute et intense de l'ambition et de la violence.</p>
+        <div class="buttons">
+            <button id="playButton">Lecture</button>
+            <button id="favoriteButton">Favoris</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('playButton').addEventListener('click', function() {
+            window.open('https://uqload.to/5ickrrt9w5gc.html', '_blank');
+        });
+
+        document.getElementById('favoriteButton').addEventListener('click', function() {
+            // Informations sur le film à stocker
+            const movie = {
+                title: 'Scarface',
+                image: 'https://www.hollywoodreporter.com/wp-content/uploads/2018/11/scarface_-_h_-_1983.jpg?w=1296'
+            };
+
+            // Récupérer la liste des favoris depuis le localStorage
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+            // Vérifier si le film est déjà dans les favoris
+            const movieIndex = favorites.findIndex(fav => fav.title === movie.title);
+
+            if (movieIndex !== -1) {
+                // Le film est déjà dans les favoris, le retirer
+                favorites.splice(movieIndex, 1);
+                alert('Le film a été retiré de vos favoris.');
+            } else {
+                // Ajouter le film aux favoris
+                favorites.push(movie);
+                alert('Le film a été ajouté à vos favoris !');
+            }
+
+            // Mettre à jour le localStorage
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        });
+    </script>
+</body>
+</html>

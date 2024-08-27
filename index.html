@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - MSFlix</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://anubhavsingh16.github.io/Netflix-Clone/images/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            transform: scale(1);
+            transition: transform 0.3s ease-in-out;
+        }
+        .container:hover {
+            transform: scale(1.02);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #e50914;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #f40612;
+        }
+        .error {
+            color: #f00;
+            margin: 10px 0;
+            display: none;
+            font-size: 14px;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .reset-password, .signup-button {
+            margin-top: 20px;
+        }
+        .reset-password a, .signup-button a {
+            color: #fff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Connexion</h1>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Nom d'utilisateur" required>
+            <input type="password" id="password" placeholder="Mot de passe" required>
+            <button type="submit">Se connecter</button>
+            <div class="error" id="error"></div>
+        </form>
+        <div class="reset-password">
+            <a href="#" onclick="showResetPassword(event)">Mot de passe oublié ?</a>
+        </div>
+        <div class="signup-button">
+            <a href="inscription.html">Pas encore membre ? Inscrivez-vous</a>
+        </div>
+        <div class="footer">
+            <p>© 2024 MSFlix</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Vérifier si l'utilisateur est déjà connecté
+            if (localStorage.getItem('loggedIn') === 'true') {
+                window.location.href = 'welcome.html'; // Redirection vers la page de bienvenue
+            }
+        });
+
+        // Liste des utilisateurs pour la vérification des identifiants
+        const users = [
+            { username: 'msrcd', password: '856Qqrsjbs@', profilePic: 'https://www.mer-ocean.com/wp-content/uploads/2021/06/1200x680_luca-jpg-1024x580.jpeg' },
+            { username: 'ninon', password: 'Ninon07092010', profilePic: 'https://readysteadycut.com/wp-content/uploads/2020/04/Screenshot-2020-04-08-at-15.06.30.jpg' }
+        ];
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('error');
+
+            const user = users.find(user => user.username === username && user.password === password);
+
+            if (user) {
+                // Stocker la session dans le localStorage
+                localStorage.setItem('loggedIn', 'true');
+                localStorage.setItem('username', username);
+                localStorage.setItem('profilePic', user.profilePic); // Stocker l'URL de la photo de profil
+                window.location.href = 'welcome.html'; // Redirection vers la page de bienvenue
+            } else {
+                errorDiv.textContent = 'Nom d\'utilisateur ou mot de passe incorrect.';
+                errorDiv.style.display = 'block';
+            }
+        });
+
+        function showResetPassword(event) {
+            event.preventDefault(); // Empêcher la navigation
+            const email = prompt("Veuillez entrer votre adresse e-mail pour réinitialiser le mot de passe :");
+            if (email) {
+                alert("Si un compte avec cet e-mail existe, un lien de réinitialisation du mot de passe sera envoyé.");
+            }
+        }
+    </script>
+</body>
+</html>

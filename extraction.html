@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extraction - Disney+</title>
+    <style>
+      body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+        }
+
+        /* Full-screen video background */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .video-background iframe {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Gradient overlay */
+        .gradient-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
+            z-index: 0;
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .return-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #f9f9f9;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+            z-index: 1000;
+        }
+
+        .return-button:hover {
+            background-color: #ddd;
+            transform: scale(1.05);
+        }
+
+        .overlay-content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 40%;
+            height: 100%;
+            padding: 10px;
+            background: linear-gradient(to right, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; /* Center items horizontally */
+            box-sizing: border-box;
+            z-index: 2;
+        }
+
+        .info {
+            text-align: left;
+            max-width: 80%;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            margin-left: auto; /* Centering to the left */
+            margin-right: auto;
+        }
+
+        .info h1 {
+            font-size: 2.5em;
+            margin: 0;
+        }
+
+        .info p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .buttons button {
+            background-color: #f9f9f9;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: black;
+        }
+
+        .buttons button:hover {
+            background-color: #ddd;
+            transform: scale(1.05);
+        }
+
+        .video-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .video-section iframe {
+            width: 80%;
+            height: 80%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .video-section .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #f9f9f9;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+            z-index: 1001;
+        }
+
+        .video-section .back-button:hover {
+            background-color: #ddd;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- Full-screen video background -->
+    <div class="video-background">
+        <iframe src="https://www.youtube.com/embed/wrAlWJ460Rg?autoplay=1&loop=1&playlist=wrAlWJ460Rg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
+    <!-- Overlay Content with Gradient -->
+    <div class="overlay-content">
+        <!-- Bouton Retour à films.html en haut à gauche -->
+        <a href="/films/films.html" class="return-button" id="returnButton">Retour</a>
+        
+        <div class="info">
+            <h1>Extraction</h1>
+            <p>2024 • Action, Thriller</p>
+            <p>Extraction est un thriller palpitant qui suit un mercenaire chargé de sauver le fils kidnappé d'un chef de la criminalité internationale. Le film offre une expérience intense avec des scènes d'action ininterrompues et une intrigue captivante.</p>            <div class="buttons">
+                <div class="buttons">
+                    <button id="playButton">Lecture</button>
+                    <button id="favoriteButton">Favoris</button>
+                </div>
+                
+        </div>
+
+        <!-- Video Section for Trailers -->
+        <div class="video-section" id="videoSection">
+            <button class="back-button" id="backButton">Retour</button>
+            <iframe id="videoPlayer" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('playButton').addEventListener('click', function() {
+            window.open('https://uqload.to/p5nv99scjhp5.html', '_blank');
+        });
+
+        document.getElementById('trailerButton').addEventListener('click', function() {
+            var content = document.querySelector('.overlay-content');
+            var videoSection = document.getElementById('videoSection');
+            var videoPlayer = document.getElementById('videoPlayer');
+
+            // Masquer le contenu pour afficher la vidéo
+            content.style.display = 'none';
+
+            // Afficher la section vidéo après la transition
+            setTimeout(function() {
+                videoSection.style.display = 'flex';
+                videoPlayer.src = 'https://www.youtube.com/embed/osgwInTdgR0'; // Charger la bande-annonce YouTube
+            }, 1000); // Durée de la transition
+        });
+
+        document.getElementById('backButton').addEventListener('click', function() {
+            var content = document.querySelector('.overlay-content');
+            var videoSection = document.getElementById('videoSection');
+
+            // Réinitialiser la source de la vidéo
+            document.getElementById('videoPlayer').src = '';
+
+            // Masquer la section vidéo et réafficher le contenu
+            videoSection.style.display = 'none';
+            content.style.display = 'flex';
+        });
+
+        document.getElementById('favoriteButton').addEventListener('click', function() {
+            // Informations sur le film à stocker
+            const movie = {
+                title: 'Extraction',
+                image: 'https://th.bing.com/th/id/OIP.OOQvCM9yshIZy3qs8PDi0wHaLH?rs=1&pid=ImgDetMain'
+            };
+
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            const movieIndex = favorites.findIndex(fav => fav.title === movie.title);
+
+            if (movieIndex !== -1) {
+        favorites.splice(movieIndex, 1);
+        alert('Le film a été retiré de vos favoris.');
+    } else {
+        favorites.push(movie);
+        alert('Le film a été ajouté à vos favoris !');
+    }
+
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        });    
+
+        document.getElementById('returnButton').addEventListener('click', function() {
+            window.location.href = '/films/films.html';
+        });
+
+        document.getElementById('playButton').addEventListener('click', function() {
+            var content = document.querySelector('.overlay-content');
+            var videoSection = document.getElementById('videoSection');
+            var videoPlayer = document.getElementById('videoPlayer');
+
+            content.style.display = 'none';
+
+            setTimeout(function() {
+                videoSection.style.display = 'flex';
+                videoPlayer.src = 'https://youtu.be/1oR5OWgfMCQ'; // Charger la bande-annonce YouTube
+            }, 1000);
+        });
+
+        document.getElementById('backButton').addEventListener('click', function() {
+            var content = document.querySelector('.overlay-content');
+            var videoSection = document.getElementById('videoSection');
+
+            document.getElementById('videoPlayer').src = '';
+            videoSection.style.display = 'none';
+            content.style.display = 'flex';
+        });
+    </script>
+</body>
+</html>
+

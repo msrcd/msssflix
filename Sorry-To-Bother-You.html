@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorry To Bother You - Disney+</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+        }
+        /* Full-screen video background */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .video-background iframe {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* Content overlay with gradient */
+        .overlay-content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 40%;
+            height: 100%;
+            padding: 10px;
+            background: linear-gradient(to right, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; /* Center items horizontally */
+            box-sizing: border-box;
+            z-index: 2;
+        }
+        .content {
+            position: relative;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .content img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            transition: transform 1s;
+        }
+        .info {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            text-align: center;
+            max-width: 600px;
+            margin: auto;
+        }
+        .info h1 {
+            font-size: 2.5em;
+            margin: 0;
+        }
+        .info p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex; /* Use flexbox to align buttons horizontally */
+            gap: 15px; /* Space between buttons */
+            justify-content: center; /* Center buttons horizontally */
+            width: 100%; /* Full width to help with centering */
+        }
+        .buttons button {
+            background-color: #f9f9f9;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: black;
+        }
+        .buttons button:hover {
+            background-color: #ddd;
+            transform: scale(1.05);
+        }
+        /* Button for returning to the previous page */
+        .return-button {
+            position: absolute;
+            top: 20px;
+            left: 50px;
+            background-color: #f9f9f9;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+            z-index: 1000;
+        }
+        .return-button:hover {
+            background-color: #ddd;
+            transform: scale(1.05);
+        }
+        /* Video section for trailers */
+        .video-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        .video-section iframe {
+            width: 80%;
+            height: 80%;
+            border: none;
+            border-radius: 10px;
+        }
+        .video-section .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #f9f9f9;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+            z-index: 1001;
+        }
+        .video-section .back-button:hover {
+            background-color: #ddd;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Full-screen video background -->
+    <div class="video-background">
+        <iframe src="https://www.youtube.com/embed/TNVBebYCIEI?autoplay=1&loop=1&playlist=TNVBebYCIEI" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
+    <div class="overlay-content">
+        <!-- Bouton Retour à films.html en haut à gauche -->
+        <a href="/films/films.html" class="return-button" id="returnButton">Retour</a>
+        
+        <div class="content">
+            <div class="info">
+                <h1>Sorry To Bother You</h1>
+                <p>2018 • Comédie</p>
+                <p>Sorry To Bother You suit Cassius Green, un employé de call center qui utilise une "voix blanche" pour gravir les échelons d'une entreprise douteuse. Avec une satire mordante et une esthétique futuriste, le film explore les thèmes de race et de capitalisme tout en offrant une critique audacieuse et visuellement percutante.</p>
+                <div class="buttons">
+                    <button id="playButton">Lecture</button>
+                    <button id="favoriteButton">Favoris</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Section for Trailers -->
+        <div class="video-section" id="videoSection">
+            <button class="back-button" id="backButton">Retour</button>
+            <iframe id="videoPlayer" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('playButton').addEventListener('click', function() {
+            window.open('https://uqload.to/c0nckwy8uwrf.html', '_blank');
+        });
+
+        document.getElementById('trailerButton').addEventListener('click', function() {
+            var content = document.querySelector('.content');
+            var videoSection = document.getElementById('videoSection');
+            var videoPlayer = document.getElementById('videoPlayer');
+
+            // Masquer le contenu pour afficher la vidéo
+            content.classList.add('hide');
+
+            // Afficher la section vidéo après la transition
+            setTimeout(function() {
+                videoSection.style.display = 'flex';
+                videoPlayer.src = 'https://www.youtube.com/embed/TNVBebYCIEI'; // Charger la bande-annonce YouTube
+            }, 1000); // Durée de la transition
+        });
+
+        document.getElementById('backButton').addEventListener('click', function() {
+            var content = document.querySelector('.content');
+            var videoSection = document.getElementById('videoSection');
+
+            // Réinitialiser la source de la vidéo
+            document.getElementById('videoPlayer').src = '';
+
+            // Masquer la section vidéo et réafficher le contenu
+            videoSection.style.display = 'none';
+            content.classList.remove('hide');
+        });
+
+        // Fonction pour ajouter ou retirer des favoris
+        document.getElementById('favoriteButton').addEventListener('click', function() {
+            // Informations sur le film à stocker
+            const movie = {
+                title: 'Sorry To Bother You',
+                image: 'https://th.bing.com/th/id/OIP.zE9oUj9jkCXc65hjG7pNUwHaK9?rs=1&pid=ImgDetMain'
+            };
+
+            // Récupérer la liste des favoris depuis le localStorage
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+            // Vérifier si le film est déjà dans les favoris
+            const movieIndex = favorites.findIndex(fav => fav.title === movie.title);
+
+            if (movieIndex !== -1) {
+                // Le film est déjà dans les favoris, le retirer
+                favorites.splice(movieIndex, 1);
+                alert('Le film a été retiré de vos favoris.');
+            } else {
+                // Ajouter le film aux favoris
+                favorites.push(movie);
+                alert('Le film a été ajouté à vos favoris !');
+            }
+
+            // Mettre à jour le localStorage
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        });
+    </script>
+
+</body>
+</html>

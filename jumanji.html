@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jumanji</title>
+    <style>
+        /* Styles généraux */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .container {
+            width: 100%;
+            min-height: 100vh; /* Ensure it takes at least the full viewport height */
+            position: relative;
+            z-index: 1;
+            padding: 100px;
+            box-sizing: border-box;
+            background-image: url('https://townsquare.media/site/442/files/2017/12/jumanji-gillen-johnson-blackpg.jpg?w=980&q=75');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(80%);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Bouton de retour */
+        .return-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #00ff00; /* Couleur de Jumanji */
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        .return-button:hover {
+            background-color: rgba(0, 255, 0, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Contenu principal */
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content {
+            flex: 1;
+            text-align: center;
+            margin-right: 20px;
+            transition: opacity 1s, transform 1s;
+        }
+
+        .info {
+            text-align: left;
+            max-width: 550px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+        }
+
+        .info h1 {
+            font-size: 3em;
+            margin: 0;
+            color: #00ff00;
+            font-family: 'Roboto Slab', serif;
+        }
+
+        .info p {
+            font-size: 1.3em;
+            margin: 10px 0;
+            line-height: 1.6;
+            color: #cccccc;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            background-color: #444;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        .buttons button:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+
+        /* Tableau des films */
+        .movies {
+            flex: 1;
+            max-width: 550px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+        }
+
+        .movies table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .movies th,
+        .movies td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        .movies th {
+            background-color: #222;
+            color: #00ff00;
+            font-size: 1.3em;
+        }
+
+        .movies td {
+            background-color: #333;
+            border: 1px solid #555;
+        }
+
+        .movies a {
+            color: #00ff00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .movies a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section vidéo */
+        .video-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .video-section iframe {
+            width: 80%;
+            height: 80%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .video-section .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #00ff00;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        .video-section .back-button:hover {
+            background-color: rgba(0, 255, 0, 0.3);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <a href="/films/films.html" class="return-button" id="returnButton">Retour</a>
+
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="info">
+                    <h1>Jumanji</h1>
+                    <p>Une série de films d'aventure fantastique basée sur le jeu de société magique Jumanji.</p>
+                    <div class="buttons">
+                        <button id="trailerButton">Bande-annonce</button>
+                        <button id="favoriteButton">Favoris</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="movies">
+                <table>
+                    <tr>
+                        <th colspan="2">Films</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/rbp5q9a479li.html" target="_blank">Jumanji (1995)</a></td>
+                        <td><a href="https://uqload.to/g84asp91xcf7.html" target="_blank">Jumanji: Bienvenue Dans La Jungle</a></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><a href="https://uqload.to/qzfsaj8dq5tq.html" target="_blank">Jumanji: Next Level</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section pour la vidéo -->
+    <div class="video-section" id="videoSection">
+        <button class="back-button" id="backButton">Retour</button>
+        <iframe id="videoPlayer" src="" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        // Script pour gérer la vidéo
+        document.getElementById('trailerButton').addEventListener('click', function () {
+            document.getElementById('videoSection').style.display = 'flex';
+            document.getElementById('videoPlayer').src = 'https://www.youtube.com/embed/oZI2njF5rx0'; // URL de la bande-annonce
+        });
+
+        document.getElementById('backButton').addEventListener('click', function () {
+            document.getElementById('videoSection').style.display = 'none';
+            document.getElementById('videoPlayer').src = '';
+        });
+
+              // Fonction pour ajouter ou retirer des favoris
+              document.getElementById('favoriteButton').addEventListener('click', function() {
+            // Informations sur le film à stocker
+            const movie = {
+                title: 'Jumanji',
+                image: 'https://www.themoviedb.org/t/p/original/qcVl1KHAZBMvfY3tui9tyMq87hA.jpg'
+            };
+
+            // Récupérer la liste des favoris depuis le localStorage
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+            // Vérifier si le film est déjà dans les favoris
+            const movieIndex = favorites.findIndex(fav => fav.title === movie.title);
+
+            if (movieIndex !== -1) {
+                // Le film est déjà dans les favoris, le retirer
+                favorites.splice(movieIndex, 1);
+                alert('Le film a été retiré de vos favoris.');
+            } else {
+                // Ajouter le film aux favoris
+                favorites.push(movie);
+                alert('Le film a été ajouté à vos favoris !');
+            }
+
+            // Mettre à jour le localStorage
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        });
+    </script>
+
+</body>
+
+</html>

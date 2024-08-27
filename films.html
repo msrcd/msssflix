@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSFlix</title>
+    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            margin-top: 100px;
+            padding: 0;
+            background-image: url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1707e452-eddb-4b53-a2d2-be332866adad/ddle43s-52197d60-a2ea-4b10-afe3-8323ae215896.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzE3MDdlNDUyLWVkZGItNGI1My1hMmQyLWJlMzMyODY2YWRhZFwvZGRsZTQzcy01MjE5N2Q2MC1hMmVhLTRiMTAtYWZlMy04MzIzYWUyMTU4OTYucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.3LhMlvyASZlP7R6HWGFNRJ8MpDGoGNnt-ZioCMiLCr8');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        header {
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    padding: 20px 40px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    justify-content: space-between; /* Assure que les éléments sont répartis */
+}
+
+.logo {
+    flex: 1; /* Occupe l'espace disponible à gauche */
+}
+        .logo img {
+            width: 60px;
+            height: 55px;   
+        }
+
+        nav {
+    flex: 2; /* Occupe l'espace disponible au centre */
+    display: flex;
+    justify-content: center; /* Centre le menu de navigation */
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    gap: 30px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: bold;
+    transition: color 0.3s, border-bottom 0.3s;
+}
+nav ul li a:hover {
+    color: #1f80e0;
+    border-bottom: 2px solid #1f80e0;
+}
+
+
+.header-right {
+    flex: 0.8; /* Occupe l'espace disponible à droite */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Aligne les éléments à droite */
+    gap: 10px;
+}
+
+
+        .search-container {
+    display: flex;
+    align-items: center; /* Assurer que le bouton est bien aligné verticalement */
+}
+
+        .search-bar {
+            width: 200px; /* Ajuster la largeur de la barre de recherche */
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #333;
+            color: #fff;
+        }
+
+/* Styles du popup */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 20px; /* Augmenté pour plus d'espace autour du contenu */
+    z-index: 2000;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.popup.active {
+    display: block;
+}
+
+.popup h2 {
+    color: #fff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.popup input {
+    width: calc(100% - 20px); /* Ajuster pour laisser un padding */
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 20px;
+    background-color: #333;
+    color: #fff;
+    box-sizing: border-box;
+}
+
+.popup .results {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 20px;
+    padding: 10px; /* Augmenté pour plus de confort */
+    background-color: #444;
+    border-radius: 5px;
+}
+
+.popup .results a {
+    display: block;
+    color: #fff;
+    padding: 10px; /* Augmenté pour plus d'espace autour des éléments */
+    text-decoration: none;
+    border-bottom: 1px solid #555;
+}
+
+.popup .results a:hover {
+    background-color: #1f80e0;
+}
+
+.popup-close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 36px;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Styles pour les images dans le popup */
+.popup img {
+    max-width: 10%; /* Ajuster la largeur maximale des images */
+    height: auto;
+    display: block;
+    margin: 0; /* Centrer les images horizontalement */
+    border-radius: 10px; /* Ajouter un arrondi aux coins */
+}
+
+        .search-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background-color: #1f80e0;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.3s ease;
+    font-size: 20px;
+}
+
+
+        .search-button:hover {
+            background-color: #145a8d;
+        }
+
+        .search-button span {
+            line-height: 0; /* Aligner correctement l'icône */
+        }
+        
+        /* Ajout de styles pour la disposition du profil utilisateur */
+        .header-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Aligner le contenu à droite */
+    gap: 10px; /* Ajuster l'espacement entre le bouton de recherche et le profil utilisateur */
+}
+.user-profile img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.user-profile img:hover {
+    transform: scale(1.1);
+}
+
+        .user-profile img {
+            width: 45px; /* Agrandir l'image du profil */
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .user-profile img:hover {
+    transform: scale(1.1);
+}
+
+.user-profile {
+    display: flex;
+    align-items: right;
+}
+
+        .carousel-container {
+            margin-top: 90px;
+            width: 95%; /* Augmenter la largeur du conteneur */
+            max-width: 1400px; /* Augmenter la largeur maximale */
+            height: 70vh; /* Augmenter la hauteur du carrousel */
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+        }
+
+        .carousel {
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .carousel-cell {
+            width: 90%; /* Augmenter la largeur des cellules du carrousel */
+            height: 100%;
+            position: relative;
+            transition: filter 0.3s ease;
+        }
+
+        .carousel-cell img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+            transition: filter 0.3s ease;
+        }
+
+        .carousel-cell:not(.is-selected) img {
+            filter: brightness(50%);
+        }
+
+        .carousel-cell.is-selected img {
+            filter: brightness(100%);
+        }
+
+        .movie-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding: 20px; /* Augmenter le padding pour plus d'espace autour des cartes */
+            gap: 30px; /* Augmenter l'espacement entre les cartes */
+            margin-top: 130px; /* Augmenter l'espacement au-dessus de la grille */
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .movie-card {
+            flex: 0 0 auto;
+            width: 230px; /* Agrandir la largeur des cartes */
+            height: 380px; /* Agrandir la hauteur des cartes */
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            scroll-snap-align: center;
+        }
+
+        .movie-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .movie-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .movie-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .movie-card-details {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            text-align: center;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.4);
+            border-top: 2px solid #1f80e0;
+            transition: opacity 0.3s ease;
+        }
+
+        .movie-card:hover .movie-card-details {
+            opacity: 1;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .movie-grid::-webkit-scrollbar {
+            height: 10px;
+        }
+
+        .movie-grid::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .movie-grid::-webkit-scrollbar-thumb {
+            background: #1f80e0;
+            border-radius: 10px;
+        }
+
+        .movie-grid::-webkit-scrollbar-thumb:hover {
+            background: #145a8d;
+        }
+
+
+        .section-padding {
+    padding-top: 55px; 
+}
+
+   
+    </style>
+</head>
+<body>
+    <header>
+
+        <div class="logo">
+            <a href="/pages/node.html"><img src="/txt/Capture d'écran 2024-08-26 105747.png" alt="Logo MSFlix"></a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/pages\node.html">Accueil 🏠</a></li>
+                <li><a href="/films\films.html">Films 🎞️</a></li>
+                <li><a href="/series/serie.html">Séries 🎥</a></li>
+                <li><a href="/pages\maliste.html">Mes Favoris ⭐</a></li>
+                <li><a href="/pages/suggesitons.html">Suggestions 📝</a></li>
+            </ul>
+            <div class="header-right">
+                <div class="search-container">
+                    <button class="search-button" onclick="togglePopup()"><span>&#128269;</span></button>
+                </div>
+                <div class="user-profile">
+                    <a href="/pages/profiles.html">
+                        <img id="profileImage" src="default-profile.jpg" alt="Photo de profil">
+                    </a>
+                </div>
+                
+            </div>
+        </header>
+  <!-- Popup Search -->
+<div class="popup" id="searchPopup">
+    <span class="popup-close" onclick="closePopup()">&times;</span>
+    <h2>Rechercher</h2>
+    <input type="text" id="searchInput" placeholder="Tapez votre recherche..." onkeyup="searchMovies()">
+    <div class="results" id="resultsContainer">
+        <!-- Les résultats seront ajoutés ici dynamiquement -->
+    </div>
+</div>
+
+ <main class="main-content">
+
+<!-- Section Films -->
+<section>
+<h2 class="section-title">Films</h2>
+<div class="movie-grid" id="movie-list">
+    <a href="/films\extraction.html" class="movie-card">
+        <img src="https://th.bing.com/th/id/OIP.OOQvCM9yshIZy3qs8PDi0wHaLH?rs=1&pid=ImgDetMain" alt="Extraction">
+        <h4>Extraction</h4>
+    </a>
+    <a href="/films\jamais-plus.html" class="movie-card">
+        <img src="https://th.bing.com/th/id/OIF.tjib8ZP4z34WDLGVFkrAUw?rs=1&pid=ImgDetMain" alt="Jamais plus - It Ends With Us">
+        <h4>Jamais plus - It Ends With Us</h4>
+    </a>
+    <a href="/films/black-to-back.html" class="movie-card">
+        <img src="https://fr.web.img6.acsta.net/c_310_420/pictures/24/03/12/15/40/0510292.jpg" alt="Back To Black">
+        <h4>Back To Black</h4>
+</a>
+
+<a href="/films/consentement.html" class="movie-card">
+    <img src="https://fr.web.img6.acsta.net/pictures/23/07/28/14/17/5661948.jpg" alt="Le Consentement">
+    <h4>Le Consentement</h4>
+</a>
+
+    <a href="/films\black-widow.html" class="movie-card">
+        <img src="https://th.bing.com/th/id/R.42f8154fab14bb9d41d460cfc98faba7?rik=nTRU0VfBhgrERw&pid=ImgRaw&r=0" alt="Black Widow">
+        <h4>Black Widow</h4>
+    </a>
+    <a href="/films\linvitations.html" class="movie-card">
+        <img src="https://assets.gadgets360cdn.com/pricee/assets/product/202206/The-Invitation-poster_1656526539.jpg" alt="L'Invitation">
+        <h4>L'Invitation</h4>
+    </a>
+
+    <a href="/films/titanic.html" class="movie-card searchable">
+        <img src="https://th.bing.com/th/id/R.3aa1f8bcf2e33c6ae0aeebf9a3cb5d9e?rik=4HUml7VcLvjpAw&pid=ImgRaw&r=0" alt="Titanic" />
+        <h4>Titanic</h4>
+    </a>
+
+</a>
+<a href="/films/get-out.html" class="movie-card">
+    <img src="https://www.themoviedb.org/t/p/original/mjTgZtmxUaLC60TBw7Jc0kA2AVx.jpg" alt="Get Out">
+    <h4>Get Out</h4>
+</a>
+
+<a href="/films/fast-and-furious.html" class="movie-card">
+    <img src="https://media.ginza.se/Images/item_img_1200/10894.jpg" alt="Fast And Furious">
+    <h4>Fast And Furious</h4>
+</a>
+<a href="/films/fight-club.html" class="movie-card">
+    <img src="https://m.media-amazon.com/images/M/MV5BMmEzNTkxYjQtZTc0MC00YTVjLTg5ZTEtZWMwOWVlYzY0NWIwXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_FMjpg_UX1000_.jpg" alt="Fight Club">
+    <h4>Fight Club</h4>
+</a>
+<a href="/films/loup-de-wallstreet.html" class="movie-card">
+    <img src="https://th.bing.com/th/id/OIP.n3dC6yEYTJcumHdGhmoowQAAAA?rs=1&pid=ImgDetMain" alt="loup de wallstreet">
+    <h4>loup de wallstreet</h4>
+</a>
+<a href="/films/300.html" class="movie-card">
+    <img src="https://fr.web.img3.acsta.net/medias/nmedia/18/36/26/41/18737112.jpg" alt="300">
+    <h4>300</h4>
+</a>
+<a href="/films/deadpool-et-wolverine.html" class="movie-card">
+    <img src="https://fr.web.img3.acsta.net/c_310_420/img/e4/cd/e4cd101f2e66f4e7818fcf53d05c006a.jpg" alt="Deadpool et Wolverine" />
+    <h4>Deadpool et Wolverine</h4>
+</a>
+<a href="/films/Fly-to-the-moon.html" class="movie-card">
+    <img src="https://fr.web.img6.acsta.net/c_310_420/img/19/aa/19aade896568089a9c8bf63a7997cee9.jpg" alt="To the Moon" />
+    <h4>Fly To the Moon</h4>
+</a>
+<a href="/films/twisters.html" class="movie-card">
+    <img src="https://fr.web.img6.acsta.net/c_310_420/img/84/7a/847a7ba3d470cb6037975b831af9d70d.jpg" alt="Twisters" />
+    <h4>Twisters</h4>
+</a>
+<a href="/films/civil-war.html" class="movie-card ">
+    <img src="https://fr.web.img2.acsta.net/c_310_420/pictures/24/03/08/08/44/3432270.jpg" alt="Civil War" />
+    <h4>Civil War</h4>
+</a>
+<a href="/films/bad-boys-ride-or-die.html" class="movie-card ">
+    <img src="https://fr.web.img4.acsta.net/c_310_420/img/ef/bb/efbbe86f093b0904258c8a9b1e60bae7.jpg" alt="Bad Boys Ride or Die" />
+    <h4>Bad Boys Ride or Die</h4>
+</a>
+<a href="/films/moi-moche-et-mechant-4.html" class="movie-card ">
+    <img src="https://fr.web.img5.acsta.net/c_310_420/img/cb/3d/cb3d42b81f3003e54a90fd77ddabaf14.jpg" alt="Moi, moche et méchant 4" />
+    <h4>Moi, moche et méchant 4</h4>
+</a>
+
+<a href="/films/Interstellar.html" class="movie-card ">
+    <img src="https://th.bing.com/th/id/OIP.uiaj_IMaC7h3NoieAhcmVwHaLG?rs=1&pid=ImgDetMain" alt="Interstellar" />
+    <h4>Interstellar</h4>
+</a>
+
+<a href="/films/sans-un-bruit-jour-1.html" class="movie-card ">
+    <img src="https://fr.web.img6.acsta.net/c_310_420/img/4f/95/4f95a31f1562e41ba10b199f25b25931.jpg" alt="Sans un bruit: jour 1" />
+    <h4>Sans un bruit: jour 1</h4>
+</a>
+<a href="/films/horizon-une-saga-americaine-chapitre-1.html" class="movie-card ">
+    <img src="https://fr.web.img4.acsta.net/c_310_420/img/8f/c6/8fc67496b5f039875b2092aa20b47f79.jpg" alt="Horizon : une saga américaine Chapitre 1" />
+    <h4>Horizon : une saga américaine Chapitre 1</h4>
+</a>
+<a href="/films/la-planete-des-singes-le-nouveau-royaume.html" class="movie-card ">
+    <img src="https://fr.web.img2.acsta.net/c_310_420/pictures/23/11/03/09/01/4866574.jpg" alt="La Planète des Singes : Le Nouveau Royaume" />
+    <h4>La Planète des Singes : Le Nouveau Royaume</h4>
+</a>
+<a href="/films/furiosa-une-saga-mad-max.html" class="movie-card ">
+    <img src="https://fr.web.img4.acsta.net/c_310_420/img/bd/b1/bdb11f06bd2f0392cfc2bf9f64ecca1d.jpg" alt="Furiosa: une saga Mad Max" />
+    <h4>Furiosa: une saga Mad Max</h4>
+</a>
+<a href="/films/the-fall-guy.html" class="movie-card ">
+    <img src="https://fr.web.img6.acsta.net/c_310_420/o_club-allocine-2024-310x420.png_0_se/pictures/24/03/22/08/41/0670281.jpg" alt="The Fall Guy" />
+    <h4>The Fall Guy</h4>
+</a>
+
+<a href="/films/godzilla-x-kong-le-nouvel-empire.html" class="movie-card ">
+    <img src="https://fr.web.img3.acsta.net/c_310_420/pictures/24/02/20/16/25/2308963.jpg" alt="Godzilla x Kong : Le Nouvel Empire" />
+    <h4>Godzilla x Kong : Le Nouvel Empire</h4>
+</a>
+<a href="/films/vermines.html" class="movie-card ">
+    <img src="https://fr.web.img6.acsta.net/c_310_420/pictures/23/11/30/11/13/5779947.jpg" alt="Vermines" />
+    <h4>Vermines</h4>
+</a>
+<a href="/films/dune-deuxieme-partie.html" class="movie-card ">
+    <img src="https://fr.web.img2.acsta.net/c_310_420/pictures/24/01/26/10/18/5392835.jpg" alt="Dune : Deuxième Partie" />
+    <h4>Dune : Deuxième Partie</h4>
+</a>
+<a href="/films/bob-marley-one-love.html" class="movie-card ">
+    <img src="https://fr.web.img6.acsta.net/c_310_420/pictures/24/01/18/11/59/2019347.jpg" alt="Bob Marley: One Love" />
+    <h4>Bob Marley: One Love</h4>
+</a>
+<a href="/films/inception.html" class="movie-card">
+    <img src="https://image.tmdb.org/t/p/original/xymM5aW6MDcH5AR9I3CamSegJd6.jpg" alt="Inception"/>
+    <h4>Inception</h4>
+</a>
+<a href="/films/kung-fu-panda-4.html" class="movie-card ">
+    <img src="https://fr.web.img6.acsta.net/c_310_420/medias/nmedia/18/81/96/03/19723216.jpg" alt="Kung Fu Panda 4" />
+    <h4>Kung Fu Panda 4</h4>
+</a>
+<a href="/films/inception.html" class="movie-card">
+    <img src="https://image.tmdb.org/t/p/original/xymM5aW6MDcH5AR9I3CamSegJd6.jpg" alt="Inception">
+    <h4>Inception</h4>
+</a>
+<a href="/films/madame-web.html" class="movie-card ">
+    <img src="https://fr.web.img4.acsta.net/c_310_420/pictures/24/01/11/09/49/2179240.jpg" alt="Madame Web" />
+    <h4>Madame Web</h4>
+</a>
+<a href="/films/argylle.html" class="movie-card ">
+    <img src="https://fr.web.img3.acsta.net/c_310_420/pictures/24/01/22/11/34/5834555.jpg" alt="Argylle" />
+    <h4>Argylle</h4>
+</a>
+<a href="/films/pauvres-creatures.html" class="movie-card ">
+    <img src="https://fr.web.img5.acsta.net/c_310_420/pictures/23/11/28/11/03/2973866.jpg" alt="Pauvres créatures" />
+    <h4>Pauvres créatures</h4>
+</a>
+<a href="/films/le-regne-animal.html" class="movie-card ">
+    <img src="https://fr.web.img6.acsta.net/c_310_420/o_club-allocine-2024-310x420.png_0_se/pictures/23/08/28/10/29/4138047.jpg" alt="Le Règne Animal" />
+    <h4>Le Règne Animal</h4>
+</a>
+
+<a href="/films/liaison-dangereuse-avec-mon-étudiante.html" class="movie-card searchable">
+    <img src="https://fusion.molotov.tv/arts/i/446x588/Ch8SHQoUWhe3KV2mIUnHwVZeBIWY-k2oVigSA2pwZxgB/jpg" alt="liaison dangereuse avec mon étudiante" />
+    <h4>liaison dangereuse avec mon étudiante</h4>
+</a>
+
+<a href="/films/aquaman-et-le-royaume-perdu.html" class="movie-card ">
+    <img src="https://fr.web.img3.acsta.net/c_310_420/pictures/23/12/14/16/49/3331945.jpg" alt="Aquaman et le Royaume perdu" />
+    <h4>Aquaman et le Royaume perdu</h4>
+</a>
+<a href="/films/wonka.html" class="movie-card ">
+    <img src="https://fr.web.img2.acsta.net/c_310_420/pictures/23/12/05/14/56/1249162.jpg" alt="Wonka" />
+    <h4>Wonka</h4>
+</a>
+<a href="/films/the-marvels.html" class="movie-card ">
+    <img src="https://fr.web.img2.acsta.net/c_310_420/pictures/23/09/07/15/28/3776600.jpg" alt="The Marvels" />
+    <h4>The Marvels</h4>
+</a>
+<a href="/films/batman.html" class="movie-card">
+    <img src="https://m.media-amazon.com/images/M/MV5BMjY2NTVkYmEtNzJlZC00YzNjLTkzNjMtOTQxZTNkOGE4MzcwXkEyXkFqcGdeQXVyNjUxMjc1OTM@._V1_.jpg" alt="<Batman>">
+    <h4>Batman</h4>
+</a>
+<a href="/films/The-Trueman-Show.html" class="movie-card">
+    <img src="https://fr.web.img3.acsta.net/pictures/22/05/16/16/32/4176595.jpg" alt="<The Trueman Show>">
+    <h4>The Trueman Show</h4>
+</a>
+<a href="/films/slenderman.html" class="movie-card">
+    <img src="https://m.media-amazon.com/images/M/MV5BNzdmZjcwZTEtYjFkYi00OGY4LWIzMDEtOWE4YTdhN2Q3YzM5XkEyXkFqcGdeQXVyMTA4NjE0NjEy._V1_.jpg" alt="Slenderman">
+    <h4>Slenderman</h4>
+    <a href="/films/deadpool.html" class="movie-card">
+        <img src="https://www.themoviedb.org/t/p/original/fSRb7vyIP8rQpL0I47P3qUsEKX3.jpg" alt="Deadpool">
+        <h4>Deadpool</h4>
+        <a href="/films/Sorry-To-Bother-You.html" class="movie-card">
+            <img src="https://th.bing.com/th/id/OIP.zE9oUj9jkCXc65hjG7pNUwHaK9?rs=1&pid=ImgDetMain" alt="Sorry To Bother You">
+            <h4>Sorry To Bother You</h4>
+    </a>
+    <a href="/films/spiderman-accros-the-verse.html" class="movie-card">
+        <img src="https://m.media-amazon.com/images/M/MV5BNThiZjA3MjItZGY5Ni00ZmJhLWEwN2EtOTBlYTA4Y2E0M2ZmXkEyXkFqcGc@._V1_.jpg" alt="Spider-Man : Across the Spider-Verse">
+        <h4>Spider-Man : Across the Spider-Verse</h4>
+</a>
+<a href="/films/viceversa.html" class="movie-card ">
+    <img src="https://i2.wp.com/www.zickma.fr/wp-content/uploads/2014/12/vice-versa-affiche-11.jpg" alt="Vic Versa">
+    <h4>Vice Versa</h4>
+</a>
+
+</a>
+</main>
+
+<!-- Section Action -->
+<section>
+<h2 class="section-title">Action 💥</h2>
+<div class="movie-grid">
+    <a href="/films/extraction.html" class="movie-card">
+        <img src="https://th.bing.com/th/id/OIP.OOQvCM9yshIZy3qs8PDi0wHaLH?rs=1&pid=ImgDetMain" alt="Extraction">
+        <h4>Extraction</h4>
+    </a>
+    <a href="/films/black-widow.html" class="movie-card">
+        <img src="https://th.bing.com/th/id/R.42f8154fab14bb9d41d460cfc98faba7?rik=nTRU0VfBhgrERw&pid=ImgRaw&r=0" alt="Black Widow">
+        <h4>Black Widow</h4>
+    </a>
+    <a href="/films/fast-and-furious.html" class="movie-card">
+        <img src="https://media.ginza.se/Images/item_img_1200/10894.jpg" alt="Fast And Furious">
+        <h4>Fast And Furious</h4>
+    </a>
+    <a href="/films/batman.html" class="movie-card">
+        <img src="https://m.media-amazon.com/images/M/MV5BMjY2NTVkYmEtNzJlZC00YzNjLTkzNjMtOTQxZTNkOGE4MzcwXkEyXkFqcGdeQXVyNjUxMjc1OTM@._V1_.jpg" alt="Batman">
+        <h4>Batman</h4>
+    </a>
+    <a href="/films/civil-war.html" class="movie-card">
+        <img src="https://fr.web.img2.acsta.net/c_310_420/pictures/24/03/08/08/44/3432270.jpg" alt="Civil War">
+        <h4>Civil War</h4>
+    </a>
+    <a href="/films/deadpool-et-wolverine.html" class="movie-card">
+        <img src="https://fr.web.img3.acsta.net/c_310_420/img/e4/cd/e4cd101f2e66f4e7818fcf53d05c006a.jpg" alt="Deadpool et Wolverine">
+        <h4>Deadpool et Wolverine</h4>
+    </a>
+    <a href="/films/inception.html" class="movie-card">
+        <img src="https://image.tmdb.org/t/p/original/xymM5aW6MDcH5AR9I3CamSegJd6.jpg" alt="Inception"/>
+        <h4>Inception</h4>
+    </a>
+</div>
+</section>
+
+<!-- Section Drame -->
+<section>
+<h2 class="section-title">Drame</h2>
+<div class="movie-grid">
+    <a href="/films/linvitations.html" class="movie-card">
+        <img src="https://assets.gadgets360cdn.com/pricee/assets/product/202206/The-Invitation-poster_1656526539.jpg" alt="L'Invitation">
+        <h4>L'Invitation</h4>
+    </a>
+    <a href="/films/consentement.html" class="movie-card">
+        <img src="https://fr.web.img6.acsta.net/pictures/23/07/28/14/17/5661948.jpg" alt="Le Consentement">
+        <h4>Le Consentement</h4>
+    </a>
+    <a href="/films/fight-club.html" class="movie-card">
+        <img src="https://m.media-amazon.com/images/M/MV5BMmEzNTkxYjQtZTc0MC00YTVjLTg5ZTEtZWMwOWVlYzY0NWIwXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_FMjpg_UX1000_.jpg" alt="Fight Club">
+        <h4>Fight Club</h4>
+    </a>
+    <a href="/films/moi-moche-et-mechant-4.html" class="movie-card">
+        <img src="https://fr.web.img5.acsta.net/c_310_420/img/cb/3d/cb3d42b81f3003e54a90fd77ddabaf14.jpg" alt="Moi, moche et méchant 4">
+        <h4>Moi, moche et méchant 4</h4>
+    </a>
+    <a href="/films/titanic.html" class="movie-card searchable">
+        <img src="https://th.bing.com/th/id/R.3aa1f8bcf2e33c6ae0aeebf9a3cb5d9e?rik=4HUml7VcLvjpAw&pid=ImgRaw&r=0" alt="Titanic" />
+        <h4>Titanic</h4>
+    </a>
+</div>
+</section>
+
+
+<section>
+<h2 class="section-title">thriller</h2> 
+<div class="movie-card">
+    <a href="/films/liaison-dangereuse-avec-mon-étudiante.html" class="movie-card searchable">
+        <img src="https://fusion.molotov.tv/arts/i/446x588/Ch8SHQoUWhe3KV2mIUnHwVZeBIWY-k2oVigSA2pwZxgB/jpg" alt="liaison dangereuse avec mon étudiante" />
+        <h4>liaison dangereuse avec mon étudiante</h4>
+    </a>
+</section>
+
+
+
+<!-- Section Humour -->
+<section>
+<h2 class="section-title">Humour 🤣</h2>
+<div class="movie-grid">
+    <a href="/films/The-Trueman-Show.html" class="movie-card">
+        <img src="https://fr.web.img3.acsta.net/pictures/22/05/16/16/32/4176595.jpg" alt="The Trueman Show">
+        <h4>The Trueman Show</h4>
+    </a>
+</div>
+</section>
+<section>
+    <h2 class="section-title">Romance ❤️</h2>
+    <div class="movie-grid">
+        <a href="/films/titanic.html" class="movie-card searchable">
+            <img src="https://th.bing.com/th/id/R.3aa1f8bcf2e33c6ae0aeebf9a3cb5d9e?rik=4HUml7VcLvjpAw&pid=ImgRaw&r=0" alt="Titanic" />
+            <h4>Titanic</h4>
+        </a>
+    </div>
+    </section>
+
+<!-- Section Fantastique -->
+<section>
+<h2 class="section-title">Fantastique</h2>
+<div class="movie-grid">
+    <a href="/films/les-enfants-loup-âmé-et-yuki.html" class="movie-card">
+        <img src="https://th.bing.com/th/id/R.5926a98fe96ff94c6fe6a04a9a0a1226?rik=rcpmVrOLQbEIUw&pid=ImgRaw&r=0" alt="Les enfants loup âmé et yuki">
+        <h4>Les enfants loup âmé et yuki</h4>
+    </a>
+    <a href="/films/spiderman-accros-the-verse.html" class="movie-card">
+        <img src="https://m.media-amazon.com/images/M/MV5BNThiZjA3MjItZGY5Ni00ZmJhLWEwN2EtOTBlYTA4Y2E0M2ZmXkEyXkFqcGc@._V1_.jpg" alt="Spider-Man : Across the Spider-Verse">
+        <h4>Spider-Man : Across the Spider-Verse</h4>
+    </a>
+</div>
+</section>
+
+<!-- Section Horreur -->
+<section>
+<h2 class="section-title">Horreur 👻</h2>
+<div class="movie-grid">
+    <a href="/films/slenderman.html" class="movie-card">
+        <img src="https://m.media-amazon.com/images/M/MV5BNzdmZjcwZTEtYjFkYi00OGY4LWIzMDEtOWE4YTdhN2Q3YzM5XkEyXkFqcGdeQXVyMTA4NjE0NjEy._V1_.jpg" alt="Slenderman">
+        <h4>Slenderman</h4>
+    </a>
+</div>
+</section>
+
+<!-- Section Animation -->
+<section>
+<h2 class="section-title">Animation</h2>
+<div class="movie-grid">
+    <a href="/films/spiderman-accros-the-verse.html" class="movie-card">
+        <img src="https://m.media-amazon.com/images/M/MV5BNThiZjA3MjItZGY5Ni00ZmJhLWEwN2EtOTBlYTA4Y2E0M2ZmXkEyXkFqcGc@._V1_.jpg" alt="Spider-Man : Across the Spider-Verse">
+        <h4>Spider-Man : Across the Spider-Verse</h4>
+    </a>
+    <a href="/films/viceversa.html" class="movie-card">
+        <img src="https://i2.wp.com/www.zickma.fr/wp-content/uploads/2014/12/vice-versa-affiche-11.jpg" alt="Vice Versa">
+        <h4>Vice Versa</h4>
+    </a>
+</div>
+</section>
+
+<!-- Section Musical -->
+<section>
+<h2 class="section-title">Musical</h2>
+<div class="movie-grid">
+    <a href="/films/black-to-back.html" class="movie-card">
+        <img src="https://fr.web.img6.acsta.net/c_310_420/pictures/24/03/12/15/40/0510292.jpg" alt="Back To Black">
+        <h4>Back To Black</h4>
+    </a>
+</div>
+</section>
+
+<!-- Section Science Fiction -->
+<section>
+<h2 class="section-title">Science Fiction 🔬</h2>
+<div class="movie-grid">
+    <a href="/films/black-widow.html" class="movie-card">
+        <img src="https://th.bing.com/th/id/R.42f8154fab14bb9d41d460cfc98faba7?rik=nTRU0VfBhgrERw&pid=ImgRaw&r=0" alt="Black Widow">
+        <h4>Black Widow</h4>
+    </a>
+    <a href="/films/Interstellar.html" class="movie-card ">
+        <img src="https://th.bing.com/th/id/OIP.uiaj_IMaC7h3NoieAhcmVwHaLG?rs=1&pid=ImgDetMain" alt="Interstellar" />
+        <h4>Interstellar</h4>
+    </a>
+</div>
+</section>
+
+<!-- Section Policier -->
+<section>
+<h2 class="section-title">Policier 🚔</h2>
+<div class="movie-grid">
+    <a href="/films/fast-and-furious.html" class="movie-card">
+        <img src="https://fr.web.img6.acsta.net/c_310_420/pictures/24/03/12/15/40/0510292.jpg" alt="Fast & Furious">
+        <h4>Fast & Furious</h4>
+    </a>
+    <a href="/films/Scarface.html" class="movie-card">
+        <img src="https://fr.web.img6.acsta.net/c_310_420/pictures/210/485/21048559_20131010181109755.jpg" alt="Scarface">
+        <h4>Scarface</h4>
+    </a>
+</div>
+</section>
+
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+    <script>
+        // Initialisation de Flickity
+        var elem = document.querySelector('.carousel');
+        var flkty = new Flickity(elem, {
+            cellAlign: 'center',
+            contain: true,
+            pageDots: false,
+            wrapAround: true,
+            autoPlay: true,
+            prevNextButtons: false,
+        });
+
+// Liste des films
+const movies = [
+    { title: "Extraction", image: "https://th.bing.com/th/id/OIP.OOQvCM9yshIZy3qs8PDi0wHaLH?rs=1&pid=ImgDetMain", link: "/films/extraction.html" },
+    { title: "Jamais plus - It Ends With Us", image: "https://th.bing.com/th/id/OIF.tjib8ZP4z34WDLGVFkrAUw?rs=1&pid=ImgDetMain", link: "/films/jamais-plus.html" },
+    { title: "Back To Black", image: "https://fr.web.img6.acsta.net/c_310_420/pictures/24/03/12/15/40/0510292.jpg", link: "/films/black-to-back.html" },
+    { title: "Black Widow", image: "https://th.bing.com/th/id/R.42f8154fab14bb9d41d460cfc98faba7?rik=nTRU0VfBhgrERw&pid=ImgRaw&r=0", link: "/films/black-widow.html" },
+    { title: "L'Invitation", image: "https://assets.gadgets360cdn.com/pricee/assets/product/202206/The-Invitation-poster_1656526539.jpg", link: "/films/linvitations.html" },
+    { title: "Jumanji", image: "https://www.themoviedb.org/t/p/original/qcVl1KHAZBMvfY3tui9tyMq87hA.jpg", link: "/films/jumanji.html" },
+    { title: "Get Out", image: "https://www.themoviedb.org/t/p/original/mjTgZtmxUaLC60TBw7Jc0kA2AVx.jpg", link: "/films/get-out.html" },
+    { title: "Fast And Furious", image: "https://media.ginza.se/Images/item_img_1200/10894.jpg", link: "/films/fast-and-furious.html" },
+    { title: "Fight Club", image: "https://m.media-amazon.com/images/M/MV5BMmEzNTkxYjQtZTc0MC00YTVjLTg5ZTEtZWMwOWVlYzY0NWIwXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_FMjpg_UX1000_.jpg", link: "/films/fight-club.html" },
+    { title: "Loup de Wallstreet", image: "https://th.bing.com/th/id/OIP.n3dC6yEYTJcumHdGhmoowQAAAA?rs=1&pid=ImgDetMain", link: "/films/loup-de-wallstreet.html" },
+    { title: "300", image: "https://fr.web.img3.acsta.net/medias/nmedia/18/36/26/41/18737112.jpg", link: "/films/300.html" },
+    { title: "Deadpool et Wolverine", image: "https://fr.web.img3.acsta.net/c_310_420/img/e4/cd/e4cd101f2e66f4e7818fcf53d05c006a.jpg", link: "/films/deadpool-et-wolverine.html" },
+    { title: "Fly To the Moon", image: "https://fr.web.img6.acsta.net/c_310_420/img/19/aa/19aade896568089a9c8bf63a7997cee9.jpg", link: "/films/Fly-to-the-moon.html" },
+    { title: "Twisters", image: "https://fr.web.img6.acsta.net/c_310_420/img/84/7a/847a7ba3d470cb6037975b831af9d70d.jpg", link: "/films/twisters.html" },
+    { title: "Civil War", image: "https://fr.web.img2.acsta.net/c_310_420/pictures/24/03/08/08/44/3432270.jpg", link: "/films/civil-war.html" },
+    { title: "Bad Boys Ride or Die", image: "https://fr.web.img4.acsta.net/c_310_420/img/ef/bb/efbbe86f093b0904258c8a9b1e60bae7.jpg", link: "/films/bad-boys-ride-or-die.html" },
+    { title: "Moi, moche et méchant 4", image: "https://fr.web.img5.acsta.net/c_310_420/img/cb/3d/cb3d42b81f3003e54a90fd77ddabaf14.jpg", link: "/films/moi-moche-et-mechant-4.html" },
+ 
+    { title: "Sans un bruit: jour 1", image: "https://fr.web.img6.acsta.net/c_310_420/img/4f/95/4f95a31f1562e41ba10b199f25b25931.jpg", link: "/films/sans-un-bruit-jour-1.html" },
+    { title: "Horizon : une saga américaine Chapitre 1", image: "https://fr.web.img4.acsta.net/c_310_420/img/8f/c6/8fc67496b5f039875b2092aa20b47f79.jpg", link: "/films/horizon-une-saga-americaine-chapitre-1.html" },
+    { title: "La Planète des Singes : Le Nouveau Royaume", image: "https://fr.web.img2.acsta.net/c_310_420/pictures/23/11/03/09/01/4866574.jpg", link: "/films/la-planete-des-singes-le-nouveau-royaume.html" },
+    { title: "Furiosa: une saga Mad Max", image: "https://fr.web.img4.acsta.net/c_310_420/img/bd/b1/bdb11f06bd2f0392cfc2bf9f64ecca1d.jpg", link: "/films/furiosa-une-saga-mad-max.html" },
+    { title: "The Fall Guy", image: "https://fr.web.img6.acsta.net/c_310_420/o_club-allocine-2024-310x420.png_0_se/pictures/24/03/22/08/41/0670281.jpg", link: "/films/the-fall-guy.html" },
+    { title: "Godzilla x Kong : Le Nouvel Empire", image: "https://fr.web.img3.acsta.net/c_310_420/pictures/24/02/20/16/25/2308963.jpg", link: "/films/godzilla-x-kong-le-nouvel-empire.html" },
+    { title: "Vermines", image: "https://fr.web.img6.acsta.net/c_310_420/pictures/23/11/30/11/13/5779947.jpg", link: "/films/vermines.html" },
+    { title: "Dune : Deuxième Partie", image: "https://fr.web.img2.acsta.net/c_310_420/pictures/24/01/26/10/18/5392835.jpg", link: "/films/dune-deuxieme-partie.html" },
+    { title: "Bob Marley: One Love", image: "https://fr.web.img6.acsta.net/c_310_420/pictures/24/01/18/11/59/2019347.jpg", link: "/films/bob-marley-one-love.html" },
+    { title: "Kung Fu Panda 4", image: "https://fr.web.img6.acsta.net/c_310_420/medias/nmedia/18/81/96/03/19723216.jpg", link: "/films/kung-fu-panda-4.html" },
+    { title: "Madame Web", image: "https://fr.web.img4.acsta.net/c_310_420/pictures/24/01/11/09/49/2179240.jpg", link: "/films/madame-web.html" },
+    { title: "Argylle", image: "https://fr.web.img3.acsta.net/c_310_420/pictures/24/01/22/11/34/5834555.jpg", link: "/films/argylle.html" },
+    { title: "Aquaman et le Royaume perdu", image: "https://fr.web.img3.acsta.net/c_310_420/pictures/23/12/14/16/49/3331945.jpg", link: "/films/aquaman-et-le-royaume-perdu.html" },
+    { title: "Interstellar", image: "https://s3.amazonaws.com/nightjarprod/content/uploads/sites/130/2021/08/19085635/gEU2QniE6E77NI6lCU6MxlNBvIx-scaled.jpg", link: "/films/interstellar.html" },
+    { title: "Inception", image: "https://image.tmdb.org/t/p/original/xymM5aW6MDcH5AR9I3CamSegJd6.jpg", link: "/films/inception.html" },
+    { title: "Le Consentement", image: "https://fr.web.img6.acsta.net/pictures/23/07/28/14/17/5661948.jpg", link: "/films/consentement.html" },
+    { title: "Titanic", image: "https://th.bing.com/th/id/R.3aa1f8bcf2e33c6ae0aeebf9a3cb5d9e?rik=4HUml7VcLvjpAw&pid=ImgRaw&r=0", link: "/films/titanic.html" },
+    { title: "liaison dangereuse avec mon étudiante", image: "https://fusion.molotov.tv/arts/i/446x588/Ch8SHQoUWhe3KV2mIUnHwVZeBIWY-k2oVigSA2pwZxgB/jpg" , link: "/films/liaison-dangereuse-avec-mon-étudiante.html" }
+];
+
+
+const profilePics = [
+    'https://avatarfiles.alphacoders.com/196/196458.jpg', // Avengers: Endgame
+    'https://th.bing.com/th/id/OIP.mgSIWJTGqC2cxgKGEoWbGgAAAA?rs=1&pid=ImgDetMain', // Spider-Man: No Way Home
+    'https://m.media-amazon.com/images/I/91KkWf50SoL._AC_SY679_.jpg', // Interstellar
+    'https://th.bing.com/th/id/R.e8180cb64a00bd675f4b23769c669c17?rik=dUhNFi6ZusJVMA&pid=ImgRaw&r=0', // The Dark Knight
+    'https://th.bing.com/th/id/R.4536cd982a20ab27d718a495c02a23c1?rik=7QN%2fO%2bx5Os%2bAMQ&pid=ImgRaw&r=0', // Star Wars: The Force Awakens
+    'https://images8.alphacoders.com/829/thumb-1920-829758.jpg', // Guardians of the Galaxy
+    'https://images6.alphacoders.com/809/thumb-1920-809702.jpg', // Thor: Ragnarok
+    'https://th.bing.com/th/id/R.77752ee5258b96bcd108982e7c154c7d?rik=3dydNJsnZXU%2fUA&pid=ImgRaw&r=0', // Deadpool
+    'https://th.bing.com/th/id/OIP.LID3rORLGZxFvWkE1eHDXwHaF1?rs=1&pid=ImgDetMain', // The Matrix
+    'https://images7.alphacoders.com/327/327742.jpg', // Inception
+    'https://th.bing.com/th/id/R.2fd16497dc078d82aa566b234e58112e?rik=WqAHPd0pOF1E2Q&pid=ImgRaw&r=0', // John Wick
+    'https://th.bing.com/th/id/R.1e55d7adabc6c0c3e476b012133edd7b?rik=UMSrIY2ehp4KdQ&riu=http%3a%2f%2fscriptshadow.net%2fwp-content%2fuploads%2f2020%2f10%2feto_trailer_dune_090920.jpg&ehk=zY4r3PQFFfKHp3J7OOlNE3NFvTQG63rRX%2b%2fSzp17Zi0%3d&risl=&pid=ImgRaw&r=0', // Dune
+    'https://images.hdqwalls.com/wallpapers/ryan-gosling-as-officer-k-in-blade-runner-2049-4k-ou.jpg', // Blade Runner 2049
+    'https://th.bing.com/th/id/OIP.ULJy1v7_ayGFWamEZPrDgAHaFj?rs=1&pid=ImgDetMain', // Mad Max: Fury Road
+    'https://th.bing.com/th/id/OIP.akwhd6lyhXZyzWycCqsD6AHaHa?rs=1&pid=ImgDetMain', // The Hunger Games
+    'https://th.bing.com/th/id/R.767bac64bb2530155ba2490e33a130da?rik=9Dvuh%2fXohPgrhQ&riu=http%3a%2f%2fimages6.fanpop.com%2fimage%2fphotos%2f40700000%2fWonder-Woman-wonder-woman-2017-40716735-1024-1074.jpg&ehk=Jx6SAqNCj8b%2fzN%2fwarClV9RhafofmlQn84ZVdbaI9w4%3d&risl=&pid=ImgRaw&r=0', // Wonder Woman
+    'https://avatarfiles.alphacoders.com/180/180374.jpg', // Logan
+    'https://images6.alphacoders.com/699/699584.jpg', // Doctor Strange
+
+];
+
+
+
+const randomPic = profilePics[Math.floor(Math.random() * profilePics.length)];
+            const profileImg = document.querySelector('.user-profile img');
+            if (profileImg) {
+                profileImg.src = randomPic;
+            }
+
+
+// Fonction pour effectuer la recherche
+function searchMovies() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const resultsContainer = document.getElementById('resultsContainer');
+
+    // Filtrer les films en fonction de la recherche
+    const filteredMovies = movies.filter(movie => movie.title.toLowerCase().includes(query));
+
+    // Vider les résultats précédents
+    resultsContainer.innerHTML = '';
+
+    // Afficher les résultats filtrés
+    filteredMovies.forEach(movie => {
+        const movieElement = document.createElement('a');
+        movieElement.href = movie.link;
+        movieElement.classList.add('result-item');
+
+        const movieImage = document.createElement('img');
+        movieImage.src = movie.image;
+        movieImage.alt = movie.title;
+        
+        const movieTitle = document.createElement('span');
+        movieTitle.textContent = movie.title;
+
+        movieElement.appendChild(movieImage);
+        movieElement.appendChild(movieTitle);
+        resultsContainer.appendChild(movieElement);
+    });
+
+    // Afficher le conteneur des résultats
+    resultsContainer.style.display = filteredMovies.length ? 'block' : 'none';
+}
+
+// Initialisation de Flickity
+var elem = document.querySelector('.carousel');
+var flkty = new Flickity(elem, {
+    cellAlign: 'center',
+    contain: true,
+    pageDots: false,
+    wrapAround: true,
+    autoPlay: true,
+    prevNextButtons: false,
+});
+
+// Fonction pour ouvrir le popup
+function togglePopup() {
+    document.getElementById('searchPopup').classList.toggle('active');
+}
+
+// Fonction pour fermer le popup
+function closePopup() {
+    document.getElementById('searchPopup').classList.remove('active');
+}
+
+// Fermer le popup si l'utilisateur clique en dehors
+window.addEventListener('click', function(event) {
+    var popup = document.getElementById('searchPopup');
+    if (event.target === popup) {
+        closePopup();
+    }
+});
+
+
+        // Fonction pour ouvrir le popup
+        function togglePopup() {
+            document.getElementById('searchPopup').classList.toggle('active');
+        }
+
+        // Fonction pour fermer le popup
+        function closePopup() {
+            document.getElementById('searchPopup').classList.remove('active');
+        }
+
+        // Fermer le popup si l'utilisateur clique en dehors
+        window.addEventListener('click', function(event) {
+            var popup = document.getElementById('searchPopup');
+            if (event.target === popup) {
+                closePopup();
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileImage = document.getElementById('profileImage');
+            const usernameSpan = document.getElementById('username');
+
+            // Charger les informations depuis localStorage
+            const savedProfileImage = localStorage.getItem('profileImage');
+            if (savedProfileImage) {
+                profileImage.src = savedProfileImage;
+            }
+            usernameSpan.textContent = localStorage.getItem('username') || 'Utilisateur';
+        });
+
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('email');
+            localStorage.removeItem('bio');
+            localStorage.removeItem('profileImage');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

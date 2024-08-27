@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Walking Dead</title>
+    <style>
+        /* Styles généraux */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            padding: 100px 20px;
+            box-sizing: border-box;
+            background-image: url('https://www.disneyplusinformer.com/wp-content/uploads/2021/07/ADE40954-8EEF-45E3-924B-2E5FAF2BF993-1536x862.jpeg');
+            background-size: cover; /* Couvre tout le conteneur */
+            background-position: center; /* Centre l'image */
+            background-attachment: fixed; /* Fixe l'image pour qu'elle ne bouge pas lors du défilement */
+            filter: brightness(70%);
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Bouton de retour */
+        .return-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #c8102e;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #c8102e;
+            font-weight: bold;
+        }
+
+        .return-button:hover {
+            background-color: rgba(200, 16, 46, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Contenu principal */
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content {
+            flex: 1;
+            text-align: center;
+            margin-right: 20px;
+            transition: opacity 1s, transform 1s;
+        }
+
+        .info {
+            text-align: left;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(200, 16, 46, 0.8);
+        }
+
+        .info h1 {
+            font-size: 3em;
+            margin: 0;
+            color: #c8102e;
+            font-family: 'Roboto Slab', serif;
+        }
+
+        .info p {
+            font-size: 1.3em;
+            margin: 10px 0;
+            line-height: 1.6;
+            color: #cccccc;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            background-color: #444;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #c8102e;
+            font-weight: bold;
+        }
+
+        .buttons button:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+
+        /* Tableau des épisodes */
+        .episodes {
+            flex: 1;
+            max-width: 800px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(200, 16, 46, 0.8);
+        }
+
+        .episodes table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .episodes th,
+        .episodes td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        .episodes th {
+            background-color: #222;
+            color: #c8102e;
+            font-size: 1.3em;
+        }
+
+        .episodes td {
+            background-color: #333;
+            border: 1px solid #555;
+        }
+
+        .episodes a {
+            color: #c8102e;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .episodes a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section vidéo */
+        .video-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .video-section iframe {
+            width: 80%;
+            height: 80%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .video-section .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #c8102e;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #c8102e;
+            font-weight: bold;
+        }
+
+        .video-section .back-button:hover {
+            background-color: rgba(200, 16, 46, 0.3);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="/series/serie.html" class="return-button" id="returnButton">Retour</a>
+
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="info">
+                    <h1>The Walking Dead</h1>
+                    <p>2010 • Drame, Horreur, Thriller</p>
+                    <p>The Walking Dead est une série captivante qui suit un groupe de survivants dans un monde post-apocalyptique ravagé par des zombies. Ils luttent pour leur survie tout en affrontant des dangers tant humains que surnaturels.</p>
+                    <div class="buttons">
+                        <button id="trailerButton">Bande-annonce</button>
+                        <button id="favoriteButton">Favoris</button>
+                    </div>
+                </div>
+            </div>
+    <div class="episodes">
+        <table>
+            <!-- Saison 1 -->
+            <tr>
+                <th colspan="2">Saison 1</th>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/qvwpuwi8hfvk.html" target="_blank">Épisode 1</a></td>
+                <td><a href="https://uqload.to/n2zyvh34ldeg.html" target="_blank">Épisode 2</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/ks9un2ih1517.html" target="_blank">Épisode 3</a></td>
+                <td><a href="https://uqload.to/44267f6iytl1.html" target="_blank">Épisode 4</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/ffto8yy18flh.html" target="_blank">Épisode 5</a></td>
+                <td><a href="https://uqload.to/rzux7kzc2mk2.html" target="_blank">Épisode 6</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/cooofd9nh5do.html" target="_blank">Épisode 7</a></td>
+                <td><a href="https://uqload.to/crbhxqwc6h3c.html" target="_blank">Épisode 8</a></td>
+            </tr>
+
+            <!-- Saison 2 -->
+            <tr>
+                <th colspan="2">Saison 2</th>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/6v4taosxjom3.html" target="_blank">Épisode 1</a></td>
+                <td><a href="https://uqload.to/6nhb1x7swvyj.html" target="_blank">Épisode 2</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/ffwggr0cw8a6.html" target="_blank">Épisode 3</a></td>
+                <td><a href="https://uqload.to/qojd9w6ac1i0.html" target="_blank">Épisode 4</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/2gdllfp2asli.html" target="_blank">Épisode 5</a></td>
+                <td><a href="https://uqload.to/zbt7hg92fflh.html" target="_blank">Épisode 6</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/xbsy4ehb2kwo.html" target="_blank">Épisode 7</a></td>
+                <td><a href="https://uqload.to/naw9zw3fnmsm.html" target="_blank">Épisode 8</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/0z0iuo8rf25u.html" target="_blank">Épisode 9</a></td>
+                <td><a href="https://uqload.to/h4zce9bbg7ka.html" target="_blank">Épisode 10</a></td>
+            </tr>
+
+            <!-- Saison 3 -->
+            <tr>
+                <th colspan="2">Saison 3</th>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/4vnukd46xbrd.html" target="_blank">Épisode 1</a></td>
+                <td><a href="https://uqload.to/7wbn8k0vyyyn.html" target="_blank">Épisode 2</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/lubwdifmftkc.html" target="_blank">Épisode 3</a></td>
+                <td><a href="https://uqload.to/s4m2q4q6ez14.html" target="_blank">Épisode 4</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/zcn4z5npsh5z.html" target="_blank">Épisode 5</a></td>
+                <td><a href="https://uqload.to/hdosjprn60xo.html" target="_blank">Épisode 6</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/qc3mdj9sy0tt.html" target="_blank">Épisode 7</a></td>
+                <td><a href="https://uqload.to/dmdtlhvnzxi7.html" target="_blank">Épisode 8</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/8rksxf0n80y8.html" target="_blank">Épisode 9</a></td>
+                <td><a href="https://uqload.to/9jmz0ne4jbxt.html" target="_blank">Épisode 10</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/2sg6v6phgix4.html" target="_blank">Épisode 11</a></td>
+                <td><a href="https://uqload.to/3mv9gj9sb27m.html" target="_blank">Épisode 12</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/lh5ot6mwbw9a.html" target="_blank">Épisode 13</a></td>
+                <td><a href="https://uqload.to/lp3grldmsm0j.html" target="_blank">Épisode 14</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/jv4tr4z3m17e.html" target="_blank">Épisode 15</a></td>
+                <td><a href="https://uqload.to/7p8vj5tnksm9.html" target="_blank">Épisode 16</a></td>
+            </tr>
+
+            <!-- Saison 4 -->
+            <tr>
+                <th colspan="2">Saison 4</th>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/6j3kxom6eq3f.html" target="_blank">Épisode 1</a></td>
+                <td><a href="https://uqload.to/kqx9bdslzpoa.html" target="_blank">Épisode 2</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/q8s4vx03yohs.html" target="_blank">Épisode 3</a></td>
+                <td><a href="https://uqload.to/2tb46fz0zwpf.html" target="_blank">Épisode 4</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/f71sckf23qdw.html" target="_blank">Épisode 5</a></td>
+                <td><a href="https://uqload.to/t7fb7m07y16s.html" target="_blank">Épisode 6</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/x89kfrtvn78i.html" target="_blank">Épisode 7</a></td>
+                <td><a href="https://uqload.to/1wn6ydcoiuz4.html" target="_blank">Épisode 8</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/8x2n2f4q8b2v.html" target="_blank">Épisode 9</a></td>
+                <td><a href="https://uqload.to/9km75u4nrkz4.html" target="_blank">Épisode 10</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/3bxxz2nq8mkd.html" target="_blank">Épisode 11</a></td>
+                <td><a href="https://uqload.to/49x2rquosshj.html" target="_blank">Épisode 12</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/znk93mzhzr1y.html" target="_blank">Épisode 13</a></td>
+                <td><a href="https://uqload.to/w4pzbrfwrxyh.html" target="_blank">Épisode 14</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/17m6tnqmsy8r.html" target="_blank">Épisode 15</a></td>
+                <td><a href="https://uqload.to/3b6po3whzwbs.html" target="_blank">Épisode 16</a></td>
+            </tr>
+
+            <!-- Saison 5 -->
+            <tr>
+                <th colspan="2">Saison 5</th>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/x8y8nl6xk1si.html" target="_blank">Épisode 1</a></td>
+                <td><a href="https://uqload.to/9kxh3dk2l28b.html" target="_blank">Épisode 2</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/7djqc5qzt35e.html" target="_blank">Épisode 3</a></td>
+                <td><a href="https://uqload.to/sf5lmgt4m7ei.html" target="_blank">Épisode 4</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/2mgpd1crzueq.html" target="_blank">Épisode 5</a></td>
+                <td><a href="https://uqload.to/v52k2qs8vn60.html" target="_blank">Épisode 6</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/m6r1a8pwv75b.html" target="_blank">Épisode 7</a></td>
+                <td><a href="https://uqload.to/2hx5nh4d5x9t.html" target="_blank">Épisode 8</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/cosx4pwnmlpm.html" target="_blank">Épisode 9</a></td>
+                <td><a href="https://uqload.to/j8qk6ck7hvlm.html" target="_blank">Épisode 10</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/t5z4v9dn9g6z.html" target="_blank">Épisode 11</a></td>
+                <td><a href="https://uqload.to/dwfpdq4y12vf.html" target="_blank">Épisode 12</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/v7lxr9pf4b6e.html" target="_blank">Épisode 13</a></td>
+                <td><a href="https://uqload.to/x93k5yds5ey9.html" target="_blank">Épisode 14</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/4sx5y87g7w3j.html" target="_blank">Épisode 15</a></td>
+                <td><a href="https://uqload.to/c5qlg7p6np44.html" target="_blank">Épisode 16</a></td>
+            </tr>
+
+            <!-- Saison 6 -->
+            <tr>
+                <th colspan="2">Saison 6</th>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/mtd30lda65a7.html" target="_blank">Épisode 1</a></td>
+                <td><a href="https://uqload.to/9gfq0gy2mmiv.html" target="_blank">Épisode 2</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/14snsplssnwc.html" target="_blank">Épisode 3</a></td>
+                <td><a href="https://uqload.to/6jrsom7ikinw.html" target="_blank">Épisode 4</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/r3uv2fdpuk0t.html" target="_blank">Épisode 5</a></td>
+                <td><a href="https://uqload.to/8aw28uqi3rhz.html" target="_blank">Épisode 6</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/m0xzlco17uhe.html" target="_blank">Épisode 7</a></td>
+                <td><a href="https://uqload.to/nwpg131n6d7l.html" target="_blank">Épisode 8</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/fejau8xrbucu.html" target="_blank">Épisode 9</a></td>
+                <td><a href="https://uqload.to/t2m2mx60zza8.html" target="_blank">Épisode 10</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/2vqajnweh9uw.html" target="_blank">Épisode 11</a></td>
+                <td><a href="https://uqload.to/eil7z9mcxs8a.html" target="_blank">Épisode 12</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/5osust7mmfv9.html" target="_blank">Épisode 13</a></td>
+                <td><a href="https://uqload.to/vyps0d6hhs6z.html" target="_blank">Épisode 14</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/vgpm8toar963.html" target="_blank">Épisode 15</a></td>
+                <td><a href="https://uqload.to/6cgi75gqoj75.html" target="_blank">Épisode 16</a></td>
+            </tr>
+
+            <!-- Saison 7 -->
+            <tr>
+                <th colspan="2">Saison 7</th>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/ij7cju7zmn8b.html" target="_blank">Épisode 1</a></td>
+                <td><a href="https://uqload.to/bjukedsemr7c.html" target="_blank">Épisode 2</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/e6xjjmdbu4on.html" target="_blank">Épisode 3</a></td>
+                <td><a href="https://uqload.to/f621sw7dk71g.html" target="_blank">Épisode 4</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/5p2bm3labj0f.html" target="_blank">Épisode 5</a></td>
+                <td><a href="https://uqload.to/qqq796k0hytg.html" target="_blank">Épisode 6</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/57hdt1fqnvi5.html" target="_blank">Épisode 7</a></td>
+                <td><a href="https://uqload.to/hpzjblx3qefy.html" target="_blank">Épisode 8</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/vrybkvfozgsl.html" target="_blank">Épisode 9</a></td>
+                <td><a href="https://uqload.to/rwxvuxiy77yv.html" target="_blank">Épisode 10</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/q87m1wvq52k5.html" target="_blank">Épisode 11</a></td>
+                <td><a href="https://uqload.to/r9k8pbk8xen0.html" target="_blank">Épisode 12</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/xm71xg5ufhw5.html" target="_blank">Épisode 13</a></td>
+                <td><a href="https://uqload.to/x0c3klb8xf76.html" target="_blank">Épisode 14</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/0krk1tdzmkbb.html" target="_blank">Épisode 15</a></td>
+                <td><a href="https://uqload.to/dkk6bhgrq5lg.html" target="_blank">Épisode 16</a></td>
+            </tr>
+
+            <!-- Saison 8 -->
+            <tr>
+                <th colspan="2">Saison 8</th>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/bnuvgq6cdkbl.html" target="_blank">Épisode 1</a></td>
+                <td><a href="https://uqload.to/3g9qnlvvs5ux.html" target="_blank">Épisode 2</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/kygeq72d5ptd.html" target="_blank">Épisode 3</a></td>
+                <td><a href="https://uqload.to/kvsk71mi5gzq.html" target="_blank">Épisode 4</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/4xvn1u8tb5cb.html" target="_blank">Épisode 5</a></td>
+                <td><a href="https://uqload.to/d5lkkmn59hgz.html" target="_blank">Épisode 6</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/x6z0h68pnh75.html" target="_blank">Épisode 7</a></td>
+                <td><a href="https://uqload.to/15kk7x9h9jwy.html" target="_blank">Épisode 8</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/gf1x7j5dr06p.html" target="_blank">Épisode 9</a></td>
+                <td><a href="https://uqload.to/6ylu5fy60v36.html" target="_blank">Épisode 10</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/g9sm9ppfnm7p.html" target="_blank">Épisode 11</a></td>
+                <td><a href="https://uqload.to/48h0o8m5fd11.html" target="_blank">Épisode 12</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/wm43bdk7mrce.html" target="_blank">Épisode 13</a></td>
+                <td><a href="https://uqload.to/g5bznh7yzm0i.html" target="_blank">Épisode 14</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/v0w7ce85fou6.html" target="_blank">Épisode 15</a></td>
+                <td><a href="https://uqload.to/8b4g1yujm3ij.html" target="_blank">Épisode 16</a></td>
+            </tr>
+
+            <!-- Saison 9 -->
+            <tr>
+                <th colspan="2">Saison 9</th>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/8f0z6g9r7woy.html" target="_blank">Épisode 1</a></td>
+                <td><a href="https://uqload.to/6ar5q0zhfdvc.html" target="_blank">Épisode 2</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/tlqvnxh3umgf.html" target="_blank">Épisode 3</a></td>
+                <td><a href="https://uqload.to/gj8w2mtb1u0r.html" target="_blank">Épisode 4</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/8zrqogldtn6s.html" target="_blank">Épisode 5</a></td>
+                <td><a href="https://uqload.to/3u9gzmq7eb2u.html" target="_blank">Épisode 6</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/pgjb8fd5b05y.html" target="_blank">Épisode 7</a></td>
+                <td><a href="https://uqload.to/nzx4a7qwym6v.html" target="_blank">Épisode 8</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/q0jpmf8xpgb4.html" target="_blank">Épisode 9</a></td>
+                <td><a href="https://uqload.to/2it47xw92zj5.html" target="_blank">Épisode 10</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/0x3yxf9nx60k.html" target="_blank">Épisode 11</a></td>
+                <td><a href="https://uqload.to/b3oq0jf64w9q.html" target="_blank">Épisode 12</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/rgc6k84syfy0.html" target="_blank">Épisode 13</a></td>
+                <td><a href="https://uqload.to/76c8vcbyz3uq.html" target="_blank">Épisode 14</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/0w64wwr6cf05.html" target="_blank">Épisode 15</a></td>
+                <td><a href="https://uqload.to/nmn8g08tc9v0.html" target="_blank">Épisode 16</a></td>
+            </tr>
+
+            <!-- Saison 10 -->
+            <tr>
+                <th colspan="2">Saison 10</th>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/tl7ptw35et7o.html" target="_blank">Épisode 1</a></td>
+                <td><a href="https://uqload.to/9u8v2z9f5b6k.html" target="_blank">Épisode 2</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/nf09vlbz6z4j.html" target="_blank">Épisode 3</a></td>
+                <td><a href="https://uqload.to/z6n7i9v0sw7k.html" target="_blank">Épisode 4</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/3du0hx5b0b06.html" target="_blank">Épisode 5</a></td>
+                <td><a href="https://uqload.to/1kdzj5p6e64a.html" target="_blank">Épisode 6</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/t95wb8p8j4t8.html" target="_blank">Épisode 7</a></td>
+                <td><a href="https://uqload.to/52yb7yrr63xa.html" target="_blank">Épisode 8</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/j9ylqgrr3il9.html" target="_blank">Épisode 9</a></td>
+                <td><a href="https://uqload.to/btcx7fsgsqeo.html" target="_blank">Épisode 10</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/37j6y7lmfd33.html" target="_blank">Épisode 11</a></td>
+                <td><a href="https://uqload.to/x1k1mrm9n7re.html" target="_blank">Épisode 12</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/0ax8l7jxyu3m.html" target="_blank">Épisode 13</a></td>
+                <td><a href="https://uqload.to/6mwj5g4r70o4.html" target="_blank">Épisode 14</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/c9sznhx7t07c.html" target="_blank">Épisode 15</a></td>
+                <td><a href="https://uqload.to/79gjkspw1uzb.html" target="_blank">Épisode 16</a></td>
+            </tr>
+
+            <!-- Saison 11 -->
+            <tr>
+                <th colspan="2">Saison 11</th>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/r4jtg8ntkzri.html" target="_blank">Épisode 1</a></td>
+                <td><a href="https://uqload.to/24g1fo6f7k5s.html" target="_blank">Épisode 2</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/bfyogpbzwvfb.html" target="_blank">Épisode 3</a></td>
+                <td><a href="https://uqload.to/yikn5c2gf0g3.html" target="_blank">Épisode 4</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/yixpcrn1x27v.html" target="_blank">Épisode 5</a></td>
+                <td><a href="https://uqload.to/xw8tfbi2v7gn.html" target="_blank">Épisode 6</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/kqjohxrl74xk.html" target="_blank">Épisode 7</a></td>
+                <td><a href="https://uqload.to/c6jl7v2g4c57.html" target="_blank">Épisode 8</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/vu7bgv1bnve2.html" target="_blank">Épisode 9</a></td>
+                <td><a href="https://uqload.to/hfwv9d5f4q25.html" target="_blank">Épisode 10</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/mklwxk1zfbqc.html" target="_blank">Épisode 11</a></td>
+                <td><a href="https://uqload.to/6phv4dby7fd8.html" target="_blank">Épisode 12</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/7f0o2orzzj5g.html" target="_blank">Épisode 13</a></td>
+                <td><a href="https://uqload.to/d2ehdsgs30er.html" target="_blank">Épisode 14</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/ht30z5oi78zi.html" target="_blank">Épisode 15</a></td>
+                <td><a href="https://uqload.to/f68c8wy2m6sz.html" target="_blank">Épisode 16</a></td>
+            </tr>
+
+            <!-- Saison 12 -->
+            <tr>
+                <th colspan="2">Saison 12</th>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/x7kwdn33x73d.html" target="_blank">Épisode 1</a></td>
+                <td><a href="https://uqload.to/vqz7zj8d3u03.html" target="_blank">Épisode 2</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/5h5kr83rn8et.html" target="_blank">Épisode 3</a></td>
+                <td><a href="https://uqload.to/hs5ew4n1c3dm.html" target="_blank">Épisode 4</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/bnpftxoct7mb.html" target="_blank">Épisode 5</a></td>
+                <td><a href="https://uqload.to/qk1a7ec9z8a1.html" target="_blank">Épisode 6</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/zzgu1byu77it.html" target="_blank">Épisode 7</a></td>
+                <td><a href="https://uqload.to/dn3g54s48gmg.html" target="_blank">Épisode 8</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/m68rfrj89pmv.html" target="_blank">Épisode 9</a></td>
+                <td><a href="https://uqload.to/dj6f2k6qkph1.html" target="_blank">Épisode 10</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/jf9s6eysdn8n.html" target="_blank">Épisode 11</a></td>
+                <td><a href="https://uqload.to/4bi1xrkgrttq.html" target="_blank">Épisode 12</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/25onbxotm8xu.html" target="_blank">Épisode 13</a></td>
+                <td><a href="https://uqload.to/f7d7ftz6t4v6.html" target="_blank">Épisode 14</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/0en3y5xogfmb.html" target="_blank">Épisode 15</a></td>
+                <td><a href="https://uqload.to/pkgtj0xz38l3.html" target="_blank">Épisode 16</a></td>
+            </tr>
+
+            <!-- Saison 13 -->
+            <tr>
+                <th colspan="2">Saison 13</th>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/suqlkc54xf78.html" target="_blank">Épisode 1</a></td>
+                <td><a href="https://uqload.to/lhv1kfpnk1wv.html" target="_blank">Épisode 2</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/9cch9fugdy6j.html" target="_blank">Épisode 3</a></td>
+                <td><a href="https://uqload.to/5k8tivn7zpsr.html" target="_blank">Épisode 4</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/7jbh7ze0l6fz.html" target="_blank">Épisode 5</a></td>
+                <td><a href="https://uqload.to/cdke9f8svb3b.html" target="_blank">Épisode 6</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/qx8bhoym7tq0.html" target="_blank">Épisode 7</a></td>
+                <td><a href="https://uqload.to/6h8to4z5bq9a.html" target="_blank">Épisode 8</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/ab4ze1q61sbl.html" target="_blank">Épisode 9</a></td>
+                <td><a href="https://uqload.to/3nlss0g0r7m4.html" target="_blank">Épisode 10</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/t5wjsvcyz0ep.html" target="_blank">Épisode 11</a></td>
+                <td><a href="https://uqload.to/zazlc3vff0wr.html" target="_blank">Épisode 12</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/h6mbmf6ly7k5.html" target="_blank">Épisode 13</a></td>
+                <td><a href="https://uqload.to/4zcm43w8nt0a.html" target="_blank">Épisode 14</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://uqload.to/0pxptxf5y1t8.html" target="_blank">Épisode 15</a></td>
+                <td><a href="https://uqload.to/gbytwp6gq4lv.html" target="_blank">Épisode 16</a></td>
+            </tr>
+        </table>
+<script>
+    // Fonction pour ajouter ou retirer des favoris
+    document.getElementById('favoriteButton').addEventListener('click', function() {
+         // Informations sur le film à stocker
+         const movie = {
+             title: 'Stranger Things',
+             image: 'https://i.pinimg.com/originals/11/d1/7b/11d17b1731cdeafedc2c027d882b4c13.jpg'
+         };
+
+         // Récupérer la liste des favoris depuis le localStorage
+         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+         // Vérifier si le film est déjà dans les favoris
+         const movieIndex = favorites.findIndex(fav => fav.title === movie.title);
+
+         if (movieIndex !== -1) {
+             // Le film est déjà dans les favoris, le retirer
+             favorites.splice(movieIndex, 1);
+             alert('Le film a été retiré de vos favoris.');
+         } else {
+             // Ajouter le film aux favoris
+             favorites.push(movie);
+             alert('Le film a été ajouté à vos favoris !');
+         }
+
+         // Mettre à jour le localStorage
+         localStorage.setItem('favorites', JSON.stringify(favorites));
+     });
+ </script>
+
+</body>
+
+</html>
+

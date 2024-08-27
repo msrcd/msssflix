@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pretty Little Liars - MXFlix</title>
+    <style>
+        /* Styles généraux */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            overflow-y: scroll;
+        }
+
+        /* Conteneur principal */
+        .container {
+            width: 100%;
+            height: 200%;
+            position: relative;
+            z-index: 1;
+            padding: 100px;
+            box-sizing: border-box;
+            background-image: url('https://th.bing.com/th/id/R.1058e27adb63ba1589820e23ccdcdc56?rik=rdLrY3iDqgqFZA&riu=http%3a%2f%2fimages6.fanpop.com%2fimage%2fphotos%2f37700000%2fPretty-little-liars-pretty-little-liars-tv-show-37712328-1920-1080.jpg&ehk=JNPrrVkAh%2bpvPBOIYxEIM0B6VsIU80j%2fyWLyTf0y2AA%3d&risl=&pid=ImgRaw&r=0'); /* Remplacez par l'image de la série */
+            background-size: cover;
+            background-position: center;
+            filter: brightness(80%);
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Bouton de retour */
+        .return-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #ff4500;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #ff4500;
+            font-weight: bold;
+        }
+
+        .return-button:hover {
+            background-color: rgba(255, 69, 0, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Contenu principal */
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content {
+            flex: 1;
+            text-align: center;
+            margin-right: 20px;
+            transition: opacity 1s, transform 1s;
+        }
+
+        .info {
+            text-align: left;
+            max-width: 550px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.8);
+        }
+
+        .info h1 {
+            font-size: 3em;
+            margin: 0;
+            color: #ff4500;
+            font-family: 'Roboto Slab', serif;
+        }
+
+        .info p {
+            font-size: 1.3em;
+            margin: 10px 0;
+            line-height: 1.6;
+            color: #cccccc;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            background-color: #444;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #ff4500;
+            font-weight: bold;
+        }
+
+        .buttons button:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+
+        /* Tableau des épisodes */
+        .episodes {
+            flex: 1;
+            max-width: 550px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.8);
+            overflow-x: auto;
+            max-height: 80vh;
+        }
+
+        .episodes table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .episodes th,
+        .episodes td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        .episodes th {
+            background-color: #222;
+            color: #ff4500;
+            font-size: 1.3em;
+        }
+
+        .episodes td {
+            background-color: #333;
+            border: 1px solid #555;
+        }
+
+        .episodes a {
+            color: #ff4500;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .episodes a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section vidéo */
+        .video-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .video-section iframe {
+            width: 80%;
+            height: 80%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .video-section .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #ff4500;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #ff4500;
+            font-weight: bold;
+        }
+
+        .video-section .back-button:hover {
+            background-color: rgba(255, 69, 0, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Personnalisation de la barre de défilement pour WebKit (Chrome, Safari) */
+        .movie-grid::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .movie-grid::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .movie-grid::-webkit-scrollbar-thumb {
+            background: #1f80e0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            scroll-behavior: smooth;
+            scrollbar-width: thin; /* Pour Firefox */
+            scrollbar-color: #1f80e0 transparent; /* Pour Firefox */
+        }
+
+        .movie-grid::-webkit-scrollbar-thumb:hover {
+            background: #145a8d;
+        }
+
+        .movie-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 25px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 20px;
+            scroll-behavior: smooth;
+            scrollbar-width: thin; /* Pour Firefox */
+            scrollbar-color: #1f80e0 transparent; /* Pour Firefox */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <a href="/series/serie.html" class="return-button" id="returnButton">Retour</a>
+
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="info">
+                    <h1>MXFlix <br> Pretty Little Liars</h1>
+                    <p>2010 • Mystère, Thriller, Drame</p>
+                    <p>"Pretty Little Liars" suit un groupe d'amies dont la vie change à jamais après la disparition mystérieuse de leur amie Alison. Alors qu'elles tentent de découvrir la vérité, elles reçoivent des messages menaçants signés "A", une personne qui semble connaître tous leurs secrets les plus sombres.</p>                    <div class="buttons">
+                        <button id="trailerButton">Bande-annonce</button>
+                        <button id="favoriteButton">Favoris</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="episodes">
+                <table>
+                    <tr>
+                        <th colspan="2">Saison 1</th>
+                    </tr>
+                    <tr>
+                <tr>
+                    <td><a href="https://uqload.to/mv144cwy36b5.html" target="_blank">Épisode 1</a></td>
+                    <td><a href="https://uqload.to/686vwzjboqyw.html" target="_blank">Épisode 2</a></td>
+                    <td><a href="https://uqload.to/ik52f6bf67mp.html" target="_blank">Épisode 3</a></td>
+                    <td><a href="https://uqload.to/334rqzjct5a8.html" target="_blank">Épisode 4</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/g18ylx9rox97.html" target="_blank">Épisode 5</a></td>
+                    <td><a href="https://uqload.to/o7nvfg8at5o4.html" target="_blank">Épisode 6</a></td>
+                    <td><a href="https://uqload.to/527p8v2zup6a.html" target="_blank">Épisode 7</a></td>
+                    <td><a href="https://uqload.to/5qu90vd9hp10.html" target="_blank">Épisode 8</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/wzl5a6lryhag.html" target="_blank">Épisode 9</a></td>
+                    <td><a href="https://uqload.to/79hck967278z.html" target="_blank">Épisode 10</a></td>
+                    <td><a href="https://uqload.to/mmhn07bbwlbi.html" target="_blank">Épisode 11</a></td>
+                    <td><a href="https://uqload.to/rvx746vltbjk.html" target="_blank">Épisode 12</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/93rpq97mchkt.html" target="_blank">Épisode 13</a></td>
+                    <td><a href="https://uqload.to/6y25i9zmohqm.html" target="_blank">Épisode 14</a></td>
+                    <td><a href="https://uqload.to/9ys4xoy5x8m5.html" target="_blank">Épisode 15</a></td>
+                    <td><a href="https://uqload.to/gnngq17vhkb1.html" target="_blank">Épisode 16</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/f46tyza1xt9n.html" target="_blank">Épisode 17</a></td>
+                    <td><a href="https://uqload.to/xi6a1dxw0385.html" target="_blank">Épisode 18</a></td>
+                    <td><a href="https://uqload.to/y9gpshpkzvl4.html" target="_blank">Épisode 19</a></td>
+                    <td><a href="https://uqload.to/wje8ko20ypl1.html" target="_blank">Épisode 20</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/mu6uj46l8hz6.html" target="_blank">Épisode 21</a></td>
+                    <td><a href="https://uqload.to/njytviwkb93a.html" target="_blank">Épisode 22</a></td>
+                </tr>
+            </table>
+            
+            <th colspan="2">Saison 2</th>
+            <hr>
+            <table border="1">
+                <tr>
+                    <td><a href="https://uqload.to/3u224nip9x3x.html" target="_blank">Épisode 1</a></td>
+                    <td><a href="https://uqload.to/g5jul6m90evl.html" target="_blank">Épisode 2</a></td>
+                    <td><a href="https://uqload.to/8u9n4msffcxs.html" target="_blank">Épisode 3</a></td>
+                    <td><a href="https://uqload.to/id6avchp8jos.html" target="_blank">Épisode 4</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/vwbvg0igeb39.html" target="_blank">Épisode 5</a></td>
+                    <td><a href="https://uqload.to/rzz7xjfwo4bs.html" target="_blank">Épisode 6</a></td>
+                    <td><a href="https://uqload.to/pmeohdbghg3z.html" target="_blank">Épisode 7</a></td>
+                    <td><a href="https://uqload.to/im0y4w627spa.html" target="_blank">Épisode 8</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/cczy5ylz1u8h.html" target="_blank">Épisode 9</a></td>
+                    <td><a href="https://uqload.to/oligzblp2zxu.html" target="_blank">Épisode 10</a></td>
+                    <td><a href="https://uqload.to/4p3127zgnt91.html" target="_blank">Épisode 11</a></td>
+                    <td><a href="https://uqload.to/m8pvmd4jmz1r.html" target="_blank">Épisode 12</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/0ca49arafzcl.html" target="_blank">Épisode 13</a></td>
+                    <td><a href="https://uqload.to/pywztat7idn1.html" target="_blank">Épisode 14</a></td>
+                    <td><a href="https://uqload.to/fxsj2b6w90e2.html" target="_blank">Épisode 15</a></td>
+                    <td><a href="https://uqload.to/9kpak94vk0n4.html" target="_blank">Épisode 16</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/qgl45qy4l76g.html" target="_blank">Épisode 17</a></td>
+                    <td><a href="https://uqload.to/yo6njux4mncc.html" target="_blank">Épisode 18</a></td>
+                    <td><a href="https://uqload.to/m21dh4r14jnj.html" target="_blank">Épisode 19</a></td>
+                    <td><a href="https://uqload.to/0a9nidynize4.html" target="_blank">Épisode 20</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/kx3olzpz88np.html" target="_blank">Épisode 21</a></td>
+                    <td><a href="https://uqload.to/qhpw8yb1gika.html" target="_blank">Épisode 22</a></td>
+                    <td><a href="https://uqload.to/wem5nyglhjgg.html" target="_blank">Épisode 23</a></td>
+                    <td><a href="https://uqload.to/3eqsqvugmpak.html" target="_blank">Épisode 24</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/mwrha5tkddod.html" target="_blank">Épisode 25</a></td>
+                </tr>
+            </table>
+            
+            <th colspan="2">Saison 3</th>
+            <hr>
+            <table border="1">
+                <tr>
+                    <td><a href="https://uqload.to/ipz7k0ferbgj.html" target="_blank">Épisode 1</a></td>
+                    <td><a href="https://uqload.to/b45i7fvy300u.html" target="_blank">Épisode 2</a></td>
+                    <td><a href="https://uqload.to/pyf3uxl4zj4c.html" target="_blank">Épisode 3</a></td>
+                    <td><a href="https://uqload.to/v5ei8m5dz8xs.html" target="_blank">Épisode 4</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/azkfpb7uz4v3.html" target="_blank">Épisode 5</a></td>
+                    <td><a href="https://uqload.to/lqguwsh7ub92.html" target="_blank">Épisode 6</a></td>
+                    <td><a href="https://uqload.to/w5za2y9ogueh.html" target="_blank">Épisode 7</a></td>
+                    <td><a href="https://uqload.to/9ufrptr8vfql.html" target="_blank">Épisode 8</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/tamd9p7te0t1.html" target="_blank">Épisode 9</a></td>
+                    <td><a href="https://uqload.to/aato64z8b40g.html" target="_blank">Épisode 10</a></td>
+                    <td><a href="https://uqload.to/1cp0iwr58540.html" target="_blank">Épisode 11</a></td>
+                    <td><a href="https://uqload.to/fgundi8qr27c.html" target="_blank">Épisode 12</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/yy0ij1ygailq.html" target="_blank">Épisode 13</a></td>
+                    <td><a href="https://uqload.to/t74w68dze8yk.html" target="_blank">Épisode 14</a></td>
+                    <td><a href="https://uqload.to/nshrb8n7aivh.html" target="_blank">Épisode 15</a></td>
+                    <td><a href="https://uqload.to/emwq72kai31e.html" target="_blank">Épisode 16</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/ipn5uen3xaph.html" target="_blank">Épisode 17</a></td>
+                    <td><a href="https://uqload.to/d8n6tjxt8xtz.html" target="_blank">Épisode 18</a></td>
+                    <td><a href="https://uqload.to/4oznp6owv3ek.html" target="_blank">Épisode 19</a></td>
+                    <td><a href="https://uqload.to/uih93abkefkw.html" target="_blank">Épisode 20</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/lhz79t8ieejx.html" target="_blank">Épisode 21</a></td>
+                    <td><a href="https://uqload.to/46e1da9u9rm3.html" target="_blank">Épisode 22</a></td>
+                    <td><a href="https://uqload.to/3q1mqk9t130u.html" target="_blank">Épisode 23</a></td>
+                    <td><a href="https://uqload.to/wghefzf6yzs5.html" target="_blank">Épisode 24</a></td>
+                </tr>
+            </table>
+            
+            <th colspan="2">Saison 4</th>
+            <hr>
+            <table border="1">
+                <tr>
+                    <td><a href="https://uqload.to/0fyiirnonmnv.html" target="_blank">Épisode 1</a></td>
+                    <td><a href="https://uqload.to/p6taqymogv6f.html" target="_blank">Épisode 2</a></td>
+                    <td><a href="https://uqload.to/zpi1so08h4j1.html" target="_blank">Épisode 3</a></td>
+                    <td><a href="https://uqload.to/2qyfugh1qzm2.html" target="_blank">Épisode 4</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/xoh32lcyxcdq.html" target="_blank">Épisode 5</a></td>
+                    <td><a href="https://uqload.to/yh7tcrwhxsk3.html" target="_blank">Épisode 6</a></td>
+                    <td><a href="https://uqload.to/n2svqzo5ul4k.html" target="_blank">Épisode 7</a></td>
+                    <td><a href="https://uqload.to/9nhlc2xsraqh.html" target="_blank">Épisode 8</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/y762kkf4143r.html" target="_blank">Épisode 9</a></td>
+                    <td><a href="https://uqload.to/fzg2unsq9tqw.html" target="_blank">Épisode 10</a></td>
+                    <td><a href="https://uqload.to/35rqmlbn5vwz.html" target="_blank">Épisode 11</a></td>
+                    <td><a href="https://uqload.to/ndk52196arcc.html" target="_blank">Épisode 12</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/di7p1wf1bnsc.html" target="_blank">Épisode 13</a></td>
+                    <td><a href="https://uqload.to/751p0v6ks5ha.html" target="_blank">Épisode 14</a></td>
+                    <td><a href="https://uqload.to/nuh33nwcxl8a.html" target="_blank">Épisode 15</a></td>
+                    <td><a href="https://uqload.to/7q8wq1qtlrml.html" target="_blank">Épisode 16</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/odjizb7i84oc.html" target="_blank">Épisode 17</a></td>
+                    <td><a href="https://uqload.to/1ojnlvd39u9r.html" target="_blank">Épisode 18</a></td>
+                    <td><a href="https://uqload.to/7w4w4msfl6n2.html" target="_blank">Épisode 19</a></td>
+                    <td><a href="https://uqload.to/ud80eb8xl3o5.html" target="_blank">Épisode 20</a></td>
+                </tr>
+                <tr>
+                    <td><a href="https://uqload.to/nrjvla7y07kj.html" target="_blank">Épisode 21</a></td>
+                    <td><a href="https://uqload.to/f31x0sg2mw0o.html" target="_blank">Épisode 22</a></td>
+                    <td><a href="https://uqload.to/q7pq2f4psd2y.html" target="_blank">Épisode 23</a></td>
+                    <td><a href="https://uqload.to/g82iace3ia5m.html" target="_blank">Épisode 24</a></td>
+                </tr>
+            </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="video-section" id="videoSection">
+        <button class="back-button" id="closeVideo">X</button>
+        <iframe src="" id="videoPlayer" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        document.getElementById('trailerButton').addEventListener('click', function () {
+            const videoSection = document.getElementById('videoSection');
+            const videoPlayer = document.getElementById('videoPlayer');
+            videoPlayer.src = 'https://www.youtube.com/embed/mgdHbEM9UzI'; // Remplacez par l'ID de votre bande-annonce
+            videoSection.style.display = 'flex';
+        });
+
+        document.getElementById('closeVideo').addEventListener('click', function () {
+            const videoSection = document.getElementById('videoSection');
+            const videoPlayer = document.getElementById('videoPlayer');
+            videoPlayer.src = '';
+            videoSection.style.display = 'none';
+        });
+
+        document.getElementById('favoriteButton').addEventListener('click', function () {
+            alert('Cette série a été ajoutée à vos favoris !');
+        });
+    </script>
+
+</body>
+
+</html>

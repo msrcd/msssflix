@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramètres - MXFlix</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1f1f1f; /* Couleur de fond gris clair */
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: #1f80e0;
+            color: #fff;
+            padding: 15px 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .profile-container {
+            margin-left: 220px; /* Margin to accommodate the sliding panel */
+            padding: 20px;
+            background: #fff;
+            min-height: 100vh;
+            transition: margin-left 0.3s; /* Smooth transition when sidebar is toggled */
+        }
+
+        .settings-section {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .settings-section h2 {
+            font-size: 22px;
+            color: #1f80e0;
+            border-bottom: 2px solid #1f80e0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .settings-section label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #666;
+        }
+
+        .settings-section input[type="text"], 
+        .settings-section input[type="email"], 
+        .settings-section input[type="password"], 
+        .settings-section textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc; /* Bordures gris clair */
+            border-radius: 5px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9; /* Fond gris très clair pour les champs */
+        }
+
+        .settings-section input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .btn {
+            background-color: #1f80e0;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #145a8d;
+        }
+
+        footer {
+            background-color: #1f80e0;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Styles pour le volet coulissant */
+        .sidebar {
+            height: 100%;
+            width: 220px;
+            position: fixed;
+            top: 0;
+            left: -220px; /* Position cachée initialement */
+            background-color: #333; /* Couleur sombre pour le volet */
+            color: #fff;
+            overflow-x: hidden;
+            transition: left 0.3s; /* Transition fluide lorsque le volet est ouvert ou fermé */
+            padding-top: 60px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #fff;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #575757; /* Couleur grise foncée pour les liens au survol */
+        }
+
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+            cursor: pointer;
+        }
+
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #1f80e0;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        /* Styles lorsque le volet est ouvert */
+        .sidebar.open {
+            left: 0;
+        }
+
+        .profile-container.shift {
+            margin-left: 220px; /* Décalage du contenu lors de l'ouverture du volet */
+        }
+
+        .openbtn.hidden {
+            display: none; /* Masquer le bouton lorsque le volet est ouvert */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Inclure le volet coulissant -->
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+        <a href="profiles.html">Profil</a>
+        <a href="settings.html">Paramètres</a>
+        <a href="login.html" onclick="logout()">Déconnexion</a>
+    </div>
+
+    <button id="menuButton" class="openbtn" onclick="toggleNav()">☰ Menu</button>
+
+    <div id="main" class="profile-container">
+        <header>
+            <h1>Paramètres - MXFlix</h1>
+        </header>
+
+        <!-- Section des paramètres -->
+        <div class="settings-section">
+            <h2>Informations du Compte</h2>
+            <label for="username">Nom d'utilisateur:</label>
+            <input type="text" id="username" name="username" value="NomUtilisateur">
+            
+            <label for="email">Adresse email:</label>
+            <input type="email" id="email" name="email" value="utilisateur@example.com">
+            
+            <label for="password">Mot de passe:</label>
+            <input type="password" id="password" name="password" placeholder="Nouveau mot de passe">
+
+            <button class="btn" onclick="saveSettings()">Enregistrer les Modifications</button>
+        </div>
+
+        <div class="settings-section">
+            <h2>Préférences de Notification</h2>
+            <label><input type="checkbox" checked> Recevoir des notifications par email</label>
+            <label><input type="checkbox"> Recevoir des alertes par SMS</label>
+        </div>
+
+        <footer>
+            <p>&copy; 2024 MXFlix. Tous droits réservés.</p>
+        </footer>
+    </div>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidebar").style.left = "0";
+            document.getElementById("main").classList.add("shift");
+            document.getElementById("menuButton").classList.add("hidden");
+        }
+
+        function closeNav() {
+            document.getElementById("mySidebar").style.left = "-220px";
+            document.getElementById("main").classList.remove("shift");
+            document.getElementById("menuButton").classList.remove("hidden");
+        }
+
+        function toggleNav() {
+            var sidebar = document.getElementById("mySidebar");
+            if (sidebar.style.left === "0px") {
+                closeNav();
+            } else {
+                openNav();
+            }
+        }
+
+        function saveSettings() {
+            // Simuler l'enregistrement des paramètres (à remplacer par une vraie logique de sauvegarde)
+            alert('Les modifications ont été enregistrées.');
+            // Redirection vers profiles.html après enregistrement
+            window.location.href = 'profiles.html';
+        }
+
+        function logout() {
+            // Simuler la déconnexion (remplacez ceci par une vraie logique de déconnexion)
+            alert('Vous avez été déconnecté.');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

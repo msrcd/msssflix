@@ -1,0 +1,36 @@
+<!-- sidebar.html -->
+<div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+    <a href="profiles.html">Profil</a>
+    <a href="settings.html">Paramètres</a>
+    <a href="login.html" onclick="logout()">Déconnexion</a>
+</div>
+<button class="openbtn" onclick="toggleNav()">☰ Menu</button>
+
+<script>
+    function openNav() {
+        document.getElementById("mySidebar").style.left = "0";
+        document.getElementById("main").classList.add("shift");
+    }
+
+    function closeNav() {
+        document.getElementById("mySidebar").style.left = "-220px";
+        document.getElementById("main").classList.remove("shift");
+    }
+
+    function toggleNav() {
+        var sidebar = document.getElementById("mySidebar");
+        if (sidebar.style.left === "0px") {
+            closeNav();
+        } else {
+            openNav();
+        }
+    }
+
+    function logout() {
+        // Simuler la déconnexion (vous pouvez remplacer cette ligne par une vraie logique de déconnexion)
+        alert('Vous avez été déconnecté.');
+        // Rediriger vers la page de connexion après déconnexion
+        window.location.href = 'login.html';
+    }
+</script>

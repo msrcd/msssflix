@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miraculous: Les Aventures de Ladybug et Chat Noir</title>
+    <style>
+        /* Styles généraux */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            padding: 100px 20px;
+            box-sizing: border-box;
+            background-image: url('https://www.justwatch.com/images/backdrop/301627639/s1440/saison-4');
+            background-size: cover; /* Couvre tout le conteneur */
+            background-position: center; /* Centre l'image */
+            background-attachment: fixed; /* Fixe l'image pour qu'elle ne bouge pas lors du défilement */
+            filter: brightness(70%);
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Bouton de retour */
+        .return-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #ff0033;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #ff0033;
+            font-weight: bold;
+        }
+
+        .return-button:hover {
+            background-color: rgba(255, 0, 51, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Contenu principal */
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content {
+            flex: 1;
+            text-align: center;
+            margin-right: 20px;
+            transition: opacity 1s, transform 1s;
+        }
+
+        .info {
+            text-align: left;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 0, 51, 0.8);
+        }
+
+        .info h1 {
+            font-size: 3em;
+            margin: 0;
+            color: #ff0033;
+            font-family: 'Roboto Slab', serif;
+        }
+
+        .info p {
+            font-size: 1.3em;
+            margin: 10px 0;
+            line-height: 1.6;
+            color: #cccccc;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            background-color: #444;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #ff0033;
+            font-weight: bold;
+        }
+
+        .buttons button:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+
+        /* Tableau des épisodes */
+        .episodes {
+            flex: 1;
+            max-width: 800px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 0, 51, 0.8);
+        }
+
+        .episodes table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .episodes th,
+        .episodes td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        .episodes th {
+            background-color: #222;
+            color: #ff0033;
+            font-size: 1.3em;
+        }
+
+        .episodes td {
+            background-color: #333;
+            border: 1px solid #555;
+        }
+
+        .episodes a {
+            color: #ff0033;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .episodes a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section vidéo */
+        .video-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .video-section iframe {
+            width: 80%;
+            height: 80%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .video-section .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #ff0033;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #ff0033;
+            font-weight: bold;
+        }
+
+        .video-section .back-button:hover {
+            background-color: rgba(255, 0, 51, 0.3);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+    <div class="container">
+        <a href="/series/serie.html" class="return-button" id="returnButton">Retour</a>
+
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="info">
+                    <h1>Miraculous: Les Aventures de Ladybug et Chat Noir</h1>
+                    <p>2015 • Animation, Action, Aventure</p>
+                    <p>"Miraculous: Les Aventures de Ladybug et Chat Noir" suit les aventures de Marinette Dupain-Cheng et Adrien Agreste, deux adolescents parisiens qui se transforment en super-héros pour protéger la ville des super-vilains.</p>
+                    <div class="buttons">
+                        <button id="trailerButton">Bande-annonce</button>
+                        <button id="favoriteButton">Favoris</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="episodes">
+                <!-- Saison 1 -->
+                <div class="season">
+                    <h2>Saison 1</h2>
+                    <table>
+            <tr>
+                <th>Épisode</th>
+                <th>Lien</th>
+            </tr>
+            <tr>
+                <td>Épisode 1</td>
+                <td><a href="https://uqload.to/ml64mgyn9tsf.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 2</td>
+                <td><a href="https://uqload.to/7kjkgmnudlty.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 3</td>
+                <td><a href="https://uqload.to/jg6m2a3pxaav.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 4</td>
+                <td><a href="https://uqload.to/h91d82jgw83d.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 5</td>
+                <td><a href="https://uqload.to/c9ltoqh16od8.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 6</td>
+                <td><a href="https://uqload.to/l2nj9kn462zv.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 7</td>
+                <td><a href="https://uqload.to/isju54iw5fbq.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 8</td>
+                <td><a href="https://uqload.to/ogc0xexi8uwe.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 9</td>
+                <td><a href="https://uqload.to/rzyxbw7jshfp.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 10</td>
+                <td><a href="https://uqload.to/89tt3kz2ucwu.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 11</td>
+                <td><a href="https://uqload.to/4p5qzldf4t1y.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 12</td>
+                <td><a href="https://uqload.to/3k9sr2atnxyu.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 13</td>
+                <td><a href="https://uqload.to/7012euulmol6.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 14</td>
+                <td><a href="https://uqload.to/uot5jsmu212q.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 15</td>
+                <td><a href="https://uqload.to/2ketlwfvd5x5.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 16</td>
+                <td><a href="https://uqload.to/88ghfxu9nzdy.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 17</td>
+                <td><a href="https://uqload.to/o6ttmlnceh7k.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 18</td>
+                <td><a href="https://uqload.to/o5ag7asvoep3.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 19</td>
+                <td><a href="https://uqload.to/jj0bvbf5hnp2.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 20</td>
+                <td><a href="https://uqload.to/al9b4oa1ccch.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 21</td>
+                <td><a href="https://uqload.to/k698ii456sx5.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 22</td>
+                <td><a href="https://uqload.to/gdq4u80c1pva.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 23</td>
+                <td><a href="https://uqload.to/cqtkxcwimiig.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 24</td>
+                <td><a href="https://uqload.to/2aekaemocnwm.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 25</td>
+                <td><a href="https://uqload.to/numa863d2289.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 26</td>
+                <td><a href="https://uqload.to/4nis7r8l3f0b.html" target="_blank">Regarder</a></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Saison 2 -->
+    <div class="season">
+        <h2>Saison 2</h2>
+        <table>
+            <tr>
+                <th>Épisode</th>
+                <th>Lien</th>
+            </tr>
+            <tr>
+                <td>Épisode 1</td>
+                <td><a href="https://uqload.to/1uoxmsze5s2p.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 2</td>
+                <td><a href="https://uqload.to/04my90874qat.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 3</td>
+                <td><a href="https://uqload.to/vci5ct90vcuz.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 4</td>
+                <td><a href="https://uqload.to/c8pnenw371pf.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 5</td>
+                <td><a href="https://uqload.to/vytwnrbncc8d.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 6</td>
+                <td><a href="https://uqload.to/lmwafqcnjuub.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 7</td>
+                <td><a href="https://uqload.to/xd1ffbbnu9h8.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 8</td>
+                <td><a href="https://uqload.to/28nhevqyf3qc.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 9</td>
+                <td><a href="https://uqload.to/pz7f6yu7ksdm.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 10</td>
+                <td><a href="https://uqload.to/uo1dz0qrrxbs.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 11</td>
+                <td><a href="https://uqload.to/wwlkpw725v1k.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 12</td>
+                <td><a href="https://uqload.to/xwcbfmi1jvsw.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 13</td>
+                <td><a href="https://uqload.to/zn6w4hskzv1r.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 14</td>
+                <td><a href="https://uqload.to/l2q55k5q8gzy.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 15</td>
+                <td><a href="https://uqload.to/x7weemg1s7rc.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 16</td>
+                <td><a href="https://uqload.to/44rss40igbyt.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 17</td>
+                <td><a href="https://uqload.to/w6gdwfs2xm2b.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 18</td>
+                <td><a href="https://uqload.to/6ren6n08gmxv.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 19</td>
+                <td><a href="https://uqload.to/f75wcfejvs4g.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 20</td>
+                <td><a href="https://uqload.to/p86dhlj4tfc1.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 21</td>
+                <td><a href="https://uqload.to/k51sya2lmw78.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 22</td>
+                <td><a href="https://uqload.to/u536tpcillxa.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 23</td>
+                <td><a href="https://uqload.to/5sgvsev1y8ku.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 24</td>
+                <td><a href="https://uqload.to/deiasajt1d5f.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 25</td>
+                <td><a href="https://uqload.to/dpni1njklpfd.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 26</td>
+                <td><a href="https://uqload.to/rofph39r3dcs.html" target="_blank">Regarder</a></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Saison 3 -->
+    <div class="season">
+        <h2>Saison 3</h2>
+        <table>
+            <tr>
+                <th>Épisode</th>
+                <th>Lien</th>
+            </tr>
+            <tr>
+                <td>Épisode 1</td>
+                <td><a href="https://uqload.to/gahga7paj6uc.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 2</td>
+                <td><a href="https://uqload.to/9l0auf1r6bv3.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 3</td>
+                <td><a href="https://uqload.to/hj2hi0wrkoxm.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 4</td>
+                <td><a href="https://uqload.to/riknd861l8f6.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 5</td>
+                <td><a href="https://uqload.to/2ubijjtly9yf.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 6</td>
+                <td><a href="https://uqload.to/m3t2wqbnc8jw.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 7</td>
+                <td><a href="https://uqload.to/pun7gepkg2xm.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 8</td>
+                <td><a href="https://uqload.to/s456ac4fado8.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 9</td>
+                <td><a href="https://uqload.to/0cyhpyqssxxh.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 10</td>
+                <td><a href="https://uqload.to/iryh26wiq39v.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 11</td>
+                <td><a href="https://uqload.to/jgjeu8hl2bb0.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 12</td>
+                <td><a href="https://uqload.to/g1j35i0q5oho.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 13</td>
+                <td><a href="https://uqload.to/l6gcwyvbwwfw.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 14</td>
+                <td><a href="https://uqload.to/02776phf23ki.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 15</td>
+                <td><a href="https://uqload.to/7bop4rkpb8vq.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 16</td>
+                <td><a href="https://uqload.to/wxenhiuhzxll.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 17</td>
+                <td><a href="https://uqload.to/jvgv9xb280ea.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 18</td>
+                <td><a href="https://uqload.to/l8ikb4u1577h.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 19</td>
+                <td><a href="https://uqload.to/gjbvfgtifw90.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 20</td>
+                <td><a href="https://uqload.to/qkkbm26gob1x.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 21</td>
+                <td><a href="https://uqload.to/vwmm6ddbqq6w.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 22</td>
+                <td><a href="https://uqload.to/o3f7f4qf51z9.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 23</td>
+                <td><a href="https://uqload.to/ey9vuyrj37r3.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 24</td>
+                <td><a href="https://uqload.to/vhse9nn0i9dz.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 25</td>
+                <td><a href="https://uqload.to/ib7mlmedn1ty.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 26</td>
+                <td><a href="https://uqload.to/xv49du1vhhw1.html" target="_blank">Regarder</a></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Saison 4 -->
+    <div class="season">
+        <h2>Saison 4</h2>
+        <table>
+            <tr>
+                <th>Épisode</th>
+                <th>Lien</th>
+            </tr>
+            <tr>
+                <td>Épisode 1</td>
+                <td><a href="https://uqload.to/vlr1qkayz5le.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 2</td>
+                <td><a href="https://uqload.to/nkuag278gycb.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 3</td>
+                <td><a href="https://uqload.to/hesl1f7ahmq9.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 4</td>
+                <td><a href="https://uqload.to/hjmnnmte3y35.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 5</td>
+                <td><a href="https://uqload.to/6hpaiss90dxo.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 6</td>
+                <td><a href="https://uqload.to/0s9jexs6xwrl.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 7</td>
+                <td><a href="https://uqload.to/lt99kt72zeaa.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 8</td>
+                <td><a href="https://uqload.to/1dqvsk0qdq8s.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 9</td>
+                <td><a href="https://uqload.to/kyrd4akwrwic.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 10</td>
+                <td><a href="https://uqload.to/kyrd4akwrwic.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 11</td>
+                <td><a href="https://uqload.to/ffs06hfl048u.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 12</td>
+                <td><a href="https://uqload.to/f3wqfdfvvgkn.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 13</td>
+                <td><a href="https://uqload.to/yw2vegqzgi9v.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 14</td>
+                <td><a href="https://uqload.to/uq3r49havdmy.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 15</td>
+                <td><a href="https://uqload.to/uj6lvizciq2p.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 16</td>
+                <td><a href="https://uqload.to/2wkf7efmts8g.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 17</td>
+                <td><a href="https://uqload.to/okutqsd12nj2.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 18</td>
+                <td><a href="https://uqload.to/8wn1b4gwppz0.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 19</td>
+                <td><a href="https://uqload.to/givvige32xvl.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 20</td>
+                <td><a href="https://uqload.to/iy0c80kydbli.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 21</td>
+                <td><a href="https://uqload.to/qnls4pks2228.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 22</td>
+                <td><a href="https://uqload.to/40u3peywho8z.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 23</td>
+                <td><a href="https://uqload.to/4pwokhs2e9bz.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 24</td>
+                <td><a href="https://uqload.to/b71f5c5lxcnz.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 25</td>
+                <td><a href="https://uqload.to/1mkmkxnt7nf4.html" target="_blank">Regarder</a></td>
+            </tr>
+            <tr>
+                <td>Épisode 26</td>
+                <td><a href="https://uqload.to/6nf7kz8o5tpj.html" target="_blank">Regarder</a></td>
+            </tr>
+        </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="video-section" id="videoSection">
+        <button class="back-button" id="backButton">Retour</button>
+        <iframe id="trailerFrame" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        document.getElementById('trailerButton').addEventListener('click', function () {
+            document.getElementById('videoSection').style.display = 'flex';
+            document.getElementById('trailerFrame').src = 'https://www.youtube.com/embed/TtQIm6jHkT8'; // Remplacez par l'URL de votre bande-annonce
+        });
+
+        document.getElementById('backButton').addEventListener('click', function () {
+            document.getElementById('videoSection').style.display = 'none';
+            document.getElementById('trailerFrame').src = '';
+        });
+
+        document.getElementById('returnButton').addEventListener('click', function () {
+            window.location.href = '/series/serie.html';
+        });
+
+
+// Fonction pour ajouter ou retirer des favoris
+document.getElementById('favoriteButton').addEventListener('click', function() {
+      // Informations sur le film à stocker
+      const movie = {
+          title: 'Wandavisions',
+          image: 'https://fr.web.img4.acsta.net/pictures/21/02/01/16/54/3730739.jpg'
+      };
+
+      // Récupérer la liste des favoris depuis le localStorage
+      let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+      // Vérifier si le film est déjà dans les favoris
+      const movieIndex = favorites.findIndex(fav => fav.title === movie.title);
+
+      if (movieIndex !== -1) {
+          // Le film est déjà dans les favoris, le retirer
+          favorites.splice(movieIndex, 1);
+          alert('Le film a été retiré de vos favoris.');
+      } else {
+          // Ajouter le film aux favoris
+          favorites.push(movie);
+          alert('Le film a été ajouté à vos favoris !');
+      }
+
+      // Mettre à jour le localStorage
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+  });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const favButtons = document.querySelectorAll('.fav-button');
+  favButtons.forEach(button => {
+      button.addEventListener('click', (event) => {
+          const movieCard = event.target.closest('.movie-card');
+          const movieTitle = movieCard.querySelector('h4').textContent;
+          const movieImgSrc = movieCard.querySelector('img').src;
+
+          // Informations sur le film à stocker
+          const movie = {
+              title: movieTitle,
+              image: movieImgSrc
+          };
+
+          // Récupérer la liste des favoris depuis le localStorage
+          let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+          // Vérifier si le film est déjà dans les favoris
+          const movieIndex = favorites.findIndex(fav => fav.title === movie.title);
+
+          if (movieIndex !== -1) {
+              // Le film est déjà dans les favoris, le retirer
+              favorites.splice(movieIndex, 1);
+              alert('Le film a été retiré de vos favoris.');
+              button.textContent = 'Ajouter à Ma Liste';
+          } else {
+              // Ajouter le film aux favoris
+              favorites.push(movie);
+              alert('Le film a été ajouté à vos favoris !');
+              button.textContent = 'Retirer de Ma Liste';
+          }
+
+          // Mettre à jour le localStorage
+          localStorage.setItem('favorites', JSON.stringify(favorites));
+      });
+  });
+});
+</script>
+
+
+</body>
+
+</html>
+

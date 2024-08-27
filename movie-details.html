@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails du Film - MSFlix</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+        }
+        .movie-card {
+            background-color: #222;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .movie-card img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+        }
+        .movie-card-details {
+            padding: 15px;
+            flex: 1;
+        }
+        .movie-card-details h4 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .back-button, .watch-button {
+            background-color: #ff00ff;
+            border: none;
+            padding: 10px;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        .back-button:hover, .watch-button:hover {
+            background-color: #e600e6;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Détails du Film</h1>
+    </header>
+    <main id="movie-details">
+        <!-- Détails du film affichés ici -->
+    </main>
+    <button class="back-button" onclick="window.location.href='maliste.html'">Retour à Ma Liste</button>
+    <button class="watch-button" id="watchButton">Regarder</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const movieId = urlParams.get('movie-id');
+
+            if (movieId !== null) {
+                const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+                const movie = favorites[movieId];
+
+                if (movie) {
+                    document.getElementById('movie-details').innerHTML = `
+                        <div class="movie-card">
+                            <img src="${movie.image}" alt="${movie.title}">
+                            <div class="movie-card-details">
+                                <h4>${movie.title}</h4>
+                                <p>Autres détails du film ici...</p>
+                            </div>
+                        </div>
+                    `;
+
+                    document.getElementById('watchButton').addEventListener('click', () => {
+                        window.location.href = `node.html?movie-id=${movieId}`;
+                    });
+                } else {
+                    document.getElementById('movie-details').innerHTML = '<p>Film non trouvé.</p>';
+                }
+            } else {
+                document.getElementById('movie-details').innerHTML = '<p>Aucun film sélectionné.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

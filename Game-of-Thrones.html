@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game of Thrones</title>
+    <style>
+        /* Styles généraux */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        /* Conteneur principal */
+        .container {
+            width: 100%;
+            height: 200%;
+            position: relative;
+            z-index: 1;
+            padding: 100px;
+            box-sizing: border-box;
+            background-image: url('https://m.media-amazon.com/images/M/MV5BN2IzYzBiOTQtNGZmMi00NDI5LTgxMzMtN2EzZjA1NjhlOGMxXkEyXkFqcGdeQXVyNjAwNDUxODI@._V1_FMjpg_UX1000_.jpg'); /* Image de Game of Thrones */
+            background-size: cover;
+            background-position: center;
+            filter: brightness(80%);
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Bouton de retour */
+        .return-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #00ff00; /* Couleur de Loki */
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        .return-button:hover {
+            background-color: rgba(0, 255, 0, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Contenu principal */
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content {
+            flex: 1;
+            text-align: center;
+            margin-right: 20px;
+            transition: opacity 1s, transform 1s;
+        }
+
+        .info {
+            text-align: left;
+            max-width: 550px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+        }
+
+        .info h1 {
+            font-size: 3em;
+            margin: 0;
+            color: #00ff00;
+            font-family: 'Roboto Slab', serif;
+        }
+
+        .info p {
+            font-size: 1.3em;
+            margin: 10px 0;
+            line-height: 1.6;
+            color: #cccccc;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            background-color: #444;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        .buttons button:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+
+        /* Tableau des épisodes */
+        .episodes {
+            flex: 1;
+            max-width: 550px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+        }
+
+        .episodes table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .episodes th,
+        .episodes td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        .episodes th {
+            background-color: #222;
+            color: #00ff00;
+            font-size: 1.3em;
+        }
+
+        .episodes td {
+            background-color: #333;
+            border: 1px solid #555;
+        }
+
+        .episodes a {
+            color: #00ff00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .episodes a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section vidéo */
+        .video-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .video-section iframe {
+            width: 80%;
+            height: 80%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .video-section .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #00ff00;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        .video-section .back-button:hover {
+            background-color: rgba(0, 255, 0, 0.3);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <a href="/series\serie.html" class="return-button" id="returnButton">Retour</a>
+
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="info">
+                    <h1>MXFlix <br> Game of Thrones</h1>
+                    <p>2011 • Action, Aventure, Drame</p>
+                    <p>"Game of Thrones" est une série épique basée sur les romans de George R.R. Martin, qui suit les luttes de pouvoir entre les familles nobles dans le royaume de Westeros, un monde fantastique rempli de dragons, de magie et de complots politiques.</p>
+                    <div class="buttons">
+                        <button id="trailerButton">Bande-annonce</button>
+                        <button id="favoriteButton">Favoris</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="episodes">
+                <table>
+                    <tr>
+                        <th colspan="2">Saison 1</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/ke3lpxh4lxl5.html" target="_blank">Épisode 1</a></td>
+                        <td><a href="https://uqload.to/xo3qv9p2ecqj.html" target="_blank">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/2hqt8x9zvgc7.html" target="_blank">Épisode 3</a></td>
+                        <td><a href="https://uqload.to/taecv3lpkmsw.html" target="_blank">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/wipp3u6oya49.html" target="_blank">Épisode 5</a></td>
+                        <td><a href="https://uqload.to/5crh9gkky2xs.html" target="_blank">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/d0g1cllu6b5b.html" target="_blank">Épisode 7</a></td>
+                        <td><a href="https://uqload.to/jar7d8r7bw2n.html" target="_blank">Épisode 8</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/shahr7wkugah.html" target="_blank">Épisode 9</a></td>
+                        <td><a href="https://uqload.to/ggwlnijmxxun.html" target="_blank">Épisode 10</a></td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Saison 2</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/h0zxxyoq31ku.html" target="_blank">Épisode 1</a></td>
+                        <td><a href="https://uqload.to/sv8bfk2v6rx1.html" target="_blank">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/m3pl18lykjtr.html" target="_blank">Épisode 3</a></td>
+                        <td><a href="https://uqload.to/rx69j8cy0cp8.html" target="_blank">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/222xkvvyr5ca.html" target="_blank">Épisode 5</a></td>
+                        <td><a href="https://uqload.to/2gwvdgkdygv6.html" target="_blank">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/m0vsh30ntnbo.html" target="_blank">Épisode 7</a></td>
+                        <td><a href="https://uqload.to/0ddjs4ghxzn9.html" target="_blank">Épisode 8</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/9bx5acgvptla.html" target="_blank">Épisode 9</a></td>
+                        <td><a href="https://uqload.to/ho50q3404r2j.html" target="_blank">Épisode 10</a></td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Saison 3</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/v6l1mnoaiu15.html" target="_blank">Épisode 1</a></td>
+                        <td><a href="https://uqload.to/h1uk5j6jm34f.html" target="_blank">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/4sjes60zknwl.html" target="_blank">Épisode 3</a></td>
+                        <td><a href="https://uqload.to/j0oa3bpna86z.html" target="_blank">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/qd8w7swnwbeb.html" target="_blank">Épisode 5</a></td>
+                        <td><a href="https://uqload.to/6kc5n23f12ai.html" target="_blank">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/v0vqbrdmd58q.html" target="_blank">Épisode 7</a></td>
+                        <td><a href="https://uqload.to/za7qrf032udg.html" target="_blank">Épisode 8</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/codubcoldgv5.html" target="_blank">Épisode 9</a></td>
+                        <td><a href="https://uqload.to/jq0g6mlpjazl.html" target="_blank">Épisode 10</a></td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Saison 4</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/ml7t1u3sx91m.html" target="_blank">Épisode 1</a></td>
+                        <td><a href="https://uqload.to/29rwkxsd4o9u.html" target="_blank">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/uvamyysfmv3u.html" target="_blank">Épisode 3</a></td>
+                        <td><a href="https://uqload.to/feqf2lc3a40z.html" target="_blank">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/7waktsdnsd7a.html" target="_blank">Épisode 5</a></td>
+                        <td><a href="https://uqload.to/8vyypmafitbp.html" target="_blank">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/r7mhcy6ic9l6.html" target="_blank">Épisode 7</a></td>
+                        <td><a href="https://uqload.to/214eqwljgdvq.html" target="_blank">Épisode 8</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/mp33p21elgiy.html" target="_blank">Épisode 9</a></td>
+                        <td><a href="https://uqload.to/d05677i5igw6.html" target="_blank">Épisode 10</a></td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Saison 5</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/ms5017uhkk9g.html" target="_blank">Épisode 1</a></td>
+                        <td><a href="https://uqload.to/0depy09yddhc.html" target="_blank">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/nzdpcha16l51.html" target="_blank">Épisode 3</a></td>
+                        <td><a href="https://uqload.to/hieye1xwe0wy.html" target="_blank">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/3vs7s4zhcely.html" target="_blank">Épisode 5</a></td>
+                        <td><a href="https://uqload.to/aam99rs28s5n.html" target="_blank">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/9t0graji3nqv.html" target="_blank">Épisode 7</a></td>
+                        <td><a href="https://uqload.to/qrq49ojvc2cq.html" target="_blank">Épisode 8</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/tqusopj61gft.html" target="_blank">Épisode 9</a></td>
+                        <td><a href="https://uqload.to/vpiofnryvf2k.html" target="_blank">Épisode 10</a></td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Saison 6</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/ie3rss6mprc2.html" target="_blank">Épisode 1</a></td>
+                        <td><a href="https://uqload.to/xiqwykg0fjtn.html" target="_blank">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/090w93wmidmv.html" target="_blank">Épisode 3</a></td>
+                        <td><a href="https://uqload.to/p76109d8b2ff.html" target="_blank">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/82cqwld9z41c.html" target="_blank">Épisode 5</a></td>
+                        <td><a href="https://uqload.to/zwcyjlcc74e2.html" target="_blank">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/08vjf9jk9m1r.html" target="_blank">Épisode 7</a></td>
+                        <td><a href="https://uqload.to/7hzwybx05rx4.html" target="_blank">Épisode 8</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/sk0tqysjpf2s.html" target="_blank">Épisode 9</a></td>
+                        <td><a href="https://uqload.to/v2213sycipfz.html" target="_blank">Épisode 10</a></td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Saison 7</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/8das6xa9wkmr.html" target="_blank">Épisode 1</a></td>
+                        <td><a href="https://uqload.to/0zev09pjmmw1.html" target="_blank">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/jfu9yjc1xqzh.html" target="_blank">Épisode 3</a></td>
+                        <td><a href="https://uqload.to/twnjt2d1j4sy.html" target="_blank">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/2bfuj25qsnv1.html" target="_blank">Épisode 5</a></td>
+                        <td><a href="https://uqload.to/rmgymzyoldgz.html" target="_blank">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><a href="https://uqload.to/xewjzb2mz9el.html" target="_blank">Épisode 7</a></td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Saison 8</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/comzsx5mmdm6.html" target="_blank">Épisode 1</a></td>
+                        <td><a href="https://uqload.to/43oek9xgo1fs.html" target="_blank">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/zfx8luum21tq.html" target="_blank">Épisode 3</a></td>
+                        <td><a href="https://uqload.to/8dus3xjc6md5.html" target="_blank">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/9hgqq5xos74f.html" target="_blank">Épisode 5</a></td>
+                        <td><a href="https://uqload.to/8qeupihjw6h7.html" target="_blank">Épisode 6</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section pour la vidéo -->
+    <div class="video-section" id="videoSection">
+        <button class="back-button" id="backButton">Retour</button>
+        <iframe id="videoPlayer" src="" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        // Script pour gérer la vidéo
+        document.getElementById('trailerButton').addEventListener('click', function () {
+            document.getElementById('videoSection').style.display = 'flex';
+            document.getElementById('videoPlayer').src = 'https://www.youtube.com/embed/Ng1W_qu5aJM?si=hG7D8Gr58igvuOEF'; // URL de la bande-annonce
+        });
+
+        document.getElementById('backButton').addEventListener('click', function () {
+            document.getElementById('videoSection').style.display = 'none';
+            document.getElementById('videoPlayer').src = '';
+        });
+      // Fonction pour ajouter ou retirer des favoris
+      document.getElementById('favoriteButton').addEventListener('click', function() {
+            // Informations sur le film à stocker
+            const movie = {
+                title: 'Game Of Throne',
+                image: 'https://i.redd.it/h7uga1bv24fz.jpg'
+            };
+
+            // Récupérer la liste des favoris depuis le localStorage
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+            // Vérifier si le film est déjà dans les favoris
+            const movieIndex = favorites.findIndex(fav => fav.title === movie.title);
+
+            if (movieIndex !== -1) {
+                // Le film est déjà dans les favoris, le retirer
+                favorites.splice(movieIndex, 1);
+                alert('Le film a été retiré de vos favoris.');
+            } else {
+                // Ajouter le film aux favoris
+                favorites.push(movie);
+                alert('Le film a été ajouté à vos favoris !');
+            }
+
+            // Mettre à jour le localStorage
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        });
+    </script>
+
+</body>
+
+</html>
+
+
+    </script>
+</body>
+
+</html>
+

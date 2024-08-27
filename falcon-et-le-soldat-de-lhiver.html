@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Falcon et le Soldat de l'hiver</title>
+    <style>
+        /* Votre style ici */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212; /* Fond sombre */
+            color: #e0e0e0; /* Texte clair pour le contraste */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+            height: 100vh;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+            box-sizing: border-box;
+            background-image: url('https://images.hdqwalls.com/wallpapers/the-falcon-and-the-winter-soldier-4k-57.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(100%); /* Ajuster la luminosité si nécessaire */
+        }
+
+        .return-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            z-index: 1000;
+            color: #333;
+        }
+
+        .return-button:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.05);
+        }
+
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content {
+            flex: 1;
+            text-align: center;
+            margin-right: 20px;
+            transition: opacity 1s, transform 1s;
+        }
+
+        .content img {
+            width: 100%;
+            height: auto;
+            display: none;
+        }
+
+        .content.hide {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        .info {
+            text-align: left;
+            max-width: 550px;
+            background: rgba(0, 0, 0, 0.9); /* Fond sombre et transparent */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6); /* Ombre rougeâtre pour le thème */
+        }
+
+        .info h1 {
+            font-size: 3em;
+            margin: 0;
+            color: #ff4500; /* Couleur rouge-orange vif */
+        }
+
+        .info p {
+            font-size: 1.3em;
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            background-color: #333; /* Fond sombre pour les boutons */
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #e0e0e0; /* Texte clair pour les boutons */
+        }
+
+        .buttons button:hover {
+            background-color: #444; /* Fond légèrement plus clair au survol */
+            transform: scale(1.05);
+        }
+
+        .episodes {
+            flex: 1;
+            max-width: 550px;
+            background-color: rgba(0, 0, 0, 0.9); /* Fond sombre et transparent */
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6); /* Ombre rougeâtre pour le thème */
+        }
+
+        .episodes table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .episodes th,
+        .episodes td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        .episodes th {
+            background-color: #222; /* Fond sombre pour les en-têtes */
+            color: #ff4500; /* Couleur rouge-orange vif */
+            font-size: 1.3em;
+        }
+
+        .episodes td {
+            background-color: #333; /* Fond sombre pour les cellules */
+            border: 1px solid #555; /* Bordure sombre */
+        }
+
+        .episodes a {
+            color: #ff0000; /* Couleur rouge pour les liens */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .episodes a:hover {
+            text-decoration: underline;
+        }
+
+        .video-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .video-section iframe {
+            width: 80%;
+            height: 80%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .video-section .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            z-index: 1001;
+            color: #333;
+        }
+
+        .video-section .back-button:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <a href="/series\serie.html" class="return-button" id="returnButton">Retour</a>
+
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="info">
+                    <h1>MXFlix <br> Falcon et le Soldat de l'hiver</h1>
+                    <p>2021 • Action, Drame, Aventure</p>
+                    <p>"Falcon et le Soldat de l'hiver" suit les aventures de Sam Wilson (Falcon) et Bucky Barnes (le Soldat de l'hiver) après les événements de "Avengers: Endgame". Ensemble, ils affrontent de nouveaux défis et des menaces globales.</p>
+                    <div class="buttons">
+                        <button id="trailerButton">Bande-annonce</button>
+                        <button id="favoriteButton">Favoris</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="episodes">
+                <table>
+                    <tr>
+                        <th colspan="2">Saison 1</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.ws/oxl3vl1ciegy.html" target="_blank">Épisode 1</a></td>
+                        <td><a href="https://uqload.ws/szuh3aimra8p.html" target="_blank">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.ws/xs6d4o5w5cl5.html" target="_blank">Épisode 3</a></td>
+                        <td><a href="https://uqload.ws/zsdqko0ynxyq.html" target="_blank">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.ws/e1mlsvb8stnl.html" target="_blank">Épisode 5</a></td>
+                        <td><a href="https://uqload.ws/8l4hcfcfrvdr.html" target="_blank">Épisode 6</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="video-section" id="videoSection">
+            <button class="back-button" id="backButton">Retour</button>
+            <iframe id="videoPlayer" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('trailerButton').addEventListener('click', function () {
+            var content = document.querySelector('.content');
+            var videoSection = document.getElementById('videoSection');
+            var videoPlayer = document.getElementById('videoPlayer');
+    
+            content.classList.add('hide');
+    
+            setTimeout(function () {
+                videoSection.style.display = 'flex';
+                videoPlayer.src = 'https://www.youtube.com/embed/X_mSpyPVVzk?si=GwxhFCYq_sEV5l38';
+            }, 1000);
+        });
+    
+        document.getElementById('backButton').addEventListener('click', function () {
+            var content = document.querySelector('.content');
+            var videoSection = document.getElementById('videoSection');
+    
+            document.getElementById('videoPlayer').src = '';
+    
+            videoSection.style.display = 'none';
+            content.classList.remove('hide');
+        });
+    
+        document.getElementById('returnButton').addEventListener('click', function () {
+            window.history.back();
+        });
+    
+        document.getElementById('favoriteButton').addEventListener('click', function() {
+            // Informations sur le film ou la série à stocker
+            const favorite = {
+                title: 'Falcon et le Soldat de l\'hiver',
+                image: 'https://example.com/falcon-winter-soldier.jpg'
+            };
+    
+            // Récupérer la liste des favoris depuis le localStorage
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    
+            // Vérifier si l'élément est déjà dans les favoris
+            const favoriteIndex = favorites.findIndex(fav => fav.title === favorite.title);
+    
+            if (favoriteIndex !== -1) {
+                // L'élément est déjà dans les favoris, le retirer
+                favorites.splice(favoriteIndex, 1);
+                alert('L\'élément a été retiré de vos favoris.');
+            } else {
+                // Ajouter l'élément aux favoris
+                favorites.push(favorite);
+                alert('L\'élément a été ajouté à vos favoris !');
+            }
+    
+            // Mettre à jour le localStorage
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        });
+    </script>
+    

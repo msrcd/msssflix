@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Récupération de Mot de Passe</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            background-image: url('https://anubhavsingh16.github.io/Netflix-Clone/images/background.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 500px;
+            margin: auto;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            opacity: 1;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .form-container.hidden {
+            opacity: 0;
+            transform: scale(0.9);
+            pointer-events: none;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            color: #fff;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin: 10px 0 5px;
+            color: #fff;
+        }
+
+        input {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #666;
+            border-radius: 4px;
+            background-color: #fff;
+            color: #333;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #e50914;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #f40612;
+        }
+
+        .message {
+            color: #f00;
+            font-size: 0.9em;
+        }
+
+        .footer {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            text-align: center;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Mon Site de Streaming</h1>
+    </header>
+    <main>
+        <div class="container">
+            <div class="form-wrapper">
+                <div class="form-container" id="recovery-form">
+                    <h2>Récupération de Mot de Passe</h2>
+                    <form id="formRecovery">
+                        <label for="email">Entrez votre adresse email :</label>
+                        <input type="email" id="email" name="email" required>
+                        <button type="submit">Envoyer le lien de réinitialisation</button>
+                        <p class="message" id="recoveryMessage"></p>
+                    </form>
+                </div>
+                <div class="form-container hidden" id="reset-form">
+                    <h2>Réinitialiser le Mot de Passe</h2>
+                    <form id="formReset">
+                        <label for="token">Token de réinitialisation :</label>
+                        <input type="text" id="token" name="token" required>
+                        <label for="new-password">Nouveau mot de passe :</label>
+                        <input type="password" id="new-password" name="new-password" required>
+                        <label for="confirm-password">Confirmer le mot de passe :</label>
+                        <input type="password" id="confirm-password" name="confirm-password" required>
+                        <button type="submit">Réinitialiser le mot de passe</button>
+                        <p class="message" id="resetMessage"></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <p>&copy; 2024 Mon Site de Streaming</p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const recoveryForm = document.getElementById('recovery-form');
+            const resetForm = document.getElementById('reset-form');
+
+            document.getElementById('formRecovery').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const email = document.getElementById('email').value;
+
+                fetch('/send-reset-link', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email: email })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('recoveryMessage').textContent = 'Un lien de réinitialisation a été envoyé à ' + email;
+                        recoveryForm.classList.add('hidden');
+                        resetForm.classList.remove('hidden');
+                    } else {
+                        document.getElementById('recoveryMessage').textContent = data.message;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('recoveryMessage').textContent = 'Une erreur est survenue. Veuillez réessayer.';
+                });
+            });
+
+            document.getElementById('formReset').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const token = document.getElementById('token').value;
+                const newPassword = document.getElementById('new-password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+
+                if (newPassword !== confirmPassword) {
+                    document.getElementById('resetMessage').textContent = 'Les mots de passe ne correspondent pas.';
+                    return;
+                }
+
+                fetch('/reset-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token: token, newPassword: newPassword })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('resetMessage').textContent = 'Votre mot de passe a été réinitialisé avec succès.';
+                    } else {
+                        document.getElementById('resetMessage').textContent = data.message;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('resetMessage').textContent = 'Une erreur est survenue. Veuillez réessayer.';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

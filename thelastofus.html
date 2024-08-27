@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The last of us  - MXFlix</title>
+    <style>
+        /* Styles généraux */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            overflow-y: scroll;
+        }
+
+        /* Conteneur principal */
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            padding: 100px 20px;
+            box-sizing: border-box;
+            background-image: url('https://www.onoticiado.com.br/wp-content/uploads/2023/01/the-last-of-us-capa-1200x665.jpg'); /* Remplacez par une image appropriée */
+            background-size: cover;
+            background-position: center;
+            filter: brightness(80%);
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.7);
+        }
+
+
+        /* Bouton de retour */
+        .return-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #ff4500;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #ff4500;
+            font-weight: bold;
+        }
+
+        .return-button:hover {
+            background-color: rgba(255, 69, 0, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Contenu principal */
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .content {
+            flex: 1;
+            text-align: center;
+            margin-right: 20px;
+            transition: opacity 1s, transform 1s;
+        }
+
+        .info {
+            text-align: left;
+            max-width: 550px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.8);
+        }
+
+        .info h1 {
+            font-size: 3em;
+            margin: 0;
+            color: #ff4500;
+            font-family: 'Roboto Slab', serif;
+        }
+
+        .info p {
+            font-size: 1.3em;
+            margin: 10px 0;
+            line-height: 1.6;
+            color: #cccccc;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .buttons button {
+            background-color: #444;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #ff4500;
+            font-weight: bold;
+        }
+
+        .buttons button:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+
+        /* Tableau des épisodes */
+        .episodes {
+            flex: 1;
+            max-width: 550px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 69, 0, 0.8);
+            overflow-x: auto;
+            max-height: 80vh;
+        }
+
+        .episodes table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .episodes th,
+        .episodes td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        .episodes th {
+            background-color: #222;
+            color: #ff4500;
+            font-size: 1.3em;
+        }
+
+        .episodes td {
+            background-color: #333;
+            border: 1px solid #555;
+        }
+
+        .episodes a {
+            color: #ff4500;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .episodes a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section vidéo */
+        .video-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .video-section iframe {
+            width: 80%;
+            height: 80%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .video-section .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #ff4500;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: #ff4500;
+            font-weight: bold;
+        }
+
+        .video-section .back-button:hover {
+            background-color: rgba(255, 69, 0, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Personnalisation de la barre de défilement pour WebKit (Chrome, Safari) */
+        .movie-grid::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .movie-grid::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .movie-grid::-webkit-scrollbar-thumb {
+            background: #1f80e0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            scroll-behavior: smooth;
+            scrollbar-width: thin; /* Pour Firefox */
+            scrollbar-color: #1f80e0 transparent; /* Pour Firefox */
+        }
+
+        .movie-grid::-webkit-scrollbar-thumb:hover {
+            background: #145a8d;
+        }
+
+        .movie-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 25px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 20px;
+            scroll-behavior: smooth;
+            scrollbar-width: thin; /* Pour Firefox */
+            scrollbar-color: #1f80e0 transparent; /* Pour Firefox */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <a href="/series/serie.html" class="return-button" id="returnButton">Retour</a>
+
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="info">
+                    <h1>MXFlix <br> The Last of Us</h1>
+                    <p>2023 • Action, Drame, Science-Fiction</p>
+                    <p>"The Last of Us" est une série basée sur le célèbre jeu vidéo. Elle suit Joel et Ellie, deux survivants dans un monde ravagé par une pandémie qui transforme les humains en créatures infectées. Ensemble, ils traversent un paysage post-apocalyptique dangereux et émotionnellement chargé, faisant face à des menaces aussi bien humaines que monstrueuses.</p>
+                    <div class="buttons">
+                        <button id="trailerButton">Bande-annonce</button>
+                        <button id="favoriteButton">Favoris</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="episodes">
+                <!-- Saison 1 -->
+                <table>
+                    <tr>
+                        <th>Saison 1</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/6uw66l5fduev.html">Épisode 1</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/dscg50iyqbtc.html">Épisode 2</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/lgdgc3h7sxfq.html">Épisode 3</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/7dcou1njitxn.html">Épisode 4</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/g4sssiffl3c5.html">Épisode 5</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/grh2m4xzf0oo.html">Épisode 6</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/owlsicp0ywip.html">Épisode 7</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/u0afxeu8eqxc.html">Épisode 8</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://uqload.to/5txbb6jib6in.html">Épisode 9</a></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="video-section" id="videoSection">
+        <button class="back-button" id="closeVideo">X</button>
+        <iframe src="" id="videoPlayer" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        document.getElementById('trailerButton').addEventListener('click', function () {
+            const videoSection = document.getElementById('videoSection');
+            const videoPlayer = document.getElementById('videoPlayer');
+            videoPlayer.src = 'https://www.youtube.com/embed/-pg6NAjHtoQ?si=7QlwQpK-Ox1caFFt'; // Remplacez par l'ID de votre bande-annonce
+            videoSection.style.display = 'flex';
+        });
+
+        document.getElementById('closeVideo').addEventListener('click', function () {
+            const videoSection = document.getElementById('videoSection');
+            const videoPlayer = document.getElementById('videoPlayer');
+            videoPlayer.src = '';
+            videoSection.style.display = 'none';
+        });
+
+        document.getElementById('favoriteButton').addEventListener('click', function () {
+            alert('Cette série a été ajoutée à vos favoris !');
+        });
+    </script>
+
+</body>
+
+</html>

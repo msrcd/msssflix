@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>liaison dangereuse avec mon étudiante - MXFlix</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+        }
+        /* Full-screen video background */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .video-background iframe {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* Content overlay with gradient */
+        .overlay-content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 40%;
+            height: 100%;
+            padding: 50px;
+            background: linear-gradient(to right, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            z-index: 2;
+        }
+        .overlay-content h1 {
+            font-size: 2.5em;
+            margin: 0 0 20px;
+        }
+        .overlay-content p {
+            font-size: 1.2em;
+            line-height: 1.5;
+            margin: 10px 0;
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+        .buttons button {
+            background-color: #f9f9f9;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: black;
+        }
+        .buttons button:hover {
+            background-color: #ddd;
+            transform: scale(1.05);
+        }
+        /* Button for returning to the previous page */
+        .return-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #f9f9f9;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+            z-index: 1000;
+        }
+        .return-button:hover {
+            background-color: #ddd;
+            transform: scale(1.05);
+        }
+        /* Video section for trailers */
+        .video-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        .video-section iframe {
+            width: 80%;
+            height: 80%;
+            border: none;
+            border-radius: 10px;
+        }
+        .video-section .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #f9f9f9;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+            z-index: 1001;
+        }
+        .video-section .back-button:hover {
+            background-color: #ddd;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Video Background -->
+    <div class="video-background">
+        <iframe src="https://www.youtube.com/embed/jcZelx04t6Y?autoplay=1&loop=1&playlist=jcZelx04t6Y" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
+    <!-- Overlay Content with Gradient -->
+    <div class="overlay-content">
+        <h1>liaison dangereuse avec mon étudiante</h1>
+        <p>2018 • Thriller</p>
+        <p>Après une séparation douloureuse, Chris espère prendre un nouveau départ avec sa fille, Riley. Celle-ci lui reproche de l’avoir arrachée à ses amis mais très vite, elle se lie d’amitié avec Kyla, une adolescente qui se passionne pour la photographie. Prête à tout pour séduire Chris, Kyla manipule ses proches. Son obsession la pousse à commettre l’impensable.</p>
+        <div class="buttons">
+            <button id="playButton">Lecture</button>
+            <button id="favoriteButton">Favoris</button>
+        </div>
+        <a href="/films/films.html" class="return-button" id="returnButton">Retour</a>
+    </div>
+
+    <!-- Video Section for Trailers -->
+    <div class="video-section" id="videoSection">
+        <button class="back-button" id="backButton">Retour</button>
+        <iframe id="videoPlayer" src="" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        document.getElementById('playButton').addEventListener('click', function() {
+            window.open('https://uqload.ws/putxjsvjlpfv.html', '_blank');
+        });
+
+        document.getElementById('favoriteButton').addEventListener('click', function() {
+            const movie = {
+                title: 'liason dangerereuse avec mon étudiantes',
+                image: 'https://fusion.molotov.tv/arts/i/446x588/Ch8SHQoUWhe3KV2mIUnHwVZeBIWY-k2oVigSA2pwZxgB/jpg' // Remplacer par l'URL réelle de l'image
+            };
+
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            const movieIndex = favorites.findIndex(fav => fav.title === movie.title);
+
+            if (movieIndex !== -1) {
+                favorites.splice(movieIndex, 1);
+                alert('Le film a été retiré de vos favoris.');
+            } else {
+                favorites.push(movie);
+                alert('Le film a été ajouté à vos favoris !');
+            }
+
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        });
+
+        document.getElementById('returnButton').addEventListener('click', function() {
+            window.location.href = '/films/films.html';
+        });
+
+        document.getElementById('playButton').addEventListener('click', function() {
+            var content = document.querySelector('.overlay-content');
+            var videoSection = document.getElementById('videoSection');
+            var videoPlayer = document.getElementById('videoPlayer');
+
+            content.style.display = 'none';
+
+            setTimeout(function() {
+                videoSection.style.display = 'flex';
+                videoPlayer.src = 'https://www.youtube.com/embed/tziXeW0ndkc'; // Charger la bande-annonce YouTube
+            }, 1000);
+        });
+
+        document.getElementById('backButton').addEventListener('click', function() {
+            var content = document.querySelector('.overlay-content');
+            var videoSection = document.getElementById('videoSection');
+
+            document.getElementById('videoPlayer').src = '';
+            videoSection.style.display = 'none';
+            content.style.display = 'flex';
+        });
+    </script>
+</body>
+</html>

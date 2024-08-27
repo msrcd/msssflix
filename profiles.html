@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Utilisateur - MSFlix</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            min-height: 100vh;
+            background-color: #1f1f1f;
+            color: #fff;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #333;
+            padding: 15px;
+            position: fixed;
+            height: 100%;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+        }
+        .sidebar a {
+            display: block;
+            color: #fff;
+            padding: 10px;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            width: calc(100% - 250px);
+        }
+        .header {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .profile-container {
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            background: #444;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .profile-container h1 {
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+        .profile-container img {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+        }
+        .profile-container p {
+            margin: 10px 0;
+        }
+        .btn {
+            display: inline-block;
+            background: #1f80e0;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+        }
+        .btn:hover {
+            background: #145a8d;
+        }
+        .logout-btn {
+            display: block;
+            margin-top: 20px;
+            background: #e04f5f;
+        }
+        .logout-btn:hover {
+            background: #c43d3d;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <a href="/pages/profiles.html">Profil 👤</a>
+        <a href="/pages/maliste.html">Ma liste 🌟</a>
+        <a href="/pages/editprofiles.html" class="logout-btn" onclick="logout()">Modifier le profile</a>
+        <a href="/pages/node.html">Accueil 🏠</a>
+        <a href="/pages/contact.html">Support</a>
+        <a href="/pages/index.html" class="logout-btn" onclick="logout()">Déconnexion ❌</a>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1>Profil</h1>
+        </header>
+        <div class="profile-container">
+            <div class="profile-image-container">
+                <img id="profileImage" src="default-profile.jpg" alt="Photo de profil">
+            </div>
+            <h2>Informations du Profil</h2>
+            <p><strong>Nom d'utilisateur:</strong> <span id="username"></span></p>
+            <p><strong>Email:</strong> <span id="email"></span></p>
+            <p><strong>Bio:</strong> <span id="bio"></span></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileImage = document.getElementById('profileImage');
+            const usernameSpan = document.getElementById('username');
+            const emailSpan = document.getElementById('email');
+            const bioSpan = document.getElementById('bio');
+
+            // Charger les informations depuis localStorage
+            const savedProfileImage = localStorage.getItem('profileImage');
+            if (savedProfileImage) {
+                profileImage.src = savedProfileImage;
+            }
+            usernameSpan.textContent = localStorage.getItem('username') || 'Non défini';
+            emailSpan.textContent = localStorage.getItem('email') || 'Non défini';
+            bioSpan.textContent = localStorage.getItem('bio') || 'Non défini';
+        });
+
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('email');
+            localStorage.removeItem('bio');
+            localStorage.removeItem('profileImage');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

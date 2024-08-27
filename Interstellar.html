@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interstellar - MSFLIX</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: black;
+        }
+        /* Full-screen video background */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .video-background iframe {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        /* Content overlay with gradient */
+        .overlay-content {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 40%;
+            height: 100%;
+            padding: 50px;
+            background: linear-gradient(to right, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            z-index: 2;
+        }
+        .overlay-content h1 {
+            font-size: 2.5em;
+            margin: 0 0 20px;
+        }
+        .overlay-content p {
+            font-size: 1.2em;
+            line-height: 1.5;
+            margin: 10px 0;
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+        .buttons button {
+            background-color: #f9f9f9;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+            color: black;
+        }
+        .buttons button:hover {
+            background-color: #ddd;
+            transform: scale(1.05);
+        }
+        /* Button for returning to the previous page */
+        .return-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #f9f9f9;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+            z-index: 1000;
+        }
+        .return-button:hover {
+            background-color: #ddd;
+            transform: scale(1.05);
+        }
+        /* Video section for trailers */
+        .video-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        .video-section iframe {
+            width: 80%;
+            height: 80%;
+            border: none;
+            border-radius: 10px;
+        }
+        .video-section .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #f9f9f9;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.2s;
+            z-index: 1001;
+        }
+        .video-section .back-button:hover {
+            background-color: #ddd;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Bouton Retour à films.html en haut à gauche -->
+        <a href="/films/films.html" class="return-button" id="returnButton">Retour</a>
+     <!-- Full-screen video background -->
+     <div class="video-background">
+        <iframe src="https://www.youtube.com/embed/VaOijhK3CRU?autoplay=1&loop=1&playlist=VaOijhK3CRU" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+
+    <!-- Overlay Content with Gradient -->
+    <div class="overlay-content">
+        <h1>Interstellar</h1>
+        <p>2014 • Science-Fiction, Aventure</p>
+        <p>Interstellar raconte l'histoire d'un groupe d'explorateurs qui entreprend un voyage au-delà des étoiles, à travers un trou de ver récemment découvert, dans l'espoir de sauver l'humanité. Ce film épique explore les limites de l'espace, du temps et de l'amour dans une aventure fascinante et poignante.</p>
+        <div class="buttons">
+    
+            <button id="playButton">Lecture</button>
+            <button id="favoriteButton">Favoris</button>
+        </div>
+        <a href="/films/films.html" class="return-button" id="returnButton">Retour</a>
+    </div>
+
+    <!-- Video Section for Trailers -->
+    <div class="video-section" id="videoSection">
+        <button class="back-button" id="backButton">Retour</button>
+        <iframe id="videoPlayer" src="" allowfullscreen></iframe>
+    </div>
+      
+
+            </div>
+        </div>
+
+        <div class="video-section" id="videoSection">
+            <button class="back-button" id="backButton">Retour</button>
+            <iframe id="videoPlayer" src="" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Lecture du film
+        document.getElementById('playButton').addEventListener('click', function() {
+            window.open('https://uqload.ws/p6uizn31bvzm.html', '_blank');
+        });
+
+        // Gestion du bouton de retour
+        document.getElementById('backButton').addEventListener('click', function() {
+            var content = document.querySelector('.overlay-content');
+            var videoSection = document.getElementById('videoSection');
+            
+            // Réinitialiser la source de la vidéo
+            document.getElementById('videoPlayer').src = '';
+            
+            // Masquer la section vidéo et réafficher le contenu principal
+            videoSection.style.display = 'none';
+            content.style.display = 'flex';
+        });
+
+        // Ajouter/Supprimer des favoris
+        document.getElementById('favoriteButton').addEventListener('click', function() {
+            const movie = {
+                title: 'Interstellar',
+                image: 'https://th.bing.com/th/id/OIP.uiaj_IMaC7h3NoieAhcmVwHaLG?rs=1&pid=ImgDetMain'
+            };
+
+            let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+            const movieIndex = favorites.findIndex(fav => fav.title === movie.title);
+
+            if (movieIndex !== -1) {
+                favorites.splice(movieIndex, 1);
+                alert('Le film a été retiré de vos favoris.');
+            } else {
+                favorites.push(movie);
+                alert('Le film a été ajouté à vos favoris !');
+            }
+
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        });
+
+        // Bouton de retour à la page des films
+        document.getElementById('returnButton').addEventListener('click', function() {
+            window.location.href = '/films/films.html';
+        });
+    </script>
+</body>
+
+</html>
